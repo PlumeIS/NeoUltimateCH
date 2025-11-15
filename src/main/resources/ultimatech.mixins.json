@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "cn.plumc.ultimatech.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "ultimatech.refmap.json",
+  "mixins": [
+    "ConnectionMixin",
+    "MinecraftServerMixin",
+    "ServerGamePacketListenerImplMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
