@@ -6,6 +6,7 @@ import cn.plumc.ultimatech.section.SectionCounter;
 import cn.plumc.ultimatech.section.SectionLocation;
 import cn.plumc.ultimatech.section.hit.BoxHit;
 import cn.plumc.ultimatech.utils.DisplayEntityUtil;
+import cn.plumc.ultimatech.utils.PlayerUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -44,7 +45,7 @@ public class RocketPack extends Section {
             process.start();
             DisplayEntityUtil.setVisible(rockEntity, "minecraft:lime_glazed_terracotta", false);
             player.getInventory().armor.set(3, getRocketItem());
-            player.connection.send(player.getInventory().createInventoryUpdatePacket(103));
+            player.connection.send(PlayerUtil.createInventoryUpdatePacket(player,103));
             globalRockedPlayers.add(player);
         }
         RocketPackPad.handleRocket(server, game, rockedPlayer);

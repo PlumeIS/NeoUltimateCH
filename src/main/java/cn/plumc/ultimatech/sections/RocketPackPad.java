@@ -56,7 +56,7 @@ public class RocketPackPad extends Section {
             process.start();
             DisplayEntityUtil.setVisible(rockEntity, "minecraft:lime_glazed_terracotta", false);
             player.getInventory().armor.set(3, getRocketItem());
-            player.connection.send(player.getInventory().createInventoryUpdatePacket(103));
+            player.connection.send(PlayerUtil.createInventoryUpdatePacket(player,103));
             rockedPlayers.add(player);
             globalRockedPlayers.add(player);
         }

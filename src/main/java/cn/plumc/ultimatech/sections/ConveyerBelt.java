@@ -10,7 +10,7 @@ import cn.plumc.ultimatech.utils.PlayerUtil;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ARGB;
+
 import net.minecraft.util.Tuple;
 import net.minecraft.world.phys.Vec3;
 
@@ -77,7 +77,7 @@ public class ConveyerBelt extends Section {
                      boolean create){
         if (create) {
             Vec3 point = BlockUtil.getRandomPointInAABB(hit.getAABB());
-            DustParticleOptions dust = new DustParticleOptions(ARGB.color(new Vec3(1, 1, 1)), 0.8f);
+            DustParticleOptions dust = new DustParticleOptions(new Vec3(1, 1, 1).toVector3f(), 0.8f);
             tracking.add(new Tuple<>(dust, point));
         }
 

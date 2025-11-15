@@ -19,7 +19,7 @@ public class Pitcher extends Section {
     public FixedLinkedList<Snowball> snowballs = new FixedLinkedList<>(UCHInfos.SECTION_MAX_ENTITIES){
         @Override
         public Snowball removeFirst() {
-            getFirst().kill(level);
+            getFirst().kill();
             return super.removeFirst();
         }
     };
@@ -55,7 +55,7 @@ public class Pitcher extends Section {
     @Override
     public void onRoundEnd() {
         super.onRoundEnd();
-        snowballs.forEach(snowball -> snowball.kill(level));
+        snowballs.forEach(snowball -> snowball.kill());
         snowballs.clear();
     }
 }

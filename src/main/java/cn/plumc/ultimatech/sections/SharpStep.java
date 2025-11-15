@@ -9,7 +9,7 @@ import cn.plumc.ultimatech.section.hit.BoxHit;
 import cn.plumc.ultimatech.utils.DisplayEntityUtil;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ARGB;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
@@ -96,7 +96,7 @@ public class SharpStep extends Section {
     private void vfx(Vec3 color){
         List<Vec3> boxPoints = transform.generateOutlinePoints(0.2);
         for (Vec3 boxPoint : boxPoints) {
-            level.sendParticles(new DustParticleOptions(ARGB.color(color), 1), boxPoint.x, boxPoint.y, boxPoint.z, 1, 0, 0, 0, 0);
+            level.sendParticles(new DustParticleOptions(color.toVector3f(), 1), boxPoint.x, boxPoint.y, boxPoint.z, 1, 0, 0, 0, 0);
         }
     }
 }

@@ -35,7 +35,7 @@ public class SectionBuilder {
 
         ItemUtil.withTag(itemStack, info.id());
 
-        itemStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(List.of(), List.of(), List.of(String.valueOf(info.code())), List.of()));
+        itemStack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(info.code()));
         itemStack.set(DataComponents.UNBREAKABLE, new Unbreakable(false));
         itemStack.set(DataComponents.ITEM_NAME, Component.literal("")
                 .append(info.name()).withStyle(ChatFormatting.BOLD).withStyle(ChatFormatting.GREEN)

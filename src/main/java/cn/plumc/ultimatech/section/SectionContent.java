@@ -15,7 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.commands.data.EntityDataAccessor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ARGB;
+
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.Display;
@@ -245,7 +245,7 @@ public class SectionContent {
     }
 
     private void createPoint(Vec3 pos, Vec3 color){
-        level.sendParticles(new DustParticleOptions(ARGB.color(color), 0.5f), pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
+        level.sendParticles(new DustParticleOptions(color.toVector3f(), 0.5f), pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
     }
 
     public boolean checkCanPlace(BlockPos pos, BlockState lastBlockState){
@@ -281,17 +281,17 @@ public class SectionContent {
                         itemEntity.getItem().is(SECTION_ROTATE_Y_ITEM.getItem()) ||
                         itemEntity.getItem().is(SECTION_ROTATE_Z_ITEM.getItem()));
         for (ItemEntity itemEntity : itemEntities){
-            itemEntity.kill(level);
+            itemEntity.kill();
         }
 
         for (int i = 0; i < inventory.getContainerSize(); i++) {
-            player.connection.send(inventory.createInventoryUpdatePacket(i));
+            player.connection.send(PlayerUtil.createInventoryUpdatePacket(player,i));
         }
     }
 
     public void remove() {
         blocks.forEach((key, value) -> level.setBlockAndUpdate(key, Blocks.AIR.defaultBlockState()));
-        entities.entities.forEach((entry) -> entry.getB().kill(level));
+        entities.entities.forEach((entry) -> entry.getB().kill());
     }
 
     public boolean containsBlock(BlockPos pos) {

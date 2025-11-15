@@ -9,7 +9,7 @@ import cn.plumc.ultimatech.section.hit.EntityHit;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ARGB;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -81,10 +81,10 @@ public class Honeycomb extends Section {
             }
 
             @Override
-            public boolean doHurtTarget(@NotNull ServerLevel level, @NotNull Entity entity) {
-                boolean result = super.doHurtTarget(level, entity);
+            public boolean doHurtTarget(@NotNull Entity entity) {
+                boolean result = super.doHurtTarget(entity);
                 if (result && entity instanceof ServerPlayer player) Honeycomb.this.kill(player);
-                bees.forEach(bee -> bee.kill(level));
+                bees.forEach(bee -> bee.kill());
                 bees.clear();
                 return result;
             }
@@ -106,7 +106,7 @@ public class Honeycomb extends Section {
     public void onRoundEnd() {
         super.onRoundEnd();
         triggered = false;
-        bees.forEach(bee -> bee.kill(level));
+        bees.forEach(bee -> bee.kill());
         bees.clear();
         setProcess(0);
     }
@@ -114,9 +114,7 @@ public class Honeycomb extends Section {
     private void vfx(){
         Vec3 center = triggerHit.getAABB().getCenter();
         level.sendParticles(
-                new DustParticleOptions(ARGB.color(new Vec3(1.0f, 0.8235f, 0.09411f)), 0.8f),
-                false,
-                false,
+                new DustParticleOptions(new Vec3(1.0f, 0.8235f, 0.09411f).toVector3f(), 0.8f),
                 center.x() + 0.5,
                 center.y() + 0.5,
                 center.z() + 0.5,

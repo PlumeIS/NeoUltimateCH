@@ -46,6 +46,10 @@ public class BlockUtil {
         return new BlockPos(Mth.floor(pos.x), Mth.floor(pos.y), Mth.floor(pos.z));
     }
 
+    public static Vec3 toVec3(BlockPos pos) {
+        return new Vec3(pos.getX(), pos.getY(), pos.getZ());
+    }
+
     public static Vec3 getRandomPointInAABB(AABB aabb) {
         Random random = new Random();
         double x = random.nextDouble() * (aabb.maxX - aabb.minX) + aabb.minX;

@@ -70,7 +70,7 @@ public class Airplane extends Section {
     public FixedLinkedList<AirplaneEntity> airplanes = new FixedLinkedList<>(UCHInfos.SECTION_MAX_ENTITIES){
         @Override
         public AirplaneEntity removeFirst() {
-            getFirst().getEntity().kill(level);
+            getFirst().getEntity().kill();
             return super.removeFirst();
         }
     };
@@ -123,7 +123,7 @@ public class Airplane extends Section {
                 entry.setCrashed(true);
                 TickUtil.runAfterTick(() -> {
                     vfx(spawnPoint.add(transform.toAbsolute(transform.rotatePoint(spawnPoint.add(entry.getPos())))));
-                    entity.kill(level);
+                    entity.kill();
                     airplanes.remove(entry);
                 }, 1.0);
             }
@@ -162,7 +162,7 @@ public class Airplane extends Section {
     @Override
     public void onRoundEnd() {
         super.onRoundEnd();
-        airplanes.forEach(airplane -> airplane.getEntity().kill(level));
+        airplanes.forEach(airplane -> airplane.getEntity().kill());
         airplanes.clear();
         changedBlocks.forEach(blockPos -> level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState()));
     }
@@ -171,6 +171,6 @@ public class Airplane extends Section {
     public void remove() {
         super.remove();
         changedBlocks.forEach(blockPos -> level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState()));
-        airplanes.forEach(airplane -> airplane.getEntity().kill(level));
+        airplanes.forEach(airplane -> airplane.getEntity().kill());
     }
 }

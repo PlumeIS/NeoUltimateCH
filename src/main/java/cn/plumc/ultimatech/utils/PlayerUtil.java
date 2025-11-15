@@ -6,9 +6,11 @@ import cn.plumc.ultimatech.section.hit.PlayerHit;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -236,5 +238,9 @@ public class PlayerUtil {
 
     public static void updateDeltaMovement(List<ServerPlayer> players, Entity entity){
         players.forEach(serverPlayer -> serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(entity)));
+    }
+
+    public static ClientboundContainerSetSlotPacket createInventoryUpdatePacket(ServerPlayer player, int slot){
+        return new ClientboundContainerSetSlotPacket(-2, 0, slot, player.getInventory().getItem(slot));
     }
 }

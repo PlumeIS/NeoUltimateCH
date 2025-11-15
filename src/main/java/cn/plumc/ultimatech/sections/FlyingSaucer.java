@@ -10,7 +10,6 @@ import cn.plumc.ultimatech.sections.base.MovableStep;
 import cn.plumc.ultimatech.utils.PlayerUtil;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
@@ -74,10 +73,10 @@ public class FlyingSaucer extends MovableStep {
         for (int i = 0; i < 6; i++) {
             Vec3 pos = origin.add(transform.rotateVector(new Vec3(1.0, 1.0, 1.0))).add(transform.rotateVector(movement.scale(i)));
             if (i == 0 || i == 5) {
-                level.sendParticles(new DustParticleOptions(ARGB.color(new Vec3(0.39, 1.0, 0.0)), 1.5f),
+                level.sendParticles(new DustParticleOptions(new Vec3(0.39, 1.0, 0.0).toVector3f(), 1.5f),
                         pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
             } else {
-                level.sendParticles(new DustParticleOptions(ARGB.color(new Vec3(0.39, 1.0, 0.0)), 0.8f),
+                level.sendParticles(new DustParticleOptions(new Vec3(0.39, 1.0, 0.0).toVector3f(), 0.8f),
                         pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
             }
         }

@@ -6,6 +6,7 @@ import cn.plumc.ultimatech.section.SectionLocation;
 import cn.plumc.ultimatech.section.hit.BlockSurfaceHit;
 import cn.plumc.ultimatech.section.hit.Hit;
 import cn.plumc.ultimatech.section.hit.PlayerHit;
+import cn.plumc.ultimatech.utils.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -74,7 +75,7 @@ public class FragileBricks extends Section {
     private void vfx(){
         HashMap<BlockPos, BlockState> blocks = content.blocks;
         for (BlockPos blockPos : blocks.keySet()) {
-            Vec3 pos = new Vec3(blockPos).add(0.5);
+            Vec3 pos = BlockUtil.toVec3(blockPos).add(0.5, 0.5, 0.5);
             level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE_BRICKS.defaultBlockState()), pos.x, pos.y, pos.z, 50, 0.8, 0.8, 0.8, 1);
             level.playSound(null, blockPos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS);
         }

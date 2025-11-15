@@ -28,7 +28,7 @@ public class Crossbow extends Section {
     public FixedLinkedList<Arrow> arrows = new FixedLinkedList<>(SECTION_MAX_ENTITIES) {
         @Override
         public Arrow removeFirst() {
-            getFirst().kill(level);
+            getFirst().kill();
             return super.removeFirst();
         }
     };
@@ -105,7 +105,7 @@ public class Crossbow extends Section {
     @Override
     public void onRoundEnd() {
         super.onRoundEnd();
-        arrows.forEach(entity -> entity.kill(level));
+        arrows.forEach(entity -> entity.kill());
         arrows.clear();
     }
 }

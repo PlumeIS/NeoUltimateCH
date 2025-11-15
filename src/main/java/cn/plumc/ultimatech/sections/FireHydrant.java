@@ -10,7 +10,7 @@ import cn.plumc.ultimatech.utils.PlayerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ARGB;
+
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
@@ -80,13 +80,13 @@ public class FireHydrant extends Section {
         if (progress <= 0.75) {
             progress*=(1.0/0.75);
             Vec3 pos = transform.toAbsolute(startPos.add(waterMovement.scale(progress)));
-            DustParticleOptions dustParticleOptions = new DustParticleOptions(ARGB.color(new Vec3(0, 0.87058823529f, 1)), 0.6f);
+            DustParticleOptions dustParticleOptions = new DustParticleOptions(new Vec3(0, 0.87058823529f, 1).toVector3f(), 0.6f);
             vfxPositions.add(new Tuple<>(pos, dustParticleOptions));
             level.sendParticles(dustParticleOptions, pos.x, pos.y, pos.z, 12,
                     Math.abs(endMovement.x), Math.abs(endMovement.y), Math.abs(endMovement.z), 0);
         } if (progress >= 0.75) {
             Vec3 pos = transform.toAbsolute(startPos.add(waterMovement));
-            DustParticleOptions dustParticleOptions = new DustParticleOptions(ARGB.color(new Vec3(0, 0.87058823529f, 1)), 0.8f);
+            DustParticleOptions dustParticleOptions = new DustParticleOptions(new Vec3(0, 0.87058823529f, 1).toVector3f(), 0.8f);
             level.sendParticles(dustParticleOptions, pos.x, pos.y, pos.z, 12,
                     Math.abs(endMovement.x), Math.abs(endMovement.y), Math.abs(endMovement.z), 0);
         }

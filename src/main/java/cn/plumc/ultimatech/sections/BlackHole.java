@@ -4,6 +4,7 @@ import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.section.Section;
 import cn.plumc.ultimatech.section.SectionLocation;
 import cn.plumc.ultimatech.section.hit.BoxHit;
+import cn.plumc.ultimatech.utils.ColorUtil;
 import cn.plumc.ultimatech.utils.FixedLinkedList;
 import cn.plumc.ultimatech.utils.PlayerUtil;
 import com.google.common.collect.ImmutableList;
@@ -70,7 +71,7 @@ public class BlackHole extends Section {
             if (texture.isLoaded()) {
                 Vec3 point = PlayerUtil.getRandomPointInPlayerAABB(player);
                 Integer randomColor = texture.getColorRandom().getRandomColor();
-                DustParticleOptions dust = new DustParticleOptions(randomColor, 0.6f);
+                DustParticleOptions dust = new DustParticleOptions(ColorUtil.toColor(randomColor), 0.6f);
                 level.sendParticles(dust, point.x, point.y, point.z, 1, 0, 0, 0, 0);
                 trackingParticles.add(new Tuple<>(dust, point));
             }

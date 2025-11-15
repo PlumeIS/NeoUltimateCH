@@ -62,16 +62,16 @@ public abstract class ConnectionMixin {
                     try {
                         ServerboundMovePlayerPacket movePlayerPacket = null;
                         if (packet instanceof ServerboundMovePlayerPacket.Pos p) {
-                            movePlayerPacket = new ServerboundMovePlayerPacket.Pos(p.getX(0), p.getY(0), p.getZ(0), false, p.horizontalCollision());
+                            movePlayerPacket = new ServerboundMovePlayerPacket.Pos(p.getX(0), p.getY(0), p.getZ(0), false);
                         }
                         if (packet instanceof ServerboundMovePlayerPacket.Rot p){
-                            movePlayerPacket = new ServerboundMovePlayerPacket.Rot(p.getYRot(0), p.getXRot(0), false, p.horizontalCollision());
+                            movePlayerPacket = new ServerboundMovePlayerPacket.Rot(p.getYRot(0), p.getXRot(0), false);
                         }
                         if (packet instanceof ServerboundMovePlayerPacket.PosRot p){
-                            movePlayerPacket = new ServerboundMovePlayerPacket.PosRot(p.getX(0), p.getY(0), p.getZ(0), p.getYRot(0), p.getXRot(0), false, p.horizontalCollision());
+                            movePlayerPacket = new ServerboundMovePlayerPacket.PosRot(p.getX(0), p.getY(0), p.getZ(0), p.getYRot(0), p.getXRot(0), false);
                         }
                         if (packet instanceof ServerboundMovePlayerPacket.StatusOnly p){
-                            movePlayerPacket = new ServerboundMovePlayerPacket.StatusOnly(false, p.horizontalCollision());
+                            movePlayerPacket = new ServerboundMovePlayerPacket.StatusOnly(false);
                         }
                         genericsFtw(movePlayerPacket, this.packetListener);
                     } catch (RunningOnDifferentThreadException runningondifferentthreadexception) {

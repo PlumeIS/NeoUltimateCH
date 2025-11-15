@@ -8,8 +8,9 @@ import cn.plumc.ultimatech.section.hit.LinearHit;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ARGB;
+
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 
 public class Flamethrower extends Section {
     public LinearHit hit;
@@ -40,7 +41,7 @@ public class Flamethrower extends Section {
     }
 
     private void vfx(int tick) {
-        int color = ARGB.color(new Vec3(1f, 0.34901960784f, 0f));
+        Vector3f color = new Vec3(1f, 0.34901960784f, 0f).toVector3f();
         double offset = 0;
         double d_offset = 0.01;
         for (int i = 0; i < hit.getHitPoints().size(); i++) {

@@ -6,7 +6,7 @@ import cn.plumc.ultimatech.section.hit.BoxHit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ARGB;
+
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -76,7 +76,7 @@ public class Barrett extends Section {
     }
 
     private void vfxWarning(){
-        level.sendParticles(new DustParticleOptions(ARGB.color(new Vec3(1, 0, 0)), 1.5f),
+        level.sendParticles(new DustParticleOptions(new Vec3(1, 0, 0).toVector3f(), 1.5f),
                 warningPos.x, warningPos.y, warningPos.z,
                 5, 0.25, 0.25, 0.25, 0
         );
@@ -95,7 +95,7 @@ public class Barrett extends Section {
                 vfx = false;
                 break;
             };
-            level.sendParticles(new DustParticleOptions(ARGB.color(new Vec3(0.0, 0.0, 0.0)), 1.2f),
+            level.sendParticles(new DustParticleOptions(new Vec3(0.0, 0.0, 0.0).toVector3f(), 1.2f),
                     point.x, point.y, point.z, 1,
                     0, 0, 0, 0);
         }

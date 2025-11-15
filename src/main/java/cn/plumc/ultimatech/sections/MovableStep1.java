@@ -8,7 +8,7 @@ import cn.plumc.ultimatech.sections.base.MovableStep;
 import cn.plumc.ultimatech.utils.PlayerUtil;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ARGB;
+
 import net.minecraft.world.phys.Vec3;
 
 import static cn.plumc.ultimatech.info.UCHInfos.SECTION_VIEW_DISTANCE;
@@ -59,10 +59,10 @@ public class MovableStep1 extends MovableStep {
         for (int i = 0; i < 7; i++) {
             Vec3 pos = origin.add(transform.rotateVector(new Vec3(0.5, 0.5, 0.5))).add(transform.rotateVector(movement.scale(i)));
             if (i == 0 || i == 6) {
-                level.sendParticles(new DustParticleOptions(ARGB.color(new Vec3(0.3, 0.3, 0.3)), 1.5f),
+                level.sendParticles(new DustParticleOptions(new Vec3(0.3, 0.3, 0.3).toVector3f(), 1.5f),
                         pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
             } else {
-                level.sendParticles(new DustParticleOptions(ARGB.color(new Vec3(0.5, 0.5, 0.5)), 0.8f),
+                level.sendParticles(new DustParticleOptions(new Vec3(0.5, 0.5, 0.5).toVector3f(), 0.8f),
                         pos.x, pos.y, pos.z, 1, 0, 0, 0, 0);
             }
         }

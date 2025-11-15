@@ -1,6 +1,7 @@
 package cn.plumc.ultimatech.utils;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -20,7 +21,7 @@ import java.util.Objects;
 
 public class ItemUtil {
     public static Holder<Enchantment> getEnchantment(ResourceKey<Enchantment> enchantment) {
-        Registry<Enchantment> enchantmentRegistry = ServerLifecycleHooks.getCurrentServer().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        HolderLookup.RegistryLookup<Enchantment> enchantmentRegistry = ServerLifecycleHooks.getCurrentServer().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
         return enchantmentRegistry.getOrThrow(enchantment);
     }
 

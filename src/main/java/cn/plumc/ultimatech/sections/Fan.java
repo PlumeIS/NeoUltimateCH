@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.ARGB;
+
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
@@ -75,7 +75,7 @@ public class Fan extends Section {
 
     private void vfx(){
         Vec3 point = BlockUtil.getRandomPointInAABB(particleHit.getAABB());
-        DustParticleOptions dust = new DustParticleOptions(ARGB.color(new Vec3(1, 1, 1)), 1);
+        DustParticleOptions dust = new DustParticleOptions(new Vec3(1, 1, 1).toVector3f(), 1);
         trackingParticles.add(new Tuple<>(dust, point));
 
         for (Tuple<DustParticleOptions, Vec3> trackingParticle : ImmutableList.copyOf(trackingParticles)) {
