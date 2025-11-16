@@ -86,6 +86,5 @@ public class Map {
 
     public void tick(){};
     public void second(){};
-    public void render(){};
     public void reset(){}
 }

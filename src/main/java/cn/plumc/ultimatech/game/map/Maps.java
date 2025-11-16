@@ -1,6 +1,7 @@
 package cn.plumc.ultimatech.game.map;
 
 import cn.plumc.ultimatech.game.map.maps.Map;
+import cn.plumc.ultimatech.game.map.maps.Waterfall;
 import net.minecraft.core.BlockPos;
 
 public enum Maps {
@@ -13,10 +14,8 @@ public enum Maps {
             new BlockPos(114561, 22, 19808),
             -10,
             13000
-            ))
-//    OLD_HOUSE("old_house", "旧房子", new Map(
-//
-//    ))
+            )),
+    WATERFALL("waterfall", "瀑布", new Waterfall());
     ;
 
     public final String id;
