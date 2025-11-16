@@ -3,6 +3,7 @@ package cn.plumc.ultimatech.commands;
 import cn.plumc.ultimatech.UltimateCH;
 import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.game.map.Maps;
+import cn.plumc.ultimatech.section.SectionRegistry;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.commands.CommandSourceStack;
@@ -11,6 +12,7 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -19,6 +21,17 @@ public class GameCommand {
         dispatcher.register(Commands.literal("game")
                 .then(Commands.literal("create")
                         .then(Commands.argument("map", StringArgumentType.string())
+                                .suggests((context, builder) -> {
+                                    try {
+                                        String string = StringArgumentType.getString(context, "map");
+                                        Arrays.stream(Maps.values()).forEach(map -> {
+                                            if (map.id.contains(string)) builder.suggest(map.id);}
+                                        );
+                                    } catch (IllegalArgumentException ignored) {
+                                        Arrays.stream(Maps.values()).map(Maps::getId).forEach(builder::suggest);
+                                    }
+                                    return builder.buildFuture();
+                                })
                                 .executes(commandContext -> {
                                     try {
                                         if (Objects.nonNull(UltimateCH.game)) UltimateCH.game.destroy();
