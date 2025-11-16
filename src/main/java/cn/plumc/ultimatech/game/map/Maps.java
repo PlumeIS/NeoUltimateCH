@@ -13,7 +13,8 @@ public enum Maps {
             new BlockPos(114564, 19, 19811),
             new BlockPos(114561, 22, 19808),
             -10,
-            13000
+            13000,
+            2
             )),
     WATERFALL("waterfall", "瀑布", new Waterfall());
     ;

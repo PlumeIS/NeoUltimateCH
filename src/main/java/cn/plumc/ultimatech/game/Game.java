@@ -1,7 +1,8 @@
 package cn.plumc.ultimatech.game;
 
+import cn.plumc.ultimatech.Lobby;
 import cn.plumc.ultimatech.UltimateCH;
-import cn.plumc.ultimatech.game.map.maps.Map;
+import cn.plumc.ultimatech.game.map.Maps;
 import cn.plumc.ultimatech.info.UCHInfos;
 import cn.plumc.ultimatech.section.Section;
 import cn.plumc.ultimatech.section.SectionBox;
@@ -36,8 +37,8 @@ public class Game {
     private final SectionManager sectionManager;
     private final StatusSignal statusSignal;
 
-    public Game(Map map) {
-        this.status = new GameStatus(map);
+    public Game(Maps mapInfo) {
+        this.status = new GameStatus(mapInfo);
         this.util = new GameUtil(this);
         this.playerManager = new PlayerManager(this, status);
         this.sectionManager = new SectionManager(this, status);
@@ -316,6 +317,7 @@ public class Game {
         status.gameStarting = false;
         status.roundReady = false;
         destroy();
+        Lobby.onGameEnd(this);
         UltimateCH.game = null;
         TickUtil.cancelDelayTask();
     }

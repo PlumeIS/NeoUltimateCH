@@ -35,7 +35,7 @@ public class GameCommand {
                                 .executes(commandContext -> {
                                     try {
                                         if (Objects.nonNull(UltimateCH.game)) UltimateCH.game.destroy();
-                                        UltimateCH.game = new Game(Maps.getMap(StringArgumentType.getString(commandContext, "map")).map);
+                                        UltimateCH.game = new Game(Maps.getMap(StringArgumentType.getString(commandContext, "map")));
                                         return 1;
                                     } catch (Exception e) {
                                         e.printStackTrace();

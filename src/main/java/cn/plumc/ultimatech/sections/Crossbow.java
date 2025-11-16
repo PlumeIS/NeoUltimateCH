@@ -13,8 +13,10 @@ import net.minecraft.server.commands.data.EntityDataAccessor;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -60,8 +62,13 @@ public class Crossbow extends Section {
                 }
 
                 @Override
+                protected boolean tryPickup(Player player) {
+                    return false;
+                }
+
+                @Override
                 protected @NotNull ItemStack getDefaultPickupItem() {
-                    return ItemStack.EMPTY;
+                    return Items.ARROW.getDefaultInstance();
                 }
             };
             arrow.setNoGravity(true);

@@ -13,6 +13,7 @@ import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.commands.data.EntityDataAccessor;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -109,9 +110,9 @@ public class SectionContent {
             EntityType<?> templateType = entityEntry.getB().getType();
 
             Display entity;
-            if (templateType == EntityType.ITEM_DISPLAY) entity = new Display.ItemDisplay(templateType, level);
-            else if (templateType == EntityType.BLOCK_DISPLAY) entity = new Display.BlockDisplay(templateType, level);
-            else if (templateType == EntityType.TEXT_DISPLAY) entity = new Display.TextDisplay(templateType, level);
+            if (templateType == EntityType.ITEM_DISPLAY) entity = new Display.ItemDisplay(EntityType.ITEM_DISPLAY, level);
+            else if (templateType == EntityType.BLOCK_DISPLAY) entity = new Display.BlockDisplay(EntityType.BLOCK_DISPLAY, level);
+            else if (templateType == EntityType.TEXT_DISPLAY) entity = new Display.TextDisplay(EntityType.TEXT_DISPLAY, level);
             else throw new RuntimeException("Unsupported type: " + templateType.getDescriptionId());
 
             EntityDataAccessor templateDataAccessor = new EntityDataAccessor(entityEntry.getB());
@@ -133,6 +134,7 @@ public class SectionContent {
                 throw new RuntimeException(e);
             }
 
+            entity.moveTo(parent.owner.position());
             entities.add(new Vec3(t_x, t_y, t_z), entity);
             level.addFreshEntity(entity);
         }

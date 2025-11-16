@@ -30,6 +30,7 @@ public class UltimateCH {
 
     public void tick(){
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        Lobby.tick(server);
         WallJumpProvider.tick(server.getPlayerList().getPlayers(), server.overworld());
         try {
             if (Objects.nonNull(game)) game.tick();

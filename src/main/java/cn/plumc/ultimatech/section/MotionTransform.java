@@ -2,6 +2,7 @@ package cn.plumc.ultimatech.section;
 
 import cn.plumc.ultimatech.section.hit.BoxHit;
 import cn.plumc.ultimatech.section.hit.LinearHit;
+import cn.plumc.ultimatech.utils.BlockUtil;
 import cn.plumc.ultimatech.utils.RotationUtil;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.*;
@@ -160,43 +161,7 @@ public class MotionTransform {
         Vec3 end = new Vec3(info.size().width(), info.size().height(), info.size().length());
         Vec3 rotatedEnd = RotationUtil.rotatePoint(origin.add(end), origin, parent.rotation.getRotations());
         AABB aabb = new AABB(origin, rotatedEnd);
-        Vec3 min = aabb.getMinPosition();
-        Vec3 max = aabb.getMaxPosition();
-
-        Vec3[] vertices = new Vec3[]{
-                new Vec3(min.x, min.y, min.z),
-                new Vec3(max.x, min.y, min.z),
-                new Vec3(min.x, max.y, min.z),
-                new Vec3(max.x, max.y, min.z),
-                new Vec3(min.x, min.y, max.z),
-                new Vec3(max.x, min.y, max.z),
-                new Vec3(min.x, max.y, max.z),
-                new Vec3(max.x, max.y, max.z)
-        };
-        List<Vec3> points = new ArrayList<>(Arrays.asList(vertices));
-        int[][] edges = new int[][]{
-                {0, 1}, {0, 2}, {0, 4},
-                {1, 3}, {1, 5},
-                {2, 3}, {2, 6},
-                {3, 7},
-                {4, 5}, {4, 6},
-                {5, 7},
-                {6, 7}
-        };
-        for (int[] edge : edges) {
-            Vec3 a = vertices[edge[0]];
-            Vec3 b = vertices[edge[1]];
-            Vec3 dir = b.subtract(a);
-            double len = dir.length();
-            Vec3 unit = dir.scale(1.0 / len);
-
-            for (double t = 0; t < len; t += step) {
-                Vec3 p = a.add(unit.scale(t));
-                points.add(p);
-            }
-            points.add(b);
-        }
-        return points;
+        return BlockUtil.generateOutlinePoints(step, aabb);
     }
 
     private void updateEntityTransformation(Entity entity, TransformationEditor editor, double duration) {

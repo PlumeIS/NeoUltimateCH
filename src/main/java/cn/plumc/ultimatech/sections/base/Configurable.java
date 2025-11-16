@@ -48,17 +48,15 @@ public class Configurable extends Section {
     }
 
     protected void handleViewBlock(BlockPos blockOrigin){
-        // block
         for (Map.Entry<BlockPos, BlockState> blockEntry : rotation.rotated(content.templateBlocks).entrySet()) {
             BlockPos relativePos = blockEntry.getKey();
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            BlockState worldBlockState = level.getBlockState(worldPos);
-            BlockEntity blockEntity = level.getBlockEntity(worldPos);
+            Tuple<BlockState, Optional<BlockEntity>> recoverBlock = game.getSectionManager().getRecoverBlockOrWorldBlock(worldPos);
             if (!BlockUtil.isMultiBlock(level, worldPos)) {
-                content.worldRecoverCache.put(worldPos, new Tuple<>(worldBlockState, Objects.nonNull(blockEntity) ? Optional.of(blockEntity) : Optional.empty()));
-                level.setBlockAndUpdate(worldPos, checkCanPlace(worldPos, worldBlockState) ? blockEntry.getValue() : SECTION_NONPPLACABLE_BLOCK);
+                content.worldRecoverCache.put(worldPos, recoverBlock);
+                level.setBlockAndUpdate(worldPos, checkCanPlace(worldPos, recoverBlock.getA()) ? blockEntry.getValue() : SECTION_NONPPLACABLE_BLOCK);
             }
         }
     }
@@ -83,6 +81,7 @@ public class Configurable extends Section {
         Vec3 viewOrigin = PlayerUtil.getPlayerLooking(owner, SECTION_VIEW_DISTANCE);
         BlockPos blockOrigin = new BlockPos(Mth.floor(viewOrigin.x), Mth.floor(viewOrigin.y), Mth.floor(viewOrigin.z));
         if (!handlePlaceBlock(blockOrigin)) return false;
+        game.getSectionManager().announcePlace(this);
         content.origin = viewOrigin;
         placed = true;
         viewing = false;

@@ -16,8 +16,9 @@ public class Map {
     public BlockPos winPos2;
     public int deathHeight;
     public int dayTime;
+    public int minStartPlayer;
 
-    public Map(BlockPos mapPos1, BlockPos mapPos2, BlockPos startPos1, BlockPos startPos2, BlockPos winPos1, BlockPos winPos2, int deathHeight, int dayTime){
+    public Map(BlockPos mapPos1, BlockPos mapPos2, BlockPos startPos1, BlockPos startPos2, BlockPos winPos1, BlockPos winPos2, int deathHeight, int dayTime, int minStartPlayer){
         this.mapPos1 = mapPos1;
         this.mapPos2 = mapPos2;
         this.startPos1 = startPos1;
@@ -26,6 +27,7 @@ public class Map {
         this.winPos2 = winPos2;
         this.deathHeight = deathHeight;
         this.dayTime = dayTime;
+        this.minStartPlayer = minStartPlayer;
     }
 
     public Vec3 getAStartPos(){

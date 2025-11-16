@@ -17,7 +17,8 @@ public class Waterfall extends Map{
                 new BlockPos(2009, 128, 2047),
                 new BlockPos(2002, 134, 2040),
                 69,
-                6000
+                6000,
+                2
         );
     }
 
