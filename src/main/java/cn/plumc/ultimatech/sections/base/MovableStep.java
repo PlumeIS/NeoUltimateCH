@@ -37,7 +37,7 @@ public class MovableStep extends Configurable {
         }
 
         for (BlockPos pos : BlockUtil.getBlocksFromAABB(blocks.getAABB())) {
-            changed.put(pos, new Tuple<>(level.getBlockState(pos), Optional.ofNullable(level.getBlockEntity(pos))));
+            changed.put(pos, game.getSectionManager().getRecoverBlockOrWorldBlock(pos));
             level.setBlockAndUpdate(pos, Blocks.GREEN_STAINED_GLASS.defaultBlockState());
         }
 

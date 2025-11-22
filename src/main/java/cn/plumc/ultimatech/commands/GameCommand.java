@@ -1,5 +1,6 @@
 package cn.plumc.ultimatech.commands;
 
+import cn.plumc.ultimatech.Lobby;
 import cn.plumc.ultimatech.UltimateCH;
 import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.game.map.Maps;
@@ -15,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 
 public class GameCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -34,59 +36,113 @@ public class GameCommand {
                                 })
                                 .executes(commandContext -> {
                                     try {
-                                        if (Objects.nonNull(UltimateCH.game)) UltimateCH.game.destroy();
-                                        UltimateCH.game = new Game(Maps.getMap(StringArgumentType.getString(commandContext, "map")));
+                                        Maps mapInfo = Maps.getMap(StringArgumentType.getString(commandContext, "map"));
+                                        Optional.ofNullable(Lobby.games.remove(mapInfo.id)).ifPresent(Game::destroy);
+                                        Lobby.games.put(mapInfo.id, new Game(mapInfo));
                                         return 1;
                                     } catch (Exception e) {
-                                        e.printStackTrace();
+                                        UltimateCH.LOGGER.error("error creating game", e);
                                     }
                                     return 0;
                                 })
                         )
                 )
                 .then(Commands.literal("join")
-                        .then(Commands.argument("player", EntityArgument.players())
-                                .executes(commandContext -> {
-                                    if (UltimateCH.game != null) {
-                                        Collection<ServerPlayer> players = EntityArgument.getPlayers(commandContext, "player");
-                                        players.forEach(serverPlayer -> UltimateCH.game.getPlayerManager().join(serverPlayer));
+                        .then(Commands.argument("map", StringArgumentType.string())
+                                .suggests((context, builder) -> {
+                                    try {
+                                        String string = StringArgumentType.getString(context, "map");
+                                        Arrays.stream(Maps.values()).forEach(map -> {
+                                            if (map.id.contains(string)) builder.suggest(map.id);}
+                                        );
+                                    } catch (IllegalArgumentException ignored) {
+                                        Arrays.stream(Maps.values()).map(Maps::getId).forEach(builder::suggest);
                                     }
-                                    return 1;
+                                    return builder.buildFuture();
                                 })
+                                .then(Commands.argument("player", EntityArgument.players())
+                                        .executes(commandContext -> {
+                                            Maps mapInfo = Maps.getMap(StringArgumentType.getString(commandContext, "map"));
+                                            Game game = Lobby.games.get(mapInfo.id);
+                                            Collection<ServerPlayer> players = EntityArgument.getPlayers(commandContext, "player");
+                                            players.forEach(serverPlayer -> game.getPlayerManager().join(serverPlayer));
+                                            return 1;
+                                        })
+                                )
                         )
+
                 )
                 .then(Commands.literal("leave")
-                        .then(Commands.argument("player", EntityArgument.player())
-                                .executes(commandContext -> {
-                                    if (UltimateCH.game != null) {
-                                        UltimateCH.game.getPlayerManager().leave(EntityArgument.getPlayer(commandContext, "player"));
+                        .then(Commands.argument("map", StringArgumentType.string())
+                                .suggests((context, builder) -> {
+                                    try {
+                                        String string = StringArgumentType.getString(context, "map");
+                                        Arrays.stream(Maps.values()).forEach(map -> {
+                                            if (map.id.contains(string)) builder.suggest(map.id);}
+                                        );
+                                    } catch (IllegalArgumentException ignored) {
+                                        Arrays.stream(Maps.values()).map(Maps::getId).forEach(builder::suggest);
                                     }
+                                    return builder.buildFuture();
+                                })
+                                .then(Commands.argument("player", EntityArgument.players())
+                                        .executes(commandContext -> {
+                                            Maps mapInfo = Maps.getMap(StringArgumentType.getString(commandContext, "map"));
+                                            Game game = Lobby.games.get(mapInfo.id);
+                                            Collection<ServerPlayer> players = EntityArgument.getPlayers(commandContext, "player");
+                                            players.forEach(serverPlayer -> game.getPlayerManager().leave(serverPlayer));
+                                            return 1;
+                                        })
+                                )
+                        )
+
+                )
+                .then(Commands.literal("start")
+                        .then(Commands.argument("map", StringArgumentType.string())
+                                .suggests((context, builder) -> {
+                                    try {
+                                        String string = StringArgumentType.getString(context, "map");
+                                        Arrays.stream(Maps.values()).forEach(map -> {
+                                            if (map.id.contains(string)) builder.suggest(map.id);}
+                                        );
+                                    } catch (IllegalArgumentException ignored) {
+                                        Arrays.stream(Maps.values()).map(Maps::getId).forEach(builder::suggest);
+                                    }
+                                    return builder.buildFuture();
+                                })
+                                .executes(commandContext -> {
+                                    Maps mapInfo = Maps.getMap(StringArgumentType.getString(commandContext, "map"));
+                                    Lobby.games.get(mapInfo.id).gameStart();
                                     return 1;
                                 })
                         )
                 )
-                .then(Commands.literal("start")
-                        .executes(commandContext -> {
-                            if (UltimateCH.game != null) {
-                                UltimateCH.game.gameStart();
-                            }
-                            return 1;
-                        })
-                )
                 .then(Commands.literal("end")
-                        .executes(commandContext -> {
-                            if (UltimateCH.game != null) {
-                                UltimateCH.game.gameEnd(commandContext.getSource().getPlayer());
-                            }
-                            return 1;
-                        })
+                        .then(Commands.argument("map", StringArgumentType.string())
+                                .suggests((context, builder) -> {
+                                    try {
+                                        String string = StringArgumentType.getString(context, "map");
+                                        Arrays.stream(Maps.values()).forEach(map -> {
+                                            if (map.id.contains(string)) builder.suggest(map.id);}
+                                        );
+                                    } catch (IllegalArgumentException ignored) {
+                                        Arrays.stream(Maps.values()).map(Maps::getId).forEach(builder::suggest);
+                                    }
+                                    return builder.buildFuture();
+                                })
+                                .executes(commandContext -> {
+                                    Maps mapInfo = Maps.getMap(StringArgumentType.getString(commandContext, "map"));
+                                    Lobby.games.get(mapInfo.id).gameEnd(commandContext.getSource().getPlayer());
+                                    return 1;
+                                })
+                        )
                 )
                 .then(Commands.literal("list")
                         .executes(commandContext -> {
-                            commandContext.getSource().getPlayer().sendSystemMessage(Component.literal("玩家列表:"));
-                            for (ServerPlayer player : UltimateCH.game.getPlayerManager().getPlayers()) {
-                                commandContext.getSource().getPlayer().sendSystemMessage(Component.literal(player.getGameProfile().getName()));
-                            }
+                            commandContext.getSource().getPlayer().sendSystemMessage(Component.literal("正在运行的游戏:"));
+                            Lobby.games.values().forEach(game -> {
+                                commandContext.getSource().getPlayer().sendSystemMessage(Component.literal(game.getStatus().mapInfo.name));
+                            });
                             return 1;
                         })
                 )

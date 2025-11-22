@@ -1,6 +1,8 @@
 package cn.plumc.ultimatech.commands;
 
+import cn.plumc.ultimatech.Lobby;
 import cn.plumc.ultimatech.UltimateCH;
+import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.section.Section;
 import cn.plumc.ultimatech.section.SectionBox;
 import cn.plumc.ultimatech.section.SectionRegistry;
@@ -14,6 +16,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Objects;
 
@@ -80,28 +83,15 @@ public class SectionCommand {
                             return 0;
                         })
                 )
-                .then(Commands.literal("tick")
-                        .executes(commandContext -> {
-                            if (tickId==-1) tickId = TickUtil.addTask(()->{
-                                if (UltimateCH.game != null) {
-                                    for (Section section:UltimateCH.game.getSectionManager().getSections()){
-                                        section.tick();
-                                    }
-                                }
-                            });
-                            return 1;
-                        })
-                )
         );
     }
 
     public static int addSection(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         try {
-            if (Objects.nonNull(UltimateCH.game)) {
-                String sectionId = StringArgumentType.getString(ctx, "section");
-                Section section = UltimateCH.game.getSectionManager().buildSection(sectionId, ctx.getSource().getPlayer());
-                UltimateCH.game.getStatus().roundSections.put(ctx.getSource().getPlayer(), section);
-            }
+            Game game = getGameByPlayer(ctx.getSource().getPlayer());
+            String sectionId = StringArgumentType.getString(ctx, "section");
+            Section section = game.getSectionManager().buildSection(sectionId, ctx.getSource().getPlayer());
+            game.getStatus().roundSections.put(ctx.getSource().getPlayer(), section);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -110,11 +100,10 @@ public class SectionCommand {
 
     public static int removeSection(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         try {
-            if (Objects.nonNull(UltimateCH.game)) {
-                int index = IntegerArgumentType.getInteger(ctx, "section");
-                UltimateCH.game.getSectionManager().getSections().get(index).remove();
-                UltimateCH.game.getSectionManager().removeSection(index);
-            }
+            Game game = getGameByPlayer(ctx.getSource().getPlayer());
+            int index = IntegerArgumentType.getInteger(ctx, "section");
+            game.getSectionManager().getSections().get(index).remove();
+            game.getSectionManager().removeSection(index);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -122,23 +111,20 @@ public class SectionCommand {
     }
 
     public static int listSection(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
-        if (Objects.nonNull(UltimateCH.game)) {
-            for (int i = 0; i < UltimateCH.game.getSectionManager().getSections().size(); i++) {
-                final int index = i;
-                Section section = UltimateCH.game.getSectionManager().getSections().get(i);
-                ctx.getSource().sendSuccess(()->Component.literal(index+" : "+ SectionRegistry.instance.getSectionInfo(section.getClass())), false);
-            }
+        Game game = getGameByPlayer(ctx.getSource().getPlayer());
+        for (int i = 0; i < game.getSectionManager().getSections().size(); i++) {
+            final int index = i;
+            Section section = game.getSectionManager().getSections().get(i);
+            ctx.getSource().sendSuccess(()->Component.literal(index+" : "+ SectionRegistry.instance.getSectionInfo(section.getClass())), false);
         }
         return 1;
     }
 
     public static int viewSection(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         try {
-
-            if (Objects.nonNull(UltimateCH.game)) {
-                int index = IntegerArgumentType.getInteger(ctx, "section");
-                UltimateCH.game.getSectionManager().getSections().get(index).view();
-            }
+            Game game = getGameByPlayer(ctx.getSource().getPlayer());
+            int index = IntegerArgumentType.getInteger(ctx, "section");
+            game.getSectionManager().getSections().get(index).view();
         } catch (Exception e){
                 e.printStackTrace();
             }
@@ -147,12 +133,11 @@ public class SectionCommand {
 
     public static int placeSection(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
         try {
-            if (Objects.nonNull(UltimateCH.game)) {
-                int index = IntegerArgumentType.getInteger(ctx, "section");
-                Section section = UltimateCH.game.getSectionManager().getSections().get(index);
-                section.place();
-                if (Objects.nonNull(section.process))section.process.start();
-            }
+            Game game = getGameByPlayer(ctx.getSource().getPlayer());
+            int index = IntegerArgumentType.getInteger(ctx, "section");
+            Section section = game.getSectionManager().getSections().get(index);
+            section.place();
+            if (Objects.nonNull(section.process))section.process.start();
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -160,25 +145,30 @@ public class SectionCommand {
     }
 
     public static int rotateSection(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
-        if (Objects.nonNull(UltimateCH.game)) {
-            int index = IntegerArgumentType.getInteger(ctx, "section");
-            Section section = UltimateCH.game.getSectionManager().getSections().get(index);
-            section.rotation.set(SectionRotation.Axis.X, IntegerArgumentType.getInteger(ctx, "x"));
-            section.rotation.set(SectionRotation.Axis.Y, IntegerArgumentType.getInteger(ctx, "y"));
-            section.rotation.set(SectionRotation.Axis.Z, IntegerArgumentType.getInteger(ctx, "z"));
-        }
+        Game game = getGameByPlayer(ctx.getSource().getPlayer());
+        int index = IntegerArgumentType.getInteger(ctx, "section");
+        Section section = game.getSectionManager().getSections().get(index);
+        section.rotation.set(SectionRotation.Axis.X, IntegerArgumentType.getInteger(ctx, "x"));
+        section.rotation.set(SectionRotation.Axis.Y, IntegerArgumentType.getInteger(ctx, "y"));
+        section.rotation.set(SectionRotation.Axis.Z, IntegerArgumentType.getInteger(ctx, "z"));
         return 1;
     }
 
 
     public static int rotateResetSection(CommandContext<CommandSourceStack> ctx) throws CommandSyntaxException {
-        if (Objects.nonNull(UltimateCH.game)) {
-            int index = IntegerArgumentType.getInteger(ctx, "section");
-            Section section = UltimateCH.game.getSectionManager().getSections().get(index);
-            section.rotation.set(SectionRotation.Axis.X, 0);
-            section.rotation.set(SectionRotation.Axis.Y, 0);
-            section.rotation.set(SectionRotation.Axis.Z, 0);
-        }
+        Game game = getGameByPlayer(ctx.getSource().getPlayer());
+        int index = IntegerArgumentType.getInteger(ctx, "section");
+        Section section = game.getSectionManager().getSections().get(index);
+        section.rotation.set(SectionRotation.Axis.X, 0);
+        section.rotation.set(SectionRotation.Axis.Y, 0);
+        section.rotation.set(SectionRotation.Axis.Z, 0);
         return 1;
+    }
+    
+    public static Game getGameByPlayer(ServerPlayer player) {
+        for (Game game : Lobby.games.values()) {
+            if (game.getPlayerManager().getPlayers().contains(player)) {return game;}
+        }
+        return null;
     }
 }

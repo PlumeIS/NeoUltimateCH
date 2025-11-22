@@ -1,7 +1,9 @@
 package cn.plumc.ultimatech.listeners;
 
+import cn.plumc.ultimatech.Lobby;
 import cn.plumc.ultimatech.UltimateCH;
 import cn.plumc.ultimatech.commands.*;
+import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.section.SectionRegistry;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -13,7 +15,6 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import static cn.plumc.ultimatech.UltimateCH.game;
 import static cn.plumc.ultimatech.info.UCHInfos.*;
 
 @EventBusSubscriber
@@ -37,9 +38,7 @@ public class ServerProcessListener {
 
     @SubscribeEvent
     public static void onServerStopping(ServerStoppingEvent event) {
-        if (game != null) {
-            game.destroy();
-        }
+        Lobby.games.values().forEach(Game::destroy);
     }
 
     private static void createPatch(MinecraftServer server) {

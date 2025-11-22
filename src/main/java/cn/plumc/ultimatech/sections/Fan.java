@@ -41,6 +41,7 @@ public class Fan extends Section {
         effectMovement = transform.rotateVector(new Vec3(1.0, 0.0, 1.0));
         effectMovement = new Vec3(Math.abs(effectMovement.x), Math.abs(effectMovement.y), Math.abs(effectMovement.z));
         deltaMovement = transform.toNonNegative(transform.rotateVector(new Vec3(0, 0.2, 0)));
+        hit = new BoxHit.Relative(content.origin, new Vec3(0, 1, 0), new Vec3(3, 8, 3));
         particleHit = new BoxHit.Relative(content.origin, new Vec3(0, 1, 0), new Vec3(3, 3.5, 3));
         transform.applyRotationToRelativeHit(hit);
         transform.applyRotationToRelativeHit(particleHit);

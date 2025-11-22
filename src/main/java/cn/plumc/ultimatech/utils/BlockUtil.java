@@ -1,6 +1,5 @@
 package cn.plumc.ultimatech.utils;
 
-import cn.plumc.ultimatech.section.SectionRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -60,7 +59,8 @@ public class BlockUtil {
         return new Vec3(x, y, z);
     }
 
-    public static List<Vec3> generateOutlinePoints(double step, AABB aabb) {
+    public static List<Vec3> generateOutlinePoints(double step, AABB aabb, double offset) {
+        Random random = new Random();
         Vec3 min = aabb.getMinPosition();
         Vec3 max = aabb.getMaxPosition();
 
@@ -92,7 +92,7 @@ public class BlockUtil {
             Vec3 unit = dir.scale(1.0 / len);
 
             for (double t = 0; t < len; t += step) {
-                Vec3 p = a.add(unit.scale(t));
+                Vec3 p = a.add(unit.scale(t)).add(unit.scale(random.nextDouble(-offset, offset)));
                 points.add(p);
             }
             points.add(b);

@@ -67,6 +67,56 @@ public class PlayerManager {
 
     }
 
+    public String settledPlayer(ServerPlayer player){
+        String message = "§7失败(+0)";
+
+        if (status.losers.isEmpty()){
+            message = "§7太简单了!(金币除外)";
+            int coin = game.getSectionManager().getPlayerCoin(player);
+            if (coin > 0){
+                message += "§e金币(+12*%d)".formatted(coin);
+                status.playerScore.get(player).add(12);
+            }
+            return message;
+        }
+
+        if (status.winners.contains(player)){
+            message = "§9胜利(+20)";
+            status.playerScore.get(player).add(20);
+            if (status.playerLoseRoundCopied.get(player) - this.status.minPlayerLoseRound >= status.COMEBACK_ROUND){
+                message += "§5翻盘(+16)";
+                status.playerScore.get(player).add(16);
+            }
+            status.playerLoseRound.get(player).set(0);
+        } else {
+            status.playerLoseRound.get(player).add(1);
+        }
+
+        if (player == status.firstWinPlayer){
+            if (status.winners.size()==1){
+                message += "§b独行(+12)";
+                status.playerScore.get(player).add(12);
+            }else {
+                message += "§a第一(+4)";
+                status.playerScore.get(player).add(4);
+            }
+        }
+        status.firstWinPlayer = null;
+
+        if (status.playerKills.get(player).get()>0){
+            message += "§6陷阱(+4*%d)".formatted(status.playerKills.get(player).get());
+            status.playerScore.get(player).add(status.playerKills.get(player).get()*4);
+        }
+
+        int coin = game.getSectionManager().getPlayerCoin(player);
+        if (coin > 0){
+            message += "§e金币(+12*%d)".formatted(coin);
+            status.playerScore.get(player).add(12);
+        }
+
+        return message;
+    }
+
     public void clearTags(){
         for (ServerPlayer player : ImmutableList.copyOf(players)) {
             player.removeTag(PICKED_SECTION_TAG);
