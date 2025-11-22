@@ -64,7 +64,7 @@ public class Lobby {
             if (!visible) return;
             Vec3 min = aabb.getMinPosition().add(0.2, 0.2, 0.2);
             Vec3 max = aabb.getMaxPosition().add(-0.2, -0.2, -0.2);
-            List<Vec3> points = BlockUtil.generateOutlinePoints(0.2, new AABB(min, max));
+            List<Vec3> points = BlockUtil.generateOutlinePoints(0.3, new AABB(min, max), 0.2);
             Vector3f color = getRegionColor(playerCount);
             ServerLevel level = server.overworld();
             points.forEach(point -> level.sendParticles(new DustParticleOptions(color, 0.5f),
@@ -108,7 +108,7 @@ public class Lobby {
                                 player.connection.send(new ClientboundSetTitleTextPacket(Component.literal(String.valueOf(time))));
                             });
                         }
-                        if (region.counter == 150*20) {
+                        if (region.counter == 15*20) {
                             Game game = new Game(mapInfo);
                             games.put(mapId, game);
                             regionPlayers.forEach(game.getPlayerManager()::join);

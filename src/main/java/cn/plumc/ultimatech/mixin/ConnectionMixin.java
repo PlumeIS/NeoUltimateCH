@@ -1,9 +1,13 @@
 package cn.plumc.ultimatech.mixin;
 
+import cn.plumc.ultimatech.Lobby;
 import cn.plumc.ultimatech.UltimateCH;
+import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.info.StatusTags;
 import cn.plumc.ultimatech.info.UCHInfos;
 import cn.plumc.ultimatech.provider.WallJumpProvider;
+import cn.plumc.ultimatech.utils.ContainerUtil;
+import cn.plumc.ultimatech.utils.PlayerUtil;
 import cn.plumc.ultimatech.utils.TickUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -91,25 +95,28 @@ public abstract class ConnectionMixin {
             TickUtil.tickRun(()->{
                 ServerPlayer player = ultimateCH$getPlayer();
                 if (player == null){return;}
-                if (Objects.nonNull(UltimateCH.game)){
-                    UltimateCH.game.getPlayerManager().onPlayerUseItem(player, player.getInventory().getSelected());
+                for (Game game : Lobby.games.values()) {
+                    if (game.getPlayerManager().getPlayers().contains(player)){
+                        game.getPlayerManager().onPlayerUseItem(player, player.getInventory().getSelected());
+                    }
                 }
             });
         }
 
         if (packet instanceof ServerboundContainerClickPacket clickPacket){
-            if (UltimateCH.game != null) {
-                if (UltimateCH.game.getStatus().playerSectionBoxCounter.containsValue(clickPacket.getContainerId())){
+            for (Game game : Lobby.games.values()) {
+                if (game.getStatus().playerSectionBoxId == clickPacket.getContainerId()){
                     ItemStack item = clickPacket.getCarriedItem();
-                    if (!item.isEmpty()) UltimateCH.game.getStatusSignal().onSectionPicked(ultimateCH$getPlayer(), item);
+                    if (!item.isEmpty()) game.getStatusSignal().onSectionPicked(ultimateCH$getPlayer(), item);
                 }
+                ContainerUtil.broadcastUpdate(game.getPlayerManager().getPlayers(), clickPacket.getContainerId(), clickPacket.getSlotNum(), ItemStack.EMPTY);
             }
         }
 
         if (packet instanceof ServerboundContainerClosePacket closePacket){
-            if (UltimateCH.game != null) {
-                if (UltimateCH.game.getStatus().playerSectionBoxCounter.containsValue(closePacket.getContainerId())){
-                    UltimateCH.game.getStatusSignal().onSectionClose(ultimateCH$getPlayer());
+            for (Game game : Lobby.games.values()) {
+                if (game.getStatus().playerSectionBoxId == closePacket.getContainerId()){
+                    game.getStatusSignal().onSectionClose(ultimateCH$getPlayer());
                 }
             }
         }

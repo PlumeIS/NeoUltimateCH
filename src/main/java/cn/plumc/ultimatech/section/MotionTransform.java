@@ -135,16 +135,7 @@ public class MotionTransform {
     }
 
     public void applyEntityScale(Entity entity, Vec3 scale, double duration){
-        Quaternionf q = RotationUtil.getMCRotation(parent.rotation.getRotations());
-        Vec3 rotatedScale = RotationUtil.rotateVector(scale, q);
-
-        Vec3 absScale = new Vec3(
-                Mth.abs((float) rotatedScale.x),
-                Mth.abs((float) rotatedScale.y),
-                Mth.abs((float) rotatedScale.z)
-        );
-
-        updateEntityTransformation(entity, t -> t.put("scale", toFloatListTag(absScale)), duration);
+        updateEntityTransformation(entity, t -> t.put("scale", toFloatListTag(scale)), duration);
     }
 
     public static HashMap<SectionRotation.Axis, Double> createZeroRotationMap(){
@@ -155,13 +146,13 @@ public class MotionTransform {
         return rotations;
     }
 
-    public List<Vec3> generateOutlinePoints(double step) {
+    public List<Vec3> generateOutlinePoints(double step, double offset) {
         Vec3 origin = parent.content.origin;
         SectionRegistry.SectionInfo info = SectionRegistry.instance.getSectionInfo(parent.getClass());
         Vec3 end = new Vec3(info.size().width(), info.size().height(), info.size().length());
         Vec3 rotatedEnd = RotationUtil.rotatePoint(origin.add(end), origin, parent.rotation.getRotations());
         AABB aabb = new AABB(origin, rotatedEnd);
-        return BlockUtil.generateOutlinePoints(step, aabb);
+        return BlockUtil.generateOutlinePoints(step, aabb, offset);
     }
 
     private void updateEntityTransformation(Entity entity, TransformationEditor editor, double duration) {

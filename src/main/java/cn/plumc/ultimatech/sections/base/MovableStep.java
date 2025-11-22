@@ -22,6 +22,7 @@ public class MovableStep extends Configurable {
     public Vec3 position = new Vec3(0.0, 0.0, 0.0);
     public Vec3 movement = new Vec3(0.0, 0.0, 1.0);
     public BoxHit.Relative blocks;
+    public BoxHit.Relative blocksCurrent;
     public HashMap<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> changed = new HashMap<>();
 
     public MovableStep(ServerPlayer player, SectionLocation location ,Game game) {
@@ -36,13 +37,13 @@ public class MovableStep extends Configurable {
             transform.moveEntityAbsolute(entity, position.add(pos), 0.05);
         }
 
-        for (BlockPos pos : BlockUtil.getBlocksFromAABB(blocks.getAABB())) {
-            changed.put(pos, new Tuple<>(level.getBlockState(pos), Optional.ofNullable(level.getBlockEntity(pos))));
-            level.setBlockAndUpdate(pos, Blocks.GREEN_STAINED_GLASS.defaultBlockState());
+        for (BlockPos pos : BlockUtil.getBlocksFromAABB(blocksCurrent.getAABB())) {
+            changed.put(pos, game.getSectionManager().getRecoverBlockOrWorldBlock(pos));
+            level.setBlockAndUpdate(pos, Blocks.BARRIER.defaultBlockState());
         }
 
         Vec3 rotatedVector = transform.rotateVector(velocity);
-        blocks.setPos(blocks.pos1.add(rotatedVector), blocks.pos2.add(rotatedVector));
+        blocksCurrent.setPos(blocksCurrent.pos1.add(rotatedVector), blocksCurrent.pos2.add(rotatedVector));
         position = position.add(velocity);
     }
 
@@ -64,6 +65,7 @@ public class MovableStep extends Configurable {
             Entity entity = entry.getB();
             transform.moveEntityAbsolute(entity, position.add(pos), 0.05);
         }
+        blocksCurrent.setPos(blocks.pos1.add(position), blocks.pos2.add(position));
         clearChanged();
     }
 

@@ -39,8 +39,8 @@ public class MovableStep1 extends MovableStep {
     public void tickRun(int tickTime) {
         if (process.at(8.50)) {
             position = new Vec3(0.0, 0.0, 0.0);
-            blocks = new BoxHit.Relative(content.origin, new Vec3(0.5, 0.5, 0.5), new Vec3(0.5, 0.5, 0.5));
-            transform.applyRotationToRelativeHit(blocks);
+            blocksCurrent = new BoxHit.Relative(content.origin, new Vec3(0.5, 0.5, 0.5), new Vec3(0.5, 0.5, 0.5));
+            transform.applyRotationToRelativeHit(blocksCurrent);
             return;
         };
         Vec3 currentVelocity = velocity;

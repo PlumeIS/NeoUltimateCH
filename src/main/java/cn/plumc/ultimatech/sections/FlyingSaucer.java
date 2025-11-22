@@ -44,8 +44,8 @@ public class FlyingSaucer extends MovableStep {
     public void tickRun(int tickTime) {
         if (process.at(10.0)) {
             position = new Vec3(0.0, 0.0, 0.0);
-            blocks = new BoxHit.Relative(content.origin, new Vec3(0.5, 0.5, 0.5), new Vec3(1.5, 0.5, 1.5));
-            transform.applyRotationToRelativeHit(blocks);
+            blocksCurrent = new BoxHit.Relative(content.origin, new Vec3(0.5, 0.5, 0.5), new Vec3(1.5, 0.5, 1.5));
+            transform.applyRotationToRelativeHit(blocksCurrent);
             return;
         };
         Vec3 currentVelocity = velocity;

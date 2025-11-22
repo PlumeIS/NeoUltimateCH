@@ -1,5 +1,6 @@
 package cn.plumc.ultimatech.listeners;
 
+import cn.plumc.ultimatech.Lobby;
 import cn.plumc.ultimatech.UltimateCH;
 import cn.plumc.ultimatech.utils.PlayerUtil;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,8 +17,8 @@ public class PlayerListener {
 
     @SubscribeEvent
     public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event){
-        if (UltimateCH.game!=null){
-            UltimateCH.game.getPlayerManager().leave((ServerPlayer) event.getEntity());
-        }
+        Lobby.games.values().forEach(game -> {
+            game.getPlayerManager().leave((ServerPlayer) event.getEntity());
+        });
     }
 }

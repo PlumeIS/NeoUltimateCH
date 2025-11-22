@@ -22,7 +22,6 @@ public class UltimateCH {
     public static final String MOD_ID = "ultimatech";
     public static final String CONTENT_ID = "uch";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static Game game = null;
 
     public UltimateCH(IEventBus modEventBus, ModContainer modContainer) {
         INSTANCE = this;
@@ -32,20 +31,35 @@ public class UltimateCH {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         Lobby.tick(server);
         WallJumpProvider.tick(server.getPlayerList().getPlayers(), server.overworld());
-        try {
-            if (Objects.nonNull(game)) game.tick();
-        } catch (Exception e) {
-            for (ServerPlayer player : game.getPlayerManager().getPlayers()){
-                if (player.hasPermissions(4)) player.sendSystemMessage(Component.literal("游戏发生错误: %s".formatted(e.getMessage())));
+
+        for (Game game : Lobby.games.values()) {
+            try {
+                game.tick();
+            } catch (Exception e) {
+                for (ServerPlayer player : game.getPlayerManager().getPlayers()) {
+                    if (player.hasPermissions(4))
+                        player.sendSystemMessage(Component.literal("游戏发生错误: %s".formatted(e.getMessage())));
+                }
+                LOGGER.error("ERROR During gaming: ", e);
+                game.gameEnd(null);
             }
-            LOGGER.error("ERROR During gaming: ", e);
-            game.gameEnd(null);
         }
     }
 
     public void second(){
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         EffectProvider.second(server.getPlayerList().getPlayers());
-        if (Objects.nonNull(game)) game.second();
+        for (Game game : Lobby.games.values()) {
+            try {
+                game.second();
+            } catch (Exception e) {
+                for (ServerPlayer player : game.getPlayerManager().getPlayers()) {
+                    if (player.hasPermissions(4))
+                        player.sendSystemMessage(Component.literal("游戏发生错误: %s".formatted(e.getMessage())));
+                }
+                LOGGER.error("ERROR During gaming: ", e);
+                game.gameEnd(null);
+            }
+        }
     }
 }

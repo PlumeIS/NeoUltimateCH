@@ -41,7 +41,7 @@ public class GameStatus {
     public ServerPlayer firstWinPlayer = null;
     
     public HashMap<ServerPlayer, Section> roundSections = new HashMap<>();
-    public HashMap<ServerPlayer, Integer> playerSectionBoxCounter = new HashMap<>();
+    public int playerSectionBoxId = -3;
     
     public boolean roundReady = false;
     public boolean roundRunning = false;

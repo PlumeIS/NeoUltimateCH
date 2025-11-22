@@ -1,7 +1,6 @@
 package cn.plumc.ultimatech.game;
 
 import cn.plumc.ultimatech.Lobby;
-import cn.plumc.ultimatech.UltimateCH;
 import cn.plumc.ultimatech.game.map.Maps;
 import cn.plumc.ultimatech.info.UCHInfos;
 import cn.plumc.ultimatech.section.Section;
@@ -110,12 +109,7 @@ public class Game {
         status.roundRunning = true;
         status.roundCountdowning = true;
 
-        for (int i = 5; i > 0; i--) {
-            final int seconds = i;
-            TickUtil.runAfterTick(() -> util.broadcast("游戏将在%d秒后开始".formatted(seconds)), 5 - i);
-        }
-
-        TickUtil.runAfterTick(() -> {
+        util.countdown(5, true, () -> {
             util.broadcast("游戏开始");
             status.playings.forEach(player -> player.setGameMode(GameType.ADVENTURE));
 
@@ -127,7 +121,7 @@ public class Game {
             status.map.startGame(new ArrayList<>(playerManager.getPlayers()));
             status.roundCountdowning = false;
             statusSignal.onRoundRunning();
-        }, 5);
+        });
     }
 
     private void handleRoundRunning() {
@@ -195,7 +189,7 @@ public class Game {
 
         SectionBox sectionBox = new SectionBox(status.round, status.playings.size());
         playerManager.getPlayers().forEach(player ->
-                status.playerSectionBoxCounter.put(player, player.openMenu(sectionBox).getAsInt())
+                status.playerSectionBoxId = player.openMenu(sectionBox).orElse(-3)
         );
         statusSignal.onRoundStart();
     }
@@ -216,7 +210,7 @@ public class Game {
         );
 
         playerManager.getPlayers().forEach(player -> {
-            String message = settledPlayer(player);
+            String message = playerManager.settledPlayer(player);
             util.broadcast(player.getGameProfile().getName() + ": " + message +
                     "§r " + status.playerScore.get(player).get() + ":" + status.winScore);
         });
@@ -237,60 +231,9 @@ public class Game {
         roundStart();
     }
 
-    public String settledPlayer(ServerPlayer player){
-        String message = "§7失败(+0)";
-
-        if (status.losers.isEmpty()){
-            message = "§7太简单了!(金币除外)";
-            int coin = sectionManager.getPlayerCoin(player);
-            if (coin > 0){
-                message += "§e金币(+12*%d)".formatted(coin);
-                status.playerScore.get(player).add(12);
-            }
-            return message;
-        }
-
-        if (status.winners.contains(player)){
-            message = "§9胜利(+20)";
-            status.playerScore.get(player).add(20);
-            if (status.playerLoseRoundCopied.get(player) - this.status.minPlayerLoseRound >= status.COMEBACK_ROUND){
-                message += "§5翻盘(+16)";
-                status.playerScore.get(player).add(16);
-            }
-            status.playerLoseRound.get(player).set(0);
-        } else {
-            status.playerLoseRound.get(player).add(1);
-        }
-
-        if (player == status.firstWinPlayer){
-            if (status.winners.size()==1){
-                message += "§b独行(+12)";
-                status.playerScore.get(player).add(12);
-            }else {
-                message += "§a第一(+4)";
-                status.playerScore.get(player).add(4);
-            }
-        }
-        status.firstWinPlayer = null;
-
-        if (status.playerKills.get(player).get()>0){
-            message += "§6陷阱(+4*%d)".formatted(status.playerKills.get(player).get());
-            status.playerScore.get(player).add(status.playerKills.get(player).get()*4);
-        }
-
-        int coin = sectionManager.getPlayerCoin(player);
-        if (coin > 0){
-            message += "§e金币(+12*%d)".formatted(coin);
-            status.playerScore.get(player).add(12);
-        }
-
-        return message;
-    }
-
     public void gameStart(){
         playerManager.clearTags();
         playerManager.setMapTime();
-        roundStart();
         for (ServerPlayer player : playerManager.getPlayers()) {
             status.playerScore.put(player, new IntCounter(0));
             status.playerLoseRound.put(player, new IntCounter(0));
@@ -299,7 +242,11 @@ public class Game {
             server.getGameRules().getRule(GameRules.RULE_FALL_DAMAGE).set(false, server);
         }
         status.map.startGame(playerManager.getPlayers());
-        status.gameStarting = true;
+        util.broadcastSubTitle("请等待地图加载...");
+        util.countdown(10, true, true, "%d",() -> {
+            roundStart();
+            status.gameStarting = true;
+        });
     }
 
     public void gameEnd(ServerPlayer winner){
@@ -318,7 +265,6 @@ public class Game {
         status.roundReady = false;
         destroy();
         Lobby.onGameEnd(this);
-        UltimateCH.game = null;
         TickUtil.cancelDelayTask();
     }
 

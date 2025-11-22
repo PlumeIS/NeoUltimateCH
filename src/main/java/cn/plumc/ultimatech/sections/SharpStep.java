@@ -94,7 +94,7 @@ public class SharpStep extends Section {
     }
 
     private void vfx(Vec3 color){
-        List<Vec3> boxPoints = transform.generateOutlinePoints(0.2);
+        List<Vec3> boxPoints = transform.generateOutlinePoints(0.2, 0.2);
         for (Vec3 boxPoint : boxPoints) {
             level.sendParticles(new DustParticleOptions(color.toVector3f(), 1), boxPoint.x, boxPoint.y, boxPoint.z, 1, 0, 0, 0, 0);
         }
