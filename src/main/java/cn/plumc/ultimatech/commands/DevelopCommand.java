@@ -7,10 +7,17 @@ import cn.plumc.ultimatech.utils.PlayerUtil;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DevelopCommand {
@@ -78,8 +85,61 @@ public class DevelopCommand {
                             CommandUtil.runList(server, source, commands);
                             return 1;
                         })
+                ).then(Commands.literal("clear_map")
+                        .executes(context -> {
+                            MinecraftServer server = context.getSource().getServer();
+                            ServerLevel level = server.overworld();
+                            BlockPos pos1 = new BlockPos(1809, -55, 1666);
+                            BlockPos pos2 = new BlockPos(2209, -55, 2166);
+                            BlockState air = Blocks.AIR.defaultBlockState();
+                            long counter = 0;
+                            long count = (long) (pos2.getX() - pos1.getX()) *(pos2.getZ()-pos1.getZ());
+                            ArrayList<BlockPos> blockPos = new ArrayList<>();
+                            for (int x = pos1.getX(); x <= pos2.getX(); x++) {
+                                for (int z = pos1.getZ(); z <= pos2.getZ(); z++) {
+                                    int height = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+                                    for (int y = -55; y <= height; y++) {
+                                        BlockPos pos = new BlockPos(x, y, z);
+                                        BlockState state = level.getBlockState(pos);
+                                        if (state.is(Blocks.BARRIER)||
+                                        state.is(Blocks.STRUCTURE_VOID)||
+                                        state.is(Blocks.SAND)||
+                                        state.is(Blocks.GRAVEL)||
+                                        state.is(BlockTags.LOGS)||
+                                        state.is(BlockTags.LEAVES)) continue;
+                                        if (!isOnAir(level, pos)) {blockPos.add(pos);}
+                                    }
+                                    counter++;
+                                }
+                                System.out.println("Counter: " + counter + "Max: " + count);
+                            }
+                            counter = 0;
+                            long max = blockPos.size();
+                            for (BlockPos pos : blockPos) {
+                                level.setBlockAndUpdate(pos, air);
+                                if ((counter%1000L)==0)System.out.println("Counter: " + counter + "Max: " + max);
+                                counter++;
+                            }
+                            return 1;
+                        })
                 )
         );
+    }
+
+    private static boolean isOnAir(ServerLevel level, BlockPos pos){
+        List<BlockPos> blocks = List.of(pos.above(), pos.below(), pos.north(), pos.east(), pos.south(), pos.west());
+        for (BlockPos block : blocks) {
+            BlockState state = level.getBlockState(block);
+            if ((state.isAir()&&!state.is(Blocks.CAVE_AIR))||
+                    !state.isCollisionShapeFullBlock(level, pos)||
+            state.is(Blocks.BARRIER)||
+            state.is(Blocks.STRUCTURE_VOID)||
+            state.is(Blocks.SAND)||
+            state.is(Blocks.GRAVEL)||
+            state.is(BlockTags.LOGS)||
+            state.is(BlockTags.LEAVES)) return true;
+        }
+        return false;
     }
 
 }

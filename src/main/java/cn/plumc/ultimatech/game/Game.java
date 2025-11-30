@@ -187,9 +187,10 @@ public class Game {
         status.playerKills.clear();
         playerManager.getPlayers().forEach(player -> status.playerKills.put(player, new IntCounter(0)));
 
+        status.playerSectionBoxIds.clear();
         SectionBox sectionBox = new SectionBox(status.round, status.playings.size());
         playerManager.getPlayers().forEach(player ->
-                status.playerSectionBoxId = player.openMenu(sectionBox).orElse(-3)
+                status.playerSectionBoxIds.put(player.getUUID(), player.openMenu(sectionBox).orElse(-3))
         );
         statusSignal.onRoundStart();
     }

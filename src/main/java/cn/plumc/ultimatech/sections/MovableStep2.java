@@ -8,7 +8,6 @@ import cn.plumc.ultimatech.sections.base.MovableStep;
 import cn.plumc.ultimatech.utils.PlayerUtil;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
-
 import net.minecraft.world.phys.Vec3;
 
 import static cn.plumc.ultimatech.info.UCHInfos.SECTION_VIEW_DISTANCE;

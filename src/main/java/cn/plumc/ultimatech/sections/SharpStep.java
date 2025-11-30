@@ -9,7 +9,6 @@ import cn.plumc.ultimatech.section.hit.BoxHit;
 import cn.plumc.ultimatech.utils.DisplayEntityUtil;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 

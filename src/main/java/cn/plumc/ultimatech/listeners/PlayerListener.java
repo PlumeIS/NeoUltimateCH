@@ -1,7 +1,6 @@
 package cn.plumc.ultimatech.listeners;
 
 import cn.plumc.ultimatech.Lobby;
-import cn.plumc.ultimatech.UltimateCH;
 import cn.plumc.ultimatech.utils.PlayerUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;

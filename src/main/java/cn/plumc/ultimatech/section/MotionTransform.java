@@ -7,7 +7,6 @@ import cn.plumc.ultimatech.utils.RotationUtil;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.*;
 import net.minecraft.server.commands.data.EntityDataAccessor;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -16,7 +15,9 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MotionTransform {

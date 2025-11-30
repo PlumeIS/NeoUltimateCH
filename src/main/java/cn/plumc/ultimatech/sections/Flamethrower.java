@@ -8,7 +8,6 @@ import cn.plumc.ultimatech.section.hit.LinearHit;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
-
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 

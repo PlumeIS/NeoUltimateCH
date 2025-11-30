@@ -7,10 +7,7 @@ import cn.plumc.ultimatech.utils.IntCounter;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.server.level.ServerPlayer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class GameStatus {
     // 玩家集合
@@ -41,7 +38,7 @@ public class GameStatus {
     public ServerPlayer firstWinPlayer = null;
     
     public HashMap<ServerPlayer, Section> roundSections = new HashMap<>();
-    public int playerSectionBoxId = -3;
+    public final HashMap<UUID, Integer> playerSectionBoxIds = new HashMap<>();
     
     public boolean roundReady = false;
     public boolean roundRunning = false;

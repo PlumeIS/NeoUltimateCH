@@ -14,6 +14,7 @@ import net.minecraft.world.level.GameType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static cn.plumc.ultimatech.info.StatusTags.*;
 import static cn.plumc.ultimatech.info.UCHInfos.*;
@@ -56,7 +57,7 @@ public class PlayerManager {
         this.status.playings.remove(player);
         this.status.winners.remove(player);
         this.status.losers.remove(player);
-        this.status.roundSections.remove(player).remove();
+        Optional.ofNullable(this.status.roundSections.remove(player)).ifPresent(Section::remove);
         this.status.putSectionPlayers.remove(player);
         this.status.playerScore.remove(player);
         this.status.playerKills.remove(player);

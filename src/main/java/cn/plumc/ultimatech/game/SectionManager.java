@@ -4,6 +4,7 @@ import cn.plumc.ultimatech.section.Section;
 import cn.plumc.ultimatech.section.SectionBuilder;
 import cn.plumc.ultimatech.sections.Coin;
 import cn.plumc.ultimatech.sections.base.Alternative;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
@@ -86,7 +87,7 @@ public class SectionManager {
     }
 
     public void sectionTick(){
-        sections.forEach(Section::tick);
+        ImmutableList.copyOf(sections).forEach(Section::tick);
     }
 
     public void sectionSecond(){

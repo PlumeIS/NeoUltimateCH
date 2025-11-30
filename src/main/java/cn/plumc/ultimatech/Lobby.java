@@ -62,9 +62,9 @@ public class Lobby {
 
         public void render(int playerCount, MinecraftServer server) {
             if (!visible) return;
-            Vec3 min = aabb.getMinPosition().add(0.2, 0.2, 0.2);
-            Vec3 max = aabb.getMaxPosition().add(-0.2, -0.2, -0.2);
-            List<Vec3> points = BlockUtil.generateOutlinePoints(0.3, new AABB(min, max), 0.2);
+            Vec3 min = aabb.getMinPosition().add(0.1, 0.1, 0.1);
+            Vec3 max = aabb.getMaxPosition().add(-0.1, -0.1, -0.1);
+            List<Vec3> points = BlockUtil.generateOutlinePoints(0.2, new AABB(min, max), 0.3);
             Vector3f color = getRegionColor(playerCount);
             ServerLevel level = server.overworld();
             points.forEach(point -> level.sendParticles(new DustParticleOptions(color, 0.5f),

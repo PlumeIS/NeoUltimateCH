@@ -13,8 +13,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 
-import java.util.Objects;
-
 
 @Mod(UltimateCH.MOD_ID)
 public class UltimateCH {

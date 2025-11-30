@@ -12,7 +12,6 @@ import net.minecraft.world.item.component.CustomModelData;
 import net.minecraft.world.item.component.Unbreakable;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 public class SectionBuilder {
     private Game game;

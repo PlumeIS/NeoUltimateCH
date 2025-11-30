@@ -1,13 +1,11 @@
 package cn.plumc.ultimatech.commands;
 
 import cn.plumc.ultimatech.Lobby;
-import cn.plumc.ultimatech.UltimateCH;
 import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.section.Section;
 import cn.plumc.ultimatech.section.SectionBox;
 import cn.plumc.ultimatech.section.SectionRegistry;
 import cn.plumc.ultimatech.section.SectionRotation;
-import cn.plumc.ultimatech.utils.TickUtil;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;

@@ -7,9 +7,7 @@ import cn.plumc.ultimatech.section.SectionLocation;
 import cn.plumc.ultimatech.section.hit.BoxHit;
 import cn.plumc.ultimatech.section.hit.EntityHit;
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;

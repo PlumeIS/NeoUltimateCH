@@ -4,7 +4,6 @@ import cn.plumc.ultimatech.Lobby;
 import cn.plumc.ultimatech.UltimateCH;
 import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.game.map.Maps;
-import cn.plumc.ultimatech.section.SectionRegistry;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.commands.CommandSourceStack;
@@ -15,7 +14,6 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Optional;
 
 public class GameCommand {

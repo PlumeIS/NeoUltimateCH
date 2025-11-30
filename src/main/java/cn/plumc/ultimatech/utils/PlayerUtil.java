@@ -10,7 +10,6 @@ import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -20,7 +19,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,6 +33,14 @@ public class PlayerUtil {
     private static final Random RANDOM = new Random();
 
     public static class PlayerTexture{
+        public ServerPlayer getPlayer() {
+            return player;
+        }
+
+        public boolean isCached() {
+            return cached;
+        }
+
         public static class WeightedSkinColorRandom {
             private final TreeMap<Integer, Integer> weightColorMap = new TreeMap<>();
 
@@ -53,12 +61,10 @@ public class PlayerUtil {
         private boolean loaded = false;
         private boolean cached = false;
 
-        private ServerPlayer player;
-        private UUID playerUUID;
-
+        private final ServerPlayer player;
+        private final UUID playerUUID;
         private String username;
-        private String textureUUID;
-        private String url;
+
         private Path skin;
 
         private BufferedImage skinImage;
@@ -139,13 +145,14 @@ public class PlayerUtil {
             // get uuid from mojang
             String uuidResponse = httpHelper.sendGet(String.format(UUID_API, username), null);
             JsonObject uuidJson = gson.fromJson(uuidResponse, JsonObject.class);
+            String textureUUID;
             if (uuidJson.has("errorMessage")) {
                 this.username = "uch_no_texture";
-                this.textureUUID = UUID.nameUUIDFromBytes(username.getBytes()).toString();
+                textureUUID = UUID.nameUUIDFromBytes(username.getBytes()).toString();
                 createNullSkin();
                 load();
             }
-            this.textureUUID = uuidJson.get("id").getAsString();
+            textureUUID = uuidJson.get("id").getAsString();
 
             // get texture from mojang
             String textureResponse = httpHelper.sendGet(String.format(TEXTURE_API, textureUUID), null);
@@ -155,13 +162,13 @@ public class PlayerUtil {
             Base64.Decoder decoder = Base64.getDecoder();
             String textureValue = new String(decoder.decode(base64Texture), StandardCharsets.UTF_8);
             JsonObject textureValueJson = gson.fromJson(textureValue, JsonObject.class);
-            this.url = textureValueJson.getAsJsonObject("textures").getAsJsonObject("SKIN").get("url").getAsString();
+            String url = textureValueJson.getAsJsonObject("textures").getAsJsonObject("SKIN").get("url").getAsString();
 
             // download skin and save
-            try (InputStream in = new URL(url).openStream()) {
+            try (InputStream in = new URI(url).toURL().openStream()) {
                 Files.copy(in, this.skin, StandardCopyOption.REPLACE_EXISTING);
                 loadSkin();
-            } catch (IOException e) {
+            } catch (IOException | URISyntaxException e) {
                 throw new RuntimeException(e);
             }
         }
