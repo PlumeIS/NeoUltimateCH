@@ -1,14 +1,21 @@
 package cn.plumc.ultimatech.section;
 
 import cn.plumc.ultimatech.game.Game;
+import cn.plumc.ultimatech.info.UCHInfos;
+import cn.plumc.ultimatech.section.layer.LayerType;
+import cn.plumc.ultimatech.utils.PlayerUtil;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 public abstract class Section {
     public ServerPlayer owner;
@@ -25,9 +32,13 @@ public abstract class Section {
     public List<ServerPlayer> killed = new ArrayList<>();
 
     //status
+    public LayerType runningLayer = LayerType.MIDDLE;
     public boolean viewing = false;
     public boolean placed = false;
+    public boolean removed = false;
     public boolean initialized = false;
+    public boolean mapSection = false;
+
 
     public Section(ServerPlayer owner, SectionLocation location, Game game){
         this.owner = owner;
@@ -39,18 +50,23 @@ public abstract class Section {
         this.rotation = new SectionRotation(this);
         this.content = new SectionContent(this, location, level);
         this.transform = new MotionTransform(this);
+
+        if (PlayerUtil.isMapHolder(owner)) mapSection = true;
     }
 
     public void setProcess(int ticks){
+        if (removed) return;
         process = new SectionCounter(ticks, -1, true, this::tickRun, this::secondRun);
     }
 
 
     public void setProcess(int ticks, int seconds, boolean loop){
+        if (removed) return;
         process = new SectionCounter(ticks, seconds, loop, this::tickRun, this::secondRun);
     }
 
     public void tick(){
+        if (removed) return;
         if (!placed&&viewing) handleView();
         if (Objects.nonNull(process)&&initialized) {process.tick();}
     }
@@ -78,6 +94,7 @@ public abstract class Section {
     public void remove(){
         if (Objects.nonNull(process)) process.stop();
         content.remove();
+        removed = true;
     }
 
     public void init(){}
@@ -111,5 +128,28 @@ public abstract class Section {
 
     public void onRoundRunning() {
         if (Objects.nonNull(process)) process.start();
+    }
+
+    public void setOnMove(Section section){}
+
+    public void onMove(Vec3i movement){}
+
+    public boolean isStatic(){return true;}
+
+    public LayerType getRunningLayer(){return runningLayer;}
+
+    public void setRunningLayer(LayerType layer){
+        if (getRunningLayer() == layer) return;
+        content.changedBlocks.forEach(pos -> {
+            Tuple<BlockState, Optional<BlockEntity>> block = content.manager.getLayer(runningLayer).remove(pos);
+            content.manager.getLayer(layer).set(pos, block);
+        });
+        this.runningLayer = layer;
+    }
+
+    @Override
+    public String toString() {
+        SectionRegistry.SectionInfo info = SectionRegistry.instance.getSectionInfo(this.getClass());
+        return "Section[type="+info.id()+" origin="+content.getOrigin()+"]";
     }
 }

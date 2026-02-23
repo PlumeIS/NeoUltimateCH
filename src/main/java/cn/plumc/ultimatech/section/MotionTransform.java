@@ -46,7 +46,7 @@ public class MotionTransform {
         safeSetData(accessor, data);
 
         parent.level.addFreshEntity(entity);
-        entity.moveTo(parent.content.origin);
+        entity.moveTo(parent.content.getOrigin());
         SectionContent.SectionEntities entities = new SectionContent.SectionEntities();
         entities.add(position, entity);
         parent.rotation.rotated(entities);
@@ -67,11 +67,11 @@ public class MotionTransform {
     }
 
     public Vec3 toAbsolute(Vec3 vec){
-        return parent.content.origin.add(vec);
+        return parent.content.getOrigin().add(vec);
     }
 
     public Vec3 toRelative(Vec3 vec){
-        return vec.subtract(parent.content.origin);
+        return vec.subtract(parent.content.getOrigin());
     }
 
     public void applyRotationToRelativeHit(BoxHit.Relative hit){
@@ -148,7 +148,7 @@ public class MotionTransform {
     }
 
     public List<Vec3> generateOutlinePoints(double step, double offset) {
-        Vec3 origin = parent.content.origin;
+        Vec3 origin = parent.content.getOrigin();
         SectionRegistry.SectionInfo info = SectionRegistry.instance.getSectionInfo(parent.getClass());
         Vec3 end = new Vec3(info.size().width(), info.size().height(), info.size().length());
         Vec3 rotatedEnd = RotationUtil.rotatePoint(origin.add(end), origin, parent.rotation.getRotations());

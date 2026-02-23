@@ -28,7 +28,7 @@ public class Spring extends Section {
 
     @Override
     public void init() {
-        triggerHit = new BoxHit.Relative(content.origin, new Vec3(0.0, 1.0, 0.0), new Vec3(2.0, 1.4, 2.0));
+        triggerHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 1.0, 0.0), new Vec3(2.0, 1.4, 2.0));
         transform.applyRotationToRelativeHit(triggerHit);
         springMotion = transform.rotateVector(new Vec3(0.0, 1.0, 0.0));
         baseMotion = transform.toNonNegative(transform.rotateVector(new Vec3(1.0, 0.0, 1.0)));

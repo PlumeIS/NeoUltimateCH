@@ -20,8 +20,8 @@ public class FlippableFloorStabbing extends Section {
 
     @Override
     public void init() {
-        topHit = new BoxHit.Relative(content.origin, new Vec3(0, 1, 0), new Vec3(1, 1.2, 1));
-        bottomHit = new BoxHit.Relative(content.origin, new Vec3(0, -0.2, 0), new Vec3(1, 0, 1));
+        topHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1, 0), new Vec3(1, 1.2, 1));
+        bottomHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, -0.2, 0), new Vec3(1, 0, 1));
         transform.applyRotationToRelativeHit(topHit);
         transform.applyRotationToRelativeHit(bottomHit);
     }

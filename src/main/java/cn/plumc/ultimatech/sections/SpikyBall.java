@@ -14,6 +14,6 @@ public class SpikyBall extends Section {
 
     @Override
     public void tickRun(int tickTime) {
-        killAll(new BlockSurfaceHit(content.origin).detectPlayers(game));
+        killAll(new BlockSurfaceHit(content.getOrigin()).detectPlayers(game));
     }
 }

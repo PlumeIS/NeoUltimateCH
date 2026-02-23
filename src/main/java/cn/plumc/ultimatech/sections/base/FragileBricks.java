@@ -31,10 +31,9 @@ public class FragileBricks extends Section {
     @Override
     public void tickRun(int tickTime) {
         if (fullBreak) return;
-        HashMap<BlockPos, BlockState> blocks = content.blocks;
         List<PlayerHit> playerHits = Hit.getPlayerHits(game);
         playerLoop: for (PlayerHit playerHit : playerHits) {
-            for (BlockPos blockPos : blocks.keySet()) {
+            for (BlockPos blockPos : content.getBlocksPos()) {
                 BlockSurfaceHit blockSurfaceHit = new BlockSurfaceHit(blockPos);
                 if (blockSurfaceHit.intersect(playerHit)) {
                     if (!standings.contains(playerHit.getPlayer().getUUID())) {
@@ -54,7 +53,7 @@ public class FragileBricks extends Section {
         double result = random.nextDouble();
         if (!(result < (chance))) return false;
 
-        HashMap<BlockPos, BlockState> bricks = content.blocks;
+        HashMap<BlockPos, BlockState> bricks = content.getBlocks();
         BlockState state = bricks.values().stream().toList().get(0);
         BlockState newState;
         if (state.getBlock() == Blocks.STONE_BRICKS) newState = Blocks.CRACKED_STONE_BRICKS.defaultBlockState();
@@ -62,18 +61,15 @@ public class FragileBricks extends Section {
             newState = Blocks.AIR.defaultBlockState();
             fullBreak = true;
         };
-        HashMap<BlockPos, BlockState> newBricks = new HashMap<>();
         vfx();
         for (java.util.Map.Entry<BlockPos, BlockState> entry: bricks.entrySet()){
-            newBricks.put(entry.getKey(), newState);
-            level.setBlockAndUpdate(entry.getKey(), newState);
+            content.manager.getMiddleLayer().set(entry.getKey(), newState);
         }
-        content.blocks = newBricks;
         return true;
     }
 
     private void vfx(){
-        HashMap<BlockPos, BlockState> blocks = content.blocks;
+        HashMap<BlockPos, BlockState> blocks = content.getBlocks();
         for (BlockPos blockPos : blocks.keySet()) {
             Vec3 pos = BlockUtil.toVec3(blockPos).add(0.5, 0.5, 0.5);
             level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.STONE_BRICKS.defaultBlockState()), pos.x, pos.y, pos.z, 50, 0.8, 0.8, 0.8, 1);

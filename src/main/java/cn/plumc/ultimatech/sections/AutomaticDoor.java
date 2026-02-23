@@ -37,10 +37,10 @@ public class AutomaticDoor extends Section {
     @Override
     public void init() {
         center = transform.toAbsolute(transform.rotatePoint(new Vec3(0.5, 1, 0.5)));
-        front = new BoxHit.Relative(content.origin, new Vec3(-0.2, 0.0, 0.0), new Vec3(0.0, 3.0, 1.0));
-        back = new BoxHit.Relative(content.origin, new Vec3(0.0, 0.0, 0.0), new Vec3(1.2, 3.0, 1.0));
-        left = new BoxHit.Relative(content.origin, new Vec3(0.0, 0.0, -0.2), new Vec3(1.0, 3.0, 0.0));
-        right = new BoxHit.Relative(content.origin, new Vec3(0.0, 0.0, 1.0), new Vec3(1.0, 3.0, 1.2));
+        front = new BoxHit.Relative(()->content.getOrigin(), new Vec3(-0.2, 0.0, 0.0), new Vec3(0.0, 3.0, 1.0));
+        back = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, 0.0), new Vec3(1.2, 3.0, 1.0));
+        left = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, -0.2), new Vec3(1.0, 3.0, 0.0));
+        right = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, 1.0), new Vec3(1.0, 3.0, 1.2));
         transform.applyRotationToRelativeHit(front);
         transform.applyRotationToRelativeHit(back);
         transform.applyRotationToRelativeHit(left);
@@ -87,7 +87,7 @@ public class AutomaticDoor extends Section {
     }
 
     private void setBlocking(boolean blocking){
-        for (Map.Entry<BlockPos, BlockState> entry : content.blocks.entrySet()) {
+        for (Map.Entry<BlockPos, BlockState> entry : content.getBlocks().entrySet()) {
             BlockPos pos = entry.getKey();
             BlockState state = entry.getValue();
             if (state.getBlock() == Blocks.BARRIER && !blocking) {

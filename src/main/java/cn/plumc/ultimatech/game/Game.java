@@ -1,10 +1,12 @@
 package cn.plumc.ultimatech.game;
 
 import cn.plumc.ultimatech.Lobby;
-import cn.plumc.ultimatech.game.map.Maps;
+import cn.plumc.ultimatech.game.map.MapInfo;
 import cn.plumc.ultimatech.info.UCHInfos;
 import cn.plumc.ultimatech.section.Section;
 import cn.plumc.ultimatech.section.SectionBox;
+import cn.plumc.ultimatech.section.layer.Layer;
+import cn.plumc.ultimatech.section.layer.WorldLayer;
 import cn.plumc.ultimatech.utils.IntCounter;
 import cn.plumc.ultimatech.utils.PlayerUtil;
 import cn.plumc.ultimatech.utils.TickUtil;
@@ -36,20 +38,22 @@ public class Game {
     private final SectionManager sectionManager;
     private final StatusSignal statusSignal;
 
-    public Game(Maps mapInfo) {
+    public Game(MapInfo mapInfo) {
+        this.server = ServerLifecycleHooks.getCurrentServer();
+        this.level = server.getLevel(Level.OVERWORLD);
+
         this.status = new GameStatus(mapInfo);
         this.util = new GameUtil(this);
         this.playerManager = new PlayerManager(this, status);
         this.sectionManager = new SectionManager(this, status);
         this.statusSignal = new StatusSignal(this);
-
-        this.server = ServerLifecycleHooks.getCurrentServer();
-        this.level = server.getLevel(Level.OVERWORLD);
     }
 
     public void tick(){
         if (!status.gameStarting) return;
 
+        status.map.tick();
+        sectionManager.applyBlockLayer();
         sectionManager.sectionTick();
 
         if (!status.roundReady) {
@@ -118,15 +122,16 @@ public class Game {
 
             TickUtil.runAfterTick(() -> util.broadcast("现在pvp已开放!"), 20);
 
-            status.map.startGame(new ArrayList<>(playerManager.getPlayers()));
+            for (ServerPlayer player : getPlayerManager().getPlayers()) {
+                Vec3 pos = getStatus().map.getAStartPos();
+                player.teleportTo(pos.x, getStatus().map.startRegion.getMin().getY() + 1.5, pos.z);
+            }
             status.roundCountdowning = false;
             statusSignal.onRoundRunning();
         });
     }
 
     private void handleRoundRunning() {
-        status.map.tick();
-
         Iterator<ServerPlayer> iterator = status.playings.iterator();
         while (iterator.hasNext()) {
             ServerPlayer player = iterator.next();
@@ -160,7 +165,7 @@ public class Game {
         Section section;
         if (Objects.nonNull(section=sectionManager.shouldPlayerLose(player))) {
             status.losers.add(player);
-            status.playerKills.get(section.owner).add();
+            if (!PlayerUtil.isMapHolder(section.owner)) status.playerKills.get(section.owner).add();
             return false;
         }
 
@@ -270,11 +275,7 @@ public class Game {
     }
 
     public void destroy(){
-        sectionManager.removeAll();
-        for (Section section : ImmutableList.copyOf(sectionManager.getSections())) {
-            section.remove();
-            sectionManager.removeSection(section);
-        }
+        sectionManager.destroy();
         status.map.reset();
         playerManager.clearTags();
     }
@@ -296,4 +297,5 @@ public class Game {
     public StatusSignal getStatusSignal() {
         return statusSignal;
     }
+
 }

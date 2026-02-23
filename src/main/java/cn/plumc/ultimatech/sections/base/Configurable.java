@@ -27,7 +27,7 @@ public class Configurable extends Section {
     @Override
     public void handleView() {
         content.setSectionViewInventory(owner);
-        Vec3 viewOrigin = PlayerUtil.getPlayerLooking(owner, SECTION_VIEW_DISTANCE);
+        Vec3 viewOrigin = mapSection ? content.mapOrigin : PlayerUtil.getPlayerLooking(owner, SECTION_VIEW_DISTANCE);
         BlockPos blockOrigin = new BlockPos(Mth.floor(viewOrigin.x), Mth.floor(viewOrigin.y), Mth.floor(viewOrigin.z));
 
         handleViewRecover(blockOrigin);
@@ -38,24 +38,23 @@ public class Configurable extends Section {
 
     protected void handleViewRecover(BlockPos blockOrigin){
         // recover
-        for (Map.Entry<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> recoverEntry : content.worldRecoverCache.entrySet()) {
-            level.setBlockAndUpdate(recoverEntry.getKey(), recoverEntry.getValue().getA());
-            Optional<BlockEntity> blockEntity = recoverEntry.getValue().getB();
-            blockEntity.ifPresent(entity -> level.setBlockEntity(entity));
+        for (BlockPos changedBlock : content.changedBlocks) {
+            content.manager.getViewLayer().remove(changedBlock);
         }
-        content.worldRecoverCache.clear();
+        content.changedBlocks.clear();
     }
 
     protected void handleViewBlock(BlockPos blockOrigin){
+        // block
         for (Map.Entry<BlockPos, BlockState> blockEntry : rotation.rotated(content.templateBlocks).entrySet()) {
             BlockPos relativePos = blockEntry.getKey();
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            Tuple<BlockState, Optional<BlockEntity>> recoverBlock = game.getSectionManager().getRecoverBlockOrWorldBlock(worldPos);
+            Tuple<BlockState, Optional<BlockEntity>> block = content.manager.getTopLayer().get(worldPos);
             if (!BlockUtil.isMultiBlock(level, worldPos)) {
-                content.worldRecoverCache.put(worldPos, recoverBlock);
-                level.setBlockAndUpdate(worldPos, checkCanPlace(worldPos, recoverBlock.getA()) ? blockEntry.getValue() : SECTION_NONPPLACABLE_BLOCK);
+                content.manager.getViewLayer().set(worldPos, checkCanPlace(worldPos, block.getA()) ? blockEntry.getValue() : SECTION_NONPPLACABLE_BLOCK);
+                content.changedBlocks.add(worldPos);
             }
         }
     }
@@ -77,10 +76,9 @@ public class Configurable extends Section {
     @Override
     public boolean place() {
         if (placed&&!viewing) return false;
-        Vec3 viewOrigin = PlayerUtil.getPlayerLooking(owner, SECTION_VIEW_DISTANCE);
+        Vec3 viewOrigin = mapSection ? content.mapOrigin : PlayerUtil.getPlayerLooking(owner, SECTION_VIEW_DISTANCE);
         BlockPos blockOrigin = new BlockPos(Mth.floor(viewOrigin.x), Mth.floor(viewOrigin.y), Mth.floor(viewOrigin.z));
         if (!handlePlaceBlock(blockOrigin)) return false;
-        game.getSectionManager().announcePlace(this);
         content.origin = viewOrigin;
         placed = true;
         viewing = false;
@@ -95,15 +93,16 @@ public class Configurable extends Section {
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            BlockState worldBlockState;
-            if (content.worldRecoverCache.containsKey(worldPos)) worldBlockState = content.worldRecoverCache.get(worldPos).getA();
-            else worldBlockState = level.getBlockState(worldPos);
-            content.blocks.put(worldPos, blockEntry.getValue());
-            if (BlockUtil.isMultiBlock(level, worldPos)||!checkCanPlace(worldPos, worldBlockState)){
-                content.blocks.clear();
+            Tuple<BlockState, Optional<BlockEntity>> block = content.manager.getTopLayer().get(worldPos);
+            if (BlockUtil.isMultiBlock(level, worldPos)||!checkCanPlace(worldPos, block.getA())) {
                 return false;
             }
         }
+        System.out.println(getRunningLayer());
+        content.changedBlocks.forEach(pos -> {
+            Tuple<BlockState, Optional<BlockEntity>> block = content.manager.getViewLayer().remove(pos);
+            content.manager.getLayer(getRunningLayer()).set(pos, block);
+        });
         return true;
     }
 }

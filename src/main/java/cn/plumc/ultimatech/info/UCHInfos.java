@@ -25,8 +25,13 @@ public class UCHInfos {
     public static Path CACHED_PATCH;
     public static Path CACHED_SKIN_PATCH;
 
+    public static final int WALL_JUMPING_USING_ID = -5;
+    public static final BlockState AIR = Blocks.AIR.defaultBlockState();
+    public static final BlockState JUMPING_BLOCK = Blocks.BARRIER.defaultBlockState();
+
+
     // Position
-    public static final Vec3 PLAYER_LOBBY_POINT = new Vec3(0.50, 1.00, -16.5);
+    public static final Vec3 PLAYER_LOBBY_POINT = new Vec3(1.5, 1.0, 11.5);
     public static final Vec3 DEVELOPER_POINT = new Vec3(1000.50, 1.00, 0.5);
 
     // Section
@@ -35,6 +40,8 @@ public class UCHInfos {
     public static final int SECTION_START_Y = 0;
     public static final int SECTION_START_Z = 0;
     public static final int SECTION_BORDER = 1;
+
+    public static final String MAP_HOLDER = id("map");
 
     public static final List<EntityType<?>> TEMPLATE_ENTITIES = Arrays.asList(
             EntityType.BLOCK_DISPLAY,

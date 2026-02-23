@@ -43,7 +43,7 @@ public class FireHydrant extends Section {
         endMovement = transform.rotateVector(new Vec3(0.2, 0.05, 0.2));
         waterMovement = transform.rotateVector(new Vec3(0.0, 3.5, 0.0));
         waterBlock = transform.toAbsolute(transform.rotatePoint(new Vec3(0.5, 4.5, 0.5)));
-        hit = new BoxHit.Relative(content.origin, new Vec3(0, 1.5, 0), new Vec3(1, 5, 1));
+        hit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1.5, 0), new Vec3(1, 5, 1));
         transform.applyRotationToRelativeHit(hit);
     }
 

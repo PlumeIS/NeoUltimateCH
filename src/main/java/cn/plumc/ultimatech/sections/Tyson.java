@@ -24,8 +24,8 @@ public class Tyson extends Section {
 
     @Override
     public void init() {
-        triggerFront = new BoxHit.Relative(content.origin, new Vec3(-0.5, 1, -0.5), new Vec3(0.5, 3, 0.5));
-        triggerBack = new BoxHit.Relative(content.origin, new Vec3(0.5, 1, 0.5), new Vec3(1.5, 3, 1.5));
+        triggerFront = new BoxHit.Relative(()->content.getOrigin(), new Vec3(-0.5, 1, -0.5), new Vec3(0.5, 3, 0.5));
+        triggerBack = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.5, 1, 0.5), new Vec3(1.5, 3, 1.5));
         transform.applyRotationToRelativeHit(triggerFront);
         transform.applyRotationToRelativeHit(triggerBack);
         scale = transform.rotateVector(scale);

@@ -8,6 +8,8 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.function.Predicate;
 
 public class BoxHit extends Hit{
@@ -55,29 +57,53 @@ public class BoxHit extends Hit{
     }
 
     public static class Relative extends BoxHit {
-        public Vec3 origin;
+        public Callable<Vec3> originGetter;
 
         public Relative(Vec3 origin, Vec3 pos1, Vec3 pos2) {
             super(pos1, pos2);
-            this.origin = origin;
-            setOrigin(origin);
+            this.originGetter = () -> origin;
+            setOrigin();
+        }
+
+        public Relative(Callable<Vec3> originGetter, Vec3 pos1, Vec3 pos2) {
+            super(pos1, pos2);
+            this.originGetter = originGetter;
+            setOrigin();
         }
 
         public void setPos(Vec3 pos1, Vec3 pos2) {
             this.pos1 = pos1;
             this.pos2 = pos2;
-            setOrigin(origin);
+            setOrigin();
         }
 
-        public void setOrigin(Vec3 pos) {
-            this.origin = pos;
-            this.aabb = new AABB(pos1.add(pos), pos2.add(pos));
+        public void setOrigin() {
+            Vec3 origin = getOrigin();
+            this.aabb = new AABB(pos1.add(origin), pos2.add(origin));
+        }
+
+        public Vec3 getOrigin() {
+            try {
+                return originGetter.call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public AABB getAABB() {
+            setOrigin();
+            return super.getAABB();
+        }
+
+        public Callable<Vec3> getOriginGetter() {
+            return originGetter;
         }
 
         @Override
         public String toString() {
             return "Relative{" +
-                    "origin=" + origin +
+                    "origin=" + getOrigin() +
                     ", pos1=" + pos1 +
                     ", pos2=" + pos2 +
                     ", aabb=" + aabb +

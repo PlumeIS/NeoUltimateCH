@@ -1,7 +1,7 @@
 package cn.plumc.ultimatech.game;
 
-import cn.plumc.ultimatech.game.map.Maps;
-import cn.plumc.ultimatech.game.map.maps.Map;
+import cn.plumc.ultimatech.game.map.MapInfo;
+import cn.plumc.ultimatech.game.map.Map;
 import cn.plumc.ultimatech.section.Section;
 import cn.plumc.ultimatech.utils.IntCounter;
 import com.google.common.collect.ImmutableList;
@@ -27,7 +27,7 @@ public class GameStatus {
     public boolean gameStarting = false;
 
     // 游戏数据
-    public final Maps mapInfo;
+    public final MapInfo mapInfo;
     public final Map map;
     public final int winScore = 100;
     public int round = 0;
@@ -44,7 +44,7 @@ public class GameStatus {
     public boolean roundRunning = false;
     public boolean roundCountdowning = false;
 
-    public GameStatus(Maps mapInfo){
+    public GameStatus(MapInfo mapInfo){
         this.mapInfo = mapInfo;
         this.map = mapInfo.map;
     }

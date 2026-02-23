@@ -33,10 +33,10 @@ public class Fist extends Section {
 
     @Override
     public void init() {
-        topCheck = new BoxHit.Relative(content.origin, new Vec3(0.0, 1.0, 0.0), new Vec3(1.0, 1.2, 1.0));
-        bottomCheck = new BoxHit.Relative(content.origin, new Vec3(0.0, 0.0, 0.0), new Vec3(1.0, -0.2, 1.0));
-        backCheck = new BoxHit.Relative(content.origin, new Vec3(0.0, 0.0, -0.2), new Vec3(1.0, 1.0, 0.0));
-        hit = new BoxHit.Relative(content.origin, new Vec3(0.0, 0.0, 1.0), new Vec3(1.0, 1.0, 3.0));
+        topCheck = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 1.0, 0.0), new Vec3(1.0, 1.2, 1.0));
+        bottomCheck = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, 0.0), new Vec3(1.0, -0.2, 1.0));
+        backCheck = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, -0.2), new Vec3(1.0, 1.0, 0.0));
+        hit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, 1.0), new Vec3(1.0, 1.0, 3.0));
         transform.applyRotationToRelativeHit(topCheck);
         transform.applyRotationToRelativeHit(bottomCheck);
         transform.applyRotationToRelativeHit(backCheck);

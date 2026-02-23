@@ -1,6 +1,7 @@
 package cn.plumc.ultimatech.mixin;
 
 import cn.plumc.ultimatech.Lobby;
+import cn.plumc.ultimatech.commands.DevelopCommands;
 import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.info.StatusTags;
 import cn.plumc.ultimatech.info.UCHInfos;
@@ -99,6 +100,7 @@ public abstract class ConnectionMixin {
                         if (game.getPlayerManager().getPlayers().contains(player)) {
                             game.getPlayerManager().onPlayerUseItem(player, player.getInventory().getSelected());
                         }
+                        DevelopCommands.onPlayerUseItem(player, player.getInventory().getSelected());
                     });
                 }
             });

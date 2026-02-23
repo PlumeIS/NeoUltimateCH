@@ -2,6 +2,7 @@ package cn.plumc.ultimatech.sections.base;
 
 import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.section.SectionLocation;
+import cn.plumc.ultimatech.section.layer.LayerType;
 import cn.plumc.ultimatech.utils.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,7 +18,7 @@ import java.util.Optional;
 import static cn.plumc.ultimatech.info.UCHInfos.SECTION_DISCARDED_BLOCK;
 
 public class Alternative extends Configurable {
-    HashMap<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> replacements = new HashMap<>();
+    public HashMap<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> replacements = new HashMap<>();
 
     public Alternative(ServerPlayer owner, SectionLocation location, Game game) {
         super(owner, location, game);
@@ -31,11 +32,10 @@ public class Alternative extends Configurable {
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            BlockState worldBlockState = level.getBlockState(worldPos);
-            BlockEntity blockEntity = level.getBlockEntity(worldPos);
+            Tuple<BlockState, Optional<BlockEntity>> block = content.manager.getTopLayer().get(worldPos);
             if (!BlockUtil.isMultiBlock(level, worldPos)) {
-                content.worldRecoverCache.put(worldPos, new Tuple<>(worldBlockState, Objects.nonNull(blockEntity) ? Optional.of(blockEntity) : Optional.empty()));
-                level.setBlockAndUpdate(worldPos, checkCanPlace(worldPos, worldBlockState) ? blockEntry.getValue() : SECTION_DISCARDED_BLOCK);
+                content.changedBlocks.add(worldPos);
+                content.manager.getViewLayer().set(worldPos, checkCanPlace(worldPos, block.getA()) ? blockEntry.getValue() : SECTION_DISCARDED_BLOCK);
             }
         }
     }
@@ -51,15 +51,19 @@ public class Alternative extends Configurable {
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            BlockState worldBlockState;
-            if (content.worldRecoverCache.containsKey(worldPos)) worldBlockState = content.worldRecoverCache.get(worldPos).getA();
-            else worldBlockState = level.getBlockState(worldPos);
-            if (!BlockUtil.isMultiBlock(level, worldPos)&&!checkCanPlace(worldPos, worldBlockState)) {
-                level.removeBlock(worldPos, false);
+            Tuple<BlockState, Optional<BlockEntity>> block = content.manager.getTopLayer().get(worldPos);
+            if (!BlockUtil.isMultiBlock(level, worldPos)&&!checkCanPlace(worldPos, block.getA())) {
+                content.manager.getViewLayer().remove(worldPos);
+                content.changedBlocks.remove(worldPos);
             } else if (!BlockUtil.isMultiBlock(level, worldPos)) {
-                replacements.put(worldPos, content.worldRecoverCache.get(worldPos));
-                content.blocks.put(worldPos, blockEntry.getValue());
+                replacements.put(worldPos, block);
             }
+        }
+        if (!replacements.isEmpty()) {
+            content.changedBlocks.forEach(pos -> {
+                Tuple<BlockState, Optional<BlockEntity>> block = content.manager.getViewLayer().remove(pos);
+                content.manager.getLayer(getRunningLayer()).set(pos, block);
+            });
         }
         return !replacements.isEmpty();
     }
@@ -70,5 +74,10 @@ public class Alternative extends Configurable {
             level.setBlockAndUpdate(entry.getKey(), entry.getValue().getA());
             if (entry.getValue().getB().isPresent()) level.setBlockEntity(entry.getValue().getB().get());
         }
+    }
+
+    @Override
+    public LayerType getRunningLayer() {
+        return LayerType.TOP;
     }
 }
