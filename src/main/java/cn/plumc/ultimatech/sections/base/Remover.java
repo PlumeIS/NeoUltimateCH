@@ -3,6 +3,7 @@ package cn.plumc.ultimatech.sections.base;
 import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.section.Section;
 import cn.plumc.ultimatech.section.SectionLocation;
+import cn.plumc.ultimatech.section.layer.LayerType;
 import cn.plumc.ultimatech.utils.BlockUtil;
 import cn.plumc.ultimatech.utils.PlayerUtil;
 import net.minecraft.core.BlockPos;
@@ -35,19 +36,18 @@ public class Remover extends Configurable {
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            BlockState worldBlockState = level.getBlockState(worldPos);
-            BlockEntity blockEntity = level.getBlockEntity(worldPos);
             if (!BlockUtil.isMultiBlock(level, worldPos)) {
-                content.worldRecoverCache.put(worldPos, new Tuple<>(worldBlockState, Objects.nonNull(blockEntity) ? Optional.of(blockEntity) : Optional.empty()));
-                List<Section> byPos = game.getSectionManager().getSectionsByPos(worldPos);
-                if (!byPos.isEmpty()) {
-                    byPos.getFirst().content.blocks.forEach((pos, state) -> {
-                        BlockEntity entity = level.getBlockEntity(worldPos);
-                        content.worldRecoverCache.put(pos, new Tuple<>(state, Objects.nonNull(entity) ? Optional.of(entity) : Optional.empty()));
-                        level.setBlockAndUpdate(pos, SECTION_NONPPLACABLE_BLOCK);
+                List<Section> tops = content.manager.getSectionsByPos(worldPos, LayerType.TOP);
+                List<Section> middles = content.manager.getSectionsByPos(worldPos, LayerType.MIDDLE);
+                tops.addAll(middles);
+                if (!tops.isEmpty()) {
+                    tops.getFirst().content.changedBlocks.forEach(pos -> {
+                        content.manager.getViewLayer().set(pos, SECTION_NONPPLACABLE_BLOCK);
+                        content.changedBlocks.add(pos);
                     });
                 } else {
-                    level.setBlockAndUpdate(worldPos, SECTION_DISCARDED_BLOCK);
+                    content.manager.getViewLayer().set(worldPos, SECTION_DISCARDED_BLOCK);
+                    content.changedBlocks.add(worldPos);
                 }
             }
         }
@@ -55,8 +55,9 @@ public class Remover extends Configurable {
 
     @Override
     protected boolean checkCanPlace(BlockPos worldPos, BlockState worldBlockState) {
-        List<Section> byPos = game.getSectionManager().getSectionsByPos(worldPos);
-        return byPos.isEmpty();
+        List<Section> tops = content.manager.getSectionsByPos(worldPos, LayerType.TOP);
+        List<Section> middles = content.manager.getSectionsByPos(worldPos, LayerType.MIDDLE);
+        return tops.isEmpty() && middles.isEmpty();
     }
 
     @Override
@@ -66,18 +67,14 @@ public class Remover extends Configurable {
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            BlockState worldBlockState;
-            if (content.worldRecoverCache.containsKey(worldPos)) worldBlockState = content.worldRecoverCache.get(worldPos).getA();
-            else worldBlockState = level.getBlockState(worldPos);
-
-            List<Section> byPos = game.getSectionManager().getSectionsByPos(worldPos);
-            if (!byPos.isEmpty()) {
-                byPos.getFirst().remove();
-            } else {
-                level.setBlockAndUpdate(worldPos, worldBlockState);
+            List<Section> tops = content.manager.getSectionsByPos(worldPos, LayerType.TOP);
+            List<Section> middles = content.manager.getSectionsByPos(worldPos, LayerType.MIDDLE);
+            tops.addAll(middles);
+            if (!tops.isEmpty()) {
+                tops.getFirst().remove();
             }
         }
-        Vec3 viewOrigin = PlayerUtil.getPlayerLooking(owner, SECTION_VIEW_DISTANCE);
+        Vec3 viewOrigin = mapSection ? content.mapOrigin : PlayerUtil.getPlayerLooking(owner, SECTION_VIEW_DISTANCE);
         content.entities.entities.stream().map(Tuple::getA).toList().forEach(position -> {
             Vec3 pos = viewOrigin.add(position);
             level.sendParticles(ParticleTypes.EXPLOSION, pos.x, pos.y, pos.z, 20,
@@ -86,5 +83,15 @@ public class Remover extends Configurable {
         });
         remove();
         return true;
+    }
+
+    @Override
+    public boolean isStatic() {
+        return false;
+    }
+
+    @Override
+    public LayerType getRunningLayer() {
+        return LayerType.VIEW;
     }
 }

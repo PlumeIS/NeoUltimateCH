@@ -31,8 +31,7 @@ public class WireMesh extends Configurable {
             BlockState worldBlockState = level.getBlockState(worldPos);
             BlockEntity blockEntity = level.getBlockEntity(worldPos);
             if (!BlockUtil.isMultiBlock(level, worldPos)) {
-                content.worldRecoverCache.put(worldPos, new Tuple<>(worldBlockState, Objects.nonNull(blockEntity) ? Optional.of(blockEntity) : Optional.empty()));
-                level.setBlockAndUpdate(worldPos, checkCanPlace(worldPos, worldBlockState) ? blockEntry.getValue() : SECTION_DISCARDED_BLOCK);
+                content.manager.getMiddleLayer().set(worldPos, checkCanPlace(worldPos, worldBlockState) ? blockEntry.getValue() : SECTION_DISCARDED_BLOCK);
             }
         }
     }
@@ -56,7 +55,7 @@ public class WireMesh extends Configurable {
     }
 
     private BlockState getWorldBlockState(BlockPos pos){
-        return content.worldRecoverCache.getOrDefault(pos, new Tuple<>(level.getBlockState(pos), Optional.ofNullable(level.getBlockEntity(pos)))).getA();
+        return content.manager.getMiddleLayer().get(pos).getA();
     }
 
     @Override
@@ -66,22 +65,15 @@ public class WireMesh extends Configurable {
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            BlockState worldBlockState;
-            if (content.worldRecoverCache.containsKey(worldPos)) worldBlockState = content.worldRecoverCache.get(worldPos).getA();
-            else worldBlockState = level.getBlockState(worldPos);
-            if (!BlockUtil.isMultiBlock(level, worldPos)&&!checkCanPlace(worldPos, worldBlockState)) {
-                level.setBlockAndUpdate(worldPos, worldBlockState);
-                Optional<BlockEntity> entity = content.worldRecoverCache.get(worldPos).getB();
-                entity.ifPresent(blockEntity -> level.setBlockEntity(blockEntity));
-            } else if (!BlockUtil.isMultiBlock(level, worldPos)) {
-                content.blocks.put(worldPos, blockEntry.getValue());
+            if (!BlockUtil.isMultiBlock(level, worldPos)) {
+                content.changedBlocks.add(worldPos);
             }
         }
-        return !content.blocks.isEmpty();
+        return !content.changedBlocks.isEmpty();
     }
 
     @Override
     public void tickRun(int tickTime) {
-        content.blocks.keySet().forEach(pos->killAll(new BlockHit(pos).detectPlayers(game)));
+        content.getBlocks().keySet().forEach(pos->killAll(new BlockHit(pos).detectPlayers(game)));
     }
 }

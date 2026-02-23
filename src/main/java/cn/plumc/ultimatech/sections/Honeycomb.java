@@ -43,7 +43,7 @@ public class Honeycomb extends Section {
 
     @Override
     public void init() {
-        triggerHit = new BoxHit.Relative(content.origin, new Vec3(0, 0, 0), new Vec3(2.0, 2.0, 2.0));
+        triggerHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 0, 0), new Vec3(2.0, 2.0, 2.0));
         transform.applyRotationToRelativeHit(triggerHit);
     }
 

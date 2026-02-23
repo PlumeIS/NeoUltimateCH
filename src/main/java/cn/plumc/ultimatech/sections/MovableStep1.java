@@ -23,22 +23,26 @@ public class MovableStep1 extends MovableStep {
 
     @Override
     public void init() {
-        blocks = new BoxHit.Relative(content.origin, new Vec3(0.5, 0.5, 0.5), new Vec3(0.5, 0.5, 0.5));
+        blocks = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.5, 0.5, 0.5), new Vec3(0.5, 0.5, 0.5));
         transform.applyRotationToRelativeHit(blocks);
+        blocksCurrent = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.5, 0.5, 0.5), new Vec3(0.5, 0.5, 0.5));
+        transform.applyRotationToRelativeHit(blocksCurrent);
     }
 
     @Override
     public void handleView() {
         super.handleView();
-        Vec3 viewOrigin = PlayerUtil.getPlayerLooking(owner, SECTION_VIEW_DISTANCE);
-        vfx(viewOrigin);
+        if (!mapSection) {
+            Vec3 viewOrigin = PlayerUtil.getPlayerLooking(owner, SECTION_VIEW_DISTANCE);
+            vfx(viewOrigin);
+        }
     }
 
     @Override
     public void tickRun(int tickTime) {
         if (process.at(8.50)) {
             position = new Vec3(0.0, 0.0, 0.0);
-            blocksCurrent = new BoxHit.Relative(content.origin, new Vec3(0.5, 0.5, 0.5), new Vec3(0.5, 0.5, 0.5));
+            blocksCurrent = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.5, 0.5, 0.5), new Vec3(0.5, 0.5, 0.5));
             transform.applyRotationToRelativeHit(blocksCurrent);
             return;
         };
@@ -50,7 +54,7 @@ public class MovableStep1 extends MovableStep {
         clearChanged();
         move(currentVelocity);
 
-        vfx(content.origin);
+        vfx(content.getOrigin());
 
     }
 

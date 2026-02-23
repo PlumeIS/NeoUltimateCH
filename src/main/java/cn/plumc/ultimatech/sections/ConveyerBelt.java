@@ -30,8 +30,8 @@ public class ConveyerBelt extends Section {
 
     @Override
     public void init() {
-        topHit = new BoxHit.Relative(content.origin, new Vec3(0, 1, 0), new Vec3(3, 1.2, 1));
-        bottomHit = new BoxHit.Relative(content.origin, new Vec3(0, 0, 0), new Vec3(3, -0.2, 1));
+        topHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1, 0), new Vec3(3, 1.2, 1));
+        bottomHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 0, 0), new Vec3(3, -0.2, 1));
         transform.applyRotationToRelativeHit(topHit);
         transform.applyRotationToRelativeHit(bottomHit);
         velocitySampling = transform.toNonNegative(transform.rotateVector(new Vec3(1, 0, 0)));

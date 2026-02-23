@@ -32,7 +32,7 @@ public class Artillery extends Section {
     @Override
     public void init() {
         motion = transform.rotateVector(new Vec3(0.0, 1.3, 3.0));
-        triggerHit = new BoxHit.Relative(content.origin, new Vec3(0.2, 0.0, 0.2), new Vec3(2.8, 2.8, 2.8));
+        triggerHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.2, 0.0, 0.2), new Vec3(2.8, 2.8, 2.8));
         transform.applyRotationToRelativeHit(triggerHit);
     }
 

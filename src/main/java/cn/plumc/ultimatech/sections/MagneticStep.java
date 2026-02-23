@@ -6,6 +6,8 @@ import cn.plumc.ultimatech.section.SectionCounter;
 import cn.plumc.ultimatech.section.SectionLocation;
 import cn.plumc.ultimatech.section.hit.BoxHit;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Objects;
@@ -21,7 +23,7 @@ public class MagneticStep extends Section {
 
     @Override
     public void init() {
-        triggerHit = new BoxHit.Relative(content.origin, new Vec3(0.0, 1.0, 0.0), new Vec3(1.0, 1.2, 2.0));
+        triggerHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 1.0, 0.0), new Vec3(1.0, 1.2, 2.0));
         transform.applyRotationToRelativeHit(triggerHit);
     }
 
@@ -33,14 +35,14 @@ public class MagneticStep extends Section {
             triggered = true;
         }
         if (process.at(0.5)) {
-            content.blocks.forEach((pos, block) -> level.destroyBlock(pos, false));
+            content.getBlocksPos().forEach(pos -> content.manager.getMiddleLayer().remove(pos));
         }
     }
 
     @Override
     public void onRoundEnd() {
         super.onRoundEnd();
-        content.blocks.forEach((pos, block) -> level.setBlockAndUpdate(pos, block));
+        content.getBlocksPos().forEach(pos -> content.manager.getMiddleLayer().set(pos, Blocks.BARRIER.defaultBlockState()));
         setProcess(0);
     }
 }

@@ -4,6 +4,7 @@ import cn.plumc.ultimatech.Lobby;
 import cn.plumc.ultimatech.UltimateCH;
 import cn.plumc.ultimatech.commands.*;
 import cn.plumc.ultimatech.game.Game;
+import cn.plumc.ultimatech.game.map.MapInfo;
 import cn.plumc.ultimatech.section.SectionRegistry;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -24,7 +25,7 @@ public class ServerProcessListener {
         GameCommand.register(event.getDispatcher());
         SectionCommand.register(event.getDispatcher());
         HubCommand.register(event.getDispatcher());
-        DevelopCommand.register(event.getDispatcher());
+        DevelopCommands.register(event.getDispatcher());
         MotionCommand.register(event.getDispatcher());
     }
 
@@ -33,6 +34,7 @@ public class ServerProcessListener {
         MinecraftServer server = event.getServer();
         server.getPlayerList().op(server.getProfileCache().get("Dev").get());
         new SectionRegistry();
+        MapInfo.registerMaps();
         createPatch(server);
     }
 

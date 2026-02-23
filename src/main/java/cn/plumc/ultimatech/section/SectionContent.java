@@ -1,5 +1,7 @@
 package cn.plumc.ultimatech.section;
 
+import cn.plumc.ultimatech.game.SectionManager;
+import cn.plumc.ultimatech.section.layer.LayerType;
 import cn.plumc.ultimatech.utils.BlockUtil;
 import cn.plumc.ultimatech.utils.IntCounter;
 import cn.plumc.ultimatech.utils.PlayerUtil;
@@ -24,7 +26,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -45,17 +46,19 @@ public class SectionContent {
     }
 
     public Section parent;
+    public SectionManager manager;
     public SectionLocation location;
     public ServerLevel level;
+    public Vec3 mapOrigin;
 
     public List<Tuple<Vec3, Entity>> templateEntities = new ArrayList<>();
     public Map<BlockPos, BlockState> templateBlocks = new HashMap<>();
 
     public SectionEntities entities = new SectionEntities();
-    public HashMap<BlockPos, BlockState> blocks = new HashMap<>();
-    public Vec3 origin;
+    public HashSet<BlockPos> changedBlocks = new HashSet<>();
 
-    public Map<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> worldRecoverCache = new HashMap<>();
+    public Vec3 origin;
+    public Vec3 relativeOrigin = new Vec3(0, 0, 0);
 
     public ArrayList<Display.TextDisplay> debugEntities = new ArrayList<>();
     public IntCounter debugCounter = new IntCounter();
@@ -65,6 +68,7 @@ public class SectionContent {
         this.location = location;
         this.level = level;
 
+        this.manager = this.parent.game.getSectionManager();
         this.load();
     }
 
@@ -132,7 +136,11 @@ public class SectionContent {
                 throw new RuntimeException(e);
             }
 
-            entity.moveTo(parent.owner.position());
+            if (!parent.mapSection) entity.moveTo(parent.owner.position());
+            else {
+                ServerPlayer player = parent.game.getPlayerManager().getPlayers().get(0);
+                entity.moveTo(player.position());
+            }
             entities.add(new Vec3(t_x, t_y, t_z), entity);
             level.addFreshEntity(entity);
         }
@@ -140,16 +148,14 @@ public class SectionContent {
 
     public void handleView(){
         setSectionViewInventory(parent.owner);
-        Vec3 viewOrigin = PlayerUtil.getPlayerLooking(parent.owner, SECTION_VIEW_DISTANCE);
+        Vec3 viewOrigin = parent.mapSection ? mapOrigin : PlayerUtil.getPlayerLooking(parent.owner, SECTION_VIEW_DISTANCE);
         BlockPos blockOrigin = new BlockPos(Mth.floor(viewOrigin.x), Mth.floor(viewOrigin.y), Mth.floor(viewOrigin.z));
 
         // recover
-        for (Map.Entry<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> recoverEntry : worldRecoverCache.entrySet()) {
-            parent.level.setBlockAndUpdate(recoverEntry.getKey(), recoverEntry.getValue().getA());
-            Optional<BlockEntity> blockEntity = recoverEntry.getValue().getB();
-            blockEntity.ifPresent(entity -> parent.level.setBlockEntity(entity));
+        for (BlockPos changedBlock : changedBlocks) {
+            manager.getViewLayer().remove(changedBlock);
         }
-        worldRecoverCache.clear();
+        changedBlocks.clear();
 
         // block
         for (Map.Entry<BlockPos, BlockState> blockEntry : parent.rotation.rotated(templateBlocks).entrySet()) {
@@ -157,10 +163,10 @@ public class SectionContent {
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            Tuple<BlockState, Optional<BlockEntity>> recoverBlock = parent.game.getSectionManager().getRecoverBlockOrWorldBlock(worldPos);
+            Tuple<BlockState, Optional<BlockEntity>> block = manager.getTopLayer().get(worldPos);
             if (!BlockUtil.isMultiBlock(parent.level, worldPos)) {
-                worldRecoverCache.put(worldPos, recoverBlock);
-                parent.level.setBlockAndUpdate(worldPos, checkCanPlace(worldPos, recoverBlock.getA()) ? blockEntry.getValue() : SECTION_NONPPLACABLE_BLOCK);
+                manager.getViewLayer().set(worldPos, checkCanPlace(worldPos, block.getA()) ? blockEntry.getValue() : SECTION_NONPPLACABLE_BLOCK);
+                changedBlocks.add(worldPos);
             }
         }
 
@@ -175,7 +181,7 @@ public class SectionContent {
 
     public boolean handlePlace(){
         if (parent.placed&&!parent.viewing) return false;
-        Vec3 viewOrigin = PlayerUtil.getPlayerLooking(parent.owner, SECTION_VIEW_DISTANCE);
+        Vec3 viewOrigin = parent.mapSection ? mapOrigin : PlayerUtil.getPlayerLooking(parent.owner, SECTION_VIEW_DISTANCE);
         BlockPos blockOrigin = new BlockPos(Mth.floor(viewOrigin.x), Mth.floor(viewOrigin.y), Mth.floor(viewOrigin.z));
 
         for (Map.Entry<BlockPos, BlockState> blockEntry : parent.rotation.rotated(templateBlocks).entrySet()) {
@@ -183,16 +189,16 @@ public class SectionContent {
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            BlockState worldBlockState;
-            if (worldRecoverCache.containsKey(worldPos)) worldBlockState = worldRecoverCache.get(worldPos).getA();
-            else worldBlockState = parent.level.getBlockState(worldPos);
-            blocks.put(worldPos, blockEntry.getValue());
-            if (BlockUtil.isMultiBlock(parent.level, worldPos)||!checkCanPlace(worldPos, worldBlockState)){
-                blocks.clear();
+            Tuple<BlockState, Optional<BlockEntity>> block = manager.getTopLayer().get(worldPos);
+            if (BlockUtil.isMultiBlock(parent.level, worldPos)||!checkCanPlace(worldPos, block.getA())) {
                 return false;
             }
         }
-        parent.game.getSectionManager().announcePlace(parent);
+        
+        changedBlocks.forEach(pos -> {
+            Tuple<BlockState, Optional<BlockEntity>> block = manager.getViewLayer().remove(pos);
+            manager.getLayer(parent.getRunningLayer()).set(pos, block);
+        });
 
         this.origin = viewOrigin;
         parent.placed = true;
@@ -220,7 +226,7 @@ public class SectionContent {
         };
         debugCounter.add();
         if (debugCounter.get()%5==0) return;
-        Vec3 viewOrigin = PlayerUtil.getPlayerLooking(parent.owner, SECTION_VIEW_DISTANCE);
+        Vec3 viewOrigin = parent.mapSection ? mapOrigin : PlayerUtil.getPlayerLooking(parent.owner, SECTION_VIEW_DISTANCE);
         SectionRegistry.SectionInfo info = SectionRegistry.instance.getSectionInfo(this.parent.getClass());
         SectionRegistry.SectionSize size = info.size();
         createPoint(viewOrigin, new Vec3(0, 0, 0));
@@ -242,6 +248,41 @@ public class SectionContent {
         }
         Vec3 pointZ = RotationUtil.rotatePoint(new Vec3(viewOrigin.x, viewOrigin.y, viewOrigin.z+size.length()+0.5), viewOrigin, parent.rotation.getRotations());
         debugEntities.get(2).teleportTo(pointZ.x, pointZ.y, pointZ.z);
+    }
+
+    public void move(int x, int y, int z){
+        this.relativeOrigin = new Vec3(x, y, z);
+        Vec3 newOrigin = origin.add(x, y, z);
+        BlockPos newBlockOrigin = new BlockPos(Mth.floor(newOrigin.x), Mth.floor(newOrigin.y), Mth.floor(newOrigin.z));
+
+        parent.init();
+        parent.setRunningLayer(LayerType.TOP);
+        changedBlocks.forEach(pos -> manager.getTopLayer().remove(pos));
+        changedBlocks.clear();
+        for (Map.Entry<BlockPos, BlockState> blockEntry : parent.rotation.rotated(templateBlocks).entrySet()) {
+            BlockPos relativePos = blockEntry.getKey();
+            BlockPos newPos = new BlockPos(newBlockOrigin.getX() + relativePos.getX(),
+                    newBlockOrigin.getY() + relativePos.getY(),
+                    newBlockOrigin.getZ() + relativePos.getZ());
+            if (!BlockUtil.isMultiBlock(parent.level, newPos)){
+                manager.getTopLayer().set(newPos, blockEntry.getValue());
+                changedBlocks.add(newPos);
+            }
+        }
+        for (Tuple<Vec3, Entity> entityTuple : entities.entities) {
+            Entity entity = entityTuple.getB();
+            entity.moveTo(newBlockOrigin.getX(), newBlockOrigin.getY(), newBlockOrigin.getZ());
+        }
+    }
+
+    public List<BlockPos> getBlocksPos() {return new ArrayList<>(changedBlocks);}
+    public Tuple<BlockState, Optional<BlockEntity>> getBlock(BlockPos pos) {
+        return manager.getLayer(parent.getRunningLayer()).get(pos);
+    }
+    public HashMap<BlockPos, BlockState> getBlocks() {
+        HashMap<BlockPos, BlockState> blocks = new HashMap<>();
+        getBlocksPos().forEach(pos -> blocks.put(pos, getBlock(pos).getA()));
+        return blocks;
     }
 
     private void createPoint(Vec3 pos, Vec3 color){
@@ -290,15 +331,27 @@ public class SectionContent {
     }
 
     public void remove() {
-        blocks.forEach((key, value) -> level.setBlockAndUpdate(key, Blocks.AIR.defaultBlockState()));
+        changedBlocks.forEach(pos -> manager.getLayer(parent.getRunningLayer()).remove(pos));
         entities.entities.forEach((entry) -> entry.getB().kill());
     }
 
+    public void setOrigin(Vec3 origin) {
+        this.origin = origin;
+    }
+
+    public Vec3 getOrigin() {
+        return origin.add(relativeOrigin);
+    }
+
+    public void setMapOrigin(Vec3 origin){
+        if (parent.mapSection) {
+            this.mapOrigin = origin;
+            this.origin = origin;
+        };
+    }
+
     public boolean containsBlock(BlockPos pos) {
-        for (BlockPos blockPos : blocks.keySet()) {
-            if (blockPos.equals(pos)) return true;
-        }
-        return false;
+        return changedBlocks.contains(pos);
     }
 
     public Entity getContentEntity(String tag) {

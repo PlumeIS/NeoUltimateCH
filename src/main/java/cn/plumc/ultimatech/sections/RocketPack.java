@@ -30,7 +30,7 @@ public class RocketPack extends Section {
 
     @Override
     public void init() {
-        triggerHit = new BoxHit.Relative(content.origin, new Vec3(0, 0, 0), new Vec3(1, 1.6, 2));
+        triggerHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 0, 0), new Vec3(1, 1.6, 2));
         transform.applyRotationToRelativeHit(triggerHit);
         rockEntity = content.getContentEntity("uch.rocket_pack_pad.rock");
     }
@@ -48,7 +48,7 @@ public class RocketPack extends Section {
             player.connection.send(PlayerUtil.createInventoryUpdatePacket(player,103));
             globalRockedPlayers.add(player);
         }
-        RocketPackPad.handleRocket(server, game, rockedPlayer);
+        if (picked) RocketPackPad.handleRocket(server, game, rockedPlayer);
     }
 
     @Override

@@ -84,7 +84,7 @@ public class Airplane extends Section {
     @Override
     public void init() {
         spawnPoint = transform.rotateVector(spawnPoint);
-        blocks = new BoxHit.Relative(content.origin, new Vec3(0.5, 3.5, 0), new Vec3(1.5, 3.5, 2));
+        blocks = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.5, 3.5, 0), new Vec3(1.5, 3.5, 2));
         transform.applyRotationToRelativeHit(blocks);
     }
 
@@ -98,7 +98,7 @@ public class Airplane extends Section {
 
             itemDisplay.setPos(transform.toAbsolute(spawnPoint));
             transform.applyEntityBaseRotation(itemDisplay, rotation.getRotations(), 0.0);
-            airplanes.add(new AirplaneEntity(itemDisplay, new BoxHit.Relative(blocks.origin, blocks.pos1, blocks.pos2), new Vec3(0, 0, 0)));
+            airplanes.add(new AirplaneEntity(itemDisplay, new BoxHit.Relative(blocks.getOriginGetter(), blocks.pos1, blocks.pos2), new Vec3(0, 0, 0)));
             level.addFreshEntity(itemDisplay);
         }
 
@@ -146,7 +146,7 @@ public class Airplane extends Section {
 
     private boolean testCrash(List<BlockPos> blocks) {
         for (BlockPos pos : blocks) {
-            if (!content.blocks.containsKey(pos)&&!content.checkCanPlace(pos, level.getBlockState(pos))) {
+            if (!content.getBlocksPos().contains(pos)&&!content.checkCanPlace(pos, level.getBlockState(pos))) {
                 return true;
             }
         }

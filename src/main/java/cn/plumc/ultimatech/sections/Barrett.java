@@ -32,8 +32,8 @@ public class Barrett extends Section {
     @Override
     public void init() {
         stick = content.getContentEntity("uch.barrett.stick");
-        hit = new BoxHit.Relative(content.origin, new Vec3(0.1, 0, 1), new Vec3(0.9, 0.8, 1.8));
-        maxHit = new BoxHit.Relative(content.origin, new Vec3(0.1, 0, 1), new Vec3(0.1, 0.8, 1.8));
+        hit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.1, 0, 1), new Vec3(0.9, 0.8, 1.8));
+        maxHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.1, 0, 1), new Vec3(0.1, 0.8, 1.8));
         transform.applyRotationToRelativeHit(hit);
         transform.applyRotationToRelativeHit(maxHit);
         detection = transform.rotateVector(new Vec3(1.0, 0.0, 0.0));

@@ -11,7 +11,7 @@ public class PendulumHit extends Hit{
 
     public PendulumHit(Pendulum pendulum){
         this.pendulum = pendulum;
-        relative = new BoxHit.Relative(pendulum.content.origin, new Vec3(0.0, 0.5, 0.5), new Vec3(1, 2.5, 2.5));
+        relative = new BoxHit.Relative(()->pendulum.content.getOrigin(), new Vec3(0.0, 0.5, 0.5), new Vec3(1, 2.5, 2.5));
         pendulum.transform.applyRotationToRelativeHit(relative);
     }
 

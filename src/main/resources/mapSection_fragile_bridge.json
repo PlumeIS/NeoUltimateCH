@@ -1,0 +1,2648 @@
+[
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6014.0,
+            "y": 64.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": -90.0,
+            "z": 0.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6010.0,
+            "y": 68.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": -90.0,
+            "z": -180.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6010.0,
+            "y": 68.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": -360.0,
+            "z": -180.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6009.0,
+            "y": 67.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -450.0,
+            "y": -900.0,
+            "z": -630.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5999.0,
+            "y": 66.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -450.0,
+            "y": -990.0,
+            "z": -810.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5998.0,
+            "y": 68.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -630.0,
+            "y": -1350.0,
+            "z": -1170.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5999.0,
+            "y": 68.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1440.0,
+            "y": -3600.0,
+            "z": -2340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5994.0,
+            "y": 64.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4230.0,
+            "z": -2880.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5994.0,
+            "y": 65.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5993.0,
+            "y": 64.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5992.0,
+            "y": 63.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5991.0,
+            "y": 62.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5990.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5989.0,
+            "y": 60.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5988.0,
+            "y": 60.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5987.0,
+            "y": 60.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5986.0,
+            "y": 60.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5985.0,
+            "y": 60.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5984.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5983.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5982.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5975.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5974.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5972.0,
+            "y": 60.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5973.0,
+            "y": 60.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5971.0,
+            "y": 59.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5970.0,
+            "y": 59.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5969.0,
+            "y": 58.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5968.0,
+            "y": 57.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5967.0,
+            "y": 56.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4320.0,
+            "z": -3060.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6000.0,
+            "y": 67.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4590.0,
+            "z": -3240.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6004.0,
+            "y": 67.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -1800.0,
+            "y": -4590.0,
+            "z": -3240.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6004.0,
+            "y": 69.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -2430.0,
+            "y": -5670.0,
+            "z": -4410.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6008.0,
+            "y": 69.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -2430.0,
+            "y": -5670.0,
+            "z": -4410.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6008.0,
+            "y": 69.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -2430.0,
+            "y": -5850.0,
+            "z": -4590.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6012.0,
+            "y": 65.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -2430.0,
+            "y": -6210.0,
+            "z": -4770.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6000.0,
+            "y": 66.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -2430.0,
+            "y": -6210.0,
+            "z": -4770.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5996.0,
+            "y": 65.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -2430.0,
+            "y": -6390.0,
+            "z": -4950.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5995.0,
+            "y": 67.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -2880.0,
+            "y": -7380.0,
+            "z": -5580.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5994.0,
+            "y": 66.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -2880.0,
+            "y": -7380.0,
+            "z": -5580.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5981.0,
+            "y": 59.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -2880.0,
+            "y": -7470.0,
+            "z": -5760.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5985.0,
+            "y": 58.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -3060.0,
+            "y": -7650.0,
+            "z": -5940.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5988.0,
+            "y": 58.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -3060.0,
+            "y": -7650.0,
+            "z": -5940.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5975.0,
+            "y": 61.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -3060.0,
+            "y": -7830.0,
+            "z": -6120.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5972.0,
+            "y": 60.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -3060.0,
+            "y": -7830.0,
+            "z": -6120.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5968.0,
+            "y": 56.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -3060.0,
+            "y": -7830.0,
+            "z": -6300.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5976.0,
+            "y": 60.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -3150.0,
+            "y": -8100.0,
+            "z": -6390.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5976.0,
+            "y": 60.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -3150.0,
+            "y": -8640.0,
+            "z": -6570.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6009.0,
+            "y": 66.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -3420.0,
+            "y": -9360.0,
+            "z": -6750.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6011.0,
+            "y": 65.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -3420.0,
+            "y": -9360.0,
+            "z": -6750.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6013.0,
+            "y": 66.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -3420.0,
+            "y": -9720.0,
+            "z": -6840.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6003.0,
+            "y": 66.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -3870.0,
+            "y": -10440.0,
+            "z": -7110.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6002.0,
+            "y": 67.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -3870.0,
+            "y": -10440.0,
+            "z": -7110.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5997.0,
+            "y": 66.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -3870.0,
+            "y": -10440.0,
+            "z": -7110.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5995.0,
+            "y": 66.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -4320.0,
+            "y": -10800.0,
+            "z": -7290.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6000.0,
+            "y": 68.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -4320.0,
+            "y": -10800.0,
+            "z": -7290.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6009.0,
+            "y": 66.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -4320.0,
+            "y": -10800.0,
+            "z": -7290.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6009.0,
+            "y": 66.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -4320.0,
+            "y": -10890.0,
+            "z": -7560.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6005.0,
+            "y": 68.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -4320.0,
+            "y": -10890.0,
+            "z": -7740.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6014.0,
+            "y": 62.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -4320.0,
+            "y": -10980.0,
+            "z": -7920.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6012.0,
+            "y": 65.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -4320.0,
+            "y": -11340.0,
+            "z": -8100.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6012.0,
+            "y": 66.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -4320.0,
+            "y": -11520.0,
+            "z": -8100.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6002.0,
+            "y": 66.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -4950.0,
+            "y": -11880.0,
+            "z": -8550.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6003.0,
+            "y": 66.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -5400.0,
+            "y": -12240.0,
+            "z": -8910.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6000.0,
+            "y": 68.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -6480.0,
+            "y": -13140.0,
+            "z": -9540.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5998.0,
+            "y": 65.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -6480.0,
+            "y": -13140.0,
+            "z": -9810.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5999.0,
+            "y": 65.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -6480.0,
+            "y": -13320.0,
+            "z": -9990.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5996.0,
+            "y": 65.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -6480.0,
+            "y": -13320.0,
+            "z": -10170.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5997.0,
+            "y": 65.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -13680.0,
+            "z": -10530.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks3",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5992.0,
+            "y": 62.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -13770.0,
+            "z": -10710.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks3",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5990.0,
+            "y": 60.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -13770.0,
+            "z": -10710.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks3",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5988.0,
+            "y": 58.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -13770.0,
+            "z": -10710.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks3",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5985.0,
+            "y": 59.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -14130.0,
+            "z": -10800.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks3",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5994.0,
+            "y": 64.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -14220.0,
+            "z": -11070.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks3",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5993.0,
+            "y": 62.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -14400.0,
+            "z": -11070.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5994.0,
+            "y": 63.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -14580.0,
+            "z": -11160.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5993.0,
+            "y": 62.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -14580.0,
+            "z": -11160.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5992.0,
+            "y": 61.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -14580.0,
+            "z": -11160.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5991.0,
+            "y": 60.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -14580.0,
+            "z": -11160.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5990.0,
+            "y": 58.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -6660.0,
+            "y": -14580.0,
+            "z": -11160.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5990.0,
+            "y": 57.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6013.0,
+            "y": 65.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6013.0,
+            "y": 66.0,
+            "z": 6006.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6010.0,
+            "y": 65.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6010.0,
+            "y": 65.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6013.0,
+            "y": 64.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6013.0,
+            "y": 64.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6014.0,
+            "y": 64.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6014.0,
+            "y": 62.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6014.0,
+            "y": 62.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5994.0,
+            "y": 63.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5995.0,
+            "y": 63.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5995.0,
+            "y": 62.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5991.0,
+            "y": 59.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5991.0,
+            "y": 59.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5992.0,
+            "y": 60.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5992.0,
+            "y": 60.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5993.0,
+            "y": 61.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5993.0,
+            "y": 61.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5990.0,
+            "y": 59.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5991.0,
+            "y": 60.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5992.0,
+            "y": 61.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5993.0,
+            "y": 62.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5995.0,
+            "y": 64.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5998.0,
+            "y": 66.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6000.0,
+            "y": 66.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6000.0,
+            "y": 66.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6001.0,
+            "y": 67.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6003.0,
+            "y": 67.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6003.0,
+            "y": 67.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6005.0,
+            "y": 66.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7020.0,
+            "y": -14760.0,
+            "z": -11340.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5989.0,
+            "y": 57.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7200.0,
+            "y": -14850.0,
+            "z": -11520.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5986.0,
+            "y": 59.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7200.0,
+            "y": -15030.0,
+            "z": -11700.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5968.0,
+            "y": 55.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -7200.0,
+            "y": -15120.0,
+            "z": -11700.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5969.0,
+            "y": 56.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -7200.0,
+            "y": -15120.0,
+            "z": -11700.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5970.0,
+            "y": 57.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -7200.0,
+            "y": -15120.0,
+            "z": -11700.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5969.0,
+            "y": 56.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15120.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks3",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5966.0,
+            "y": 53.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15210.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks3",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5966.0,
+            "y": 54.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15210.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5971.0,
+            "y": 58.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5973.0,
+            "y": 59.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5967.0,
+            "y": 55.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5968.0,
+            "y": 56.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5968.0,
+            "y": 56.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5968.0,
+            "y": 57.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5969.0,
+            "y": 58.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5970.0,
+            "y": 58.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5971.0,
+            "y": 58.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5972.0,
+            "y": 59.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5971.0,
+            "y": 59.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5973.0,
+            "y": 59.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5973.0,
+            "y": 59.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5972.0,
+            "y": 59.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5973.0,
+            "y": 61.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5975.0,
+            "y": 60.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5979.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5980.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5978.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5976.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5975.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5977.0,
+            "y": 61.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5980.0,
+            "y": 60.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5980.0,
+            "y": 60.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5979.0,
+            "y": 60.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -7380.0,
+            "y": -15300.0,
+            "z": -11790.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5981.0,
+            "y": 60.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7470.0,
+            "y": -15570.0,
+            "z": -12150.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5984.0,
+            "y": 57.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7470.0,
+            "y": -15570.0,
+            "z": -12330.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5984.0,
+            "y": 57.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -7470.0,
+            "y": -15570.0,
+            "z": -12330.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5989.0,
+            "y": 50.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -7470.0,
+            "y": -15570.0,
+            "z": -12330.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5989.0,
+            "y": 50.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7470.0,
+            "y": -15570.0,
+            "z": -12330.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5989.0,
+            "y": 50.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7470.0,
+            "y": -15570.0,
+            "z": -12330.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5989.0,
+            "y": 54.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -7470.0,
+            "y": -15750.0,
+            "z": -12330.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5989.0,
+            "y": 54.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -7470.0,
+            "y": -15750.0,
+            "z": -12330.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5989.0,
+            "y": 54.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -7470.0,
+            "y": -15750.0,
+            "z": -12330.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5986.0,
+            "y": 53.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -8190.0,
+            "y": -16830.0,
+            "z": -12870.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5986.0,
+            "y": 53.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -8190.0,
+            "y": -16830.0,
+            "z": -12870.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5986.0,
+            "y": 53.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -8190.0,
+            "y": -16830.0,
+            "z": -12870.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5986.0,
+            "y": 55.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -8190.0,
+            "y": -16830.0,
+            "z": -12870.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5986.0,
+            "y": 55.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -8190.0,
+            "y": -16830.0,
+            "z": -12870.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5986.0,
+            "y": 55.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -8190.0,
+            "y": -16830.0,
+            "z": -12870.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5986.0,
+            "y": 55.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -8460.0,
+            "y": -17280.0,
+            "z": -13140.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5985.0,
+            "y": 58.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -8460.0,
+            "y": -17460.0,
+            "z": -13320.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks3",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5988.0,
+            "y": 50.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -8460.0,
+            "y": -17460.0,
+            "z": -13410.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5988.0,
+            "y": 53.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -8460.0,
+            "y": -17460.0,
+            "z": -13410.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5988.0,
+            "y": 53.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -8460.0,
+            "y": -17460.0,
+            "z": -13410.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5988.0,
+            "y": 53.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -8460.0,
+            "y": -17460.0,
+            "z": -13410.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5987.0,
+            "y": 50.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -8460.0,
+            "y": -17460.0,
+            "z": -13410.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5988.0,
+            "y": 50.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -8460.0,
+            "y": -17460.0,
+            "z": -13410.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5988.0,
+            "y": 55.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -8460.0,
+            "y": -17460.0,
+            "z": -13410.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5988.0,
+            "y": 55.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -8460.0,
+            "y": -17460.0,
+            "z": -13410.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5990.0,
+            "y": 55.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -8460.0,
+            "y": -17460.0,
+            "z": -13410.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5987.0,
+            "y": 56.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -8640.0,
+            "y": -18000.0,
+            "z": -13770.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks2",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5987.0,
+            "y": 58.0,
+            "z": 6005.0
+        },
+        "rotation": {
+            "x": -8730.0,
+            "y": -18360.0,
+            "z": -14130.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks3",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5989.0,
+            "y": 57.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -8730.0,
+            "y": -18720.0,
+            "z": -14310.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5986.0,
+            "y": 55.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -8730.0,
+            "y": -18720.0,
+            "z": -14310.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5986.0,
+            "y": 55.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": -8730.0,
+            "y": -18720.0,
+            "z": -14310.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5985.0,
+            "y": 57.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -8730.0,
+            "y": -18720.0,
+            "z": -14310.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks3",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5985.0,
+            "y": 58.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": -9180.0,
+            "y": -19260.0,
+            "z": -14670.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5985.0,
+            "y": 58.0,
+            "z": 6001.0
+        },
+        "rotation": {
+            "x": -9180.0,
+            "y": -19260.0,
+            "z": -14670.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5984.0,
+            "y": 59.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -9180.0,
+            "y": -19260.0,
+            "z": -14670.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5983.0,
+            "y": 60.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -9180.0,
+            "y": -19260.0,
+            "z": -14670.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5982.0,
+            "y": 60.0,
+            "z": 6004.0
+        },
+        "rotation": {
+            "x": -9180.0,
+            "y": -19260.0,
+            "z": -14670.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 6011.0,
+            "y": 65.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5998.0,
+            "y": 65.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5996.0,
+            "y": 64.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5995.0,
+            "y": 63.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5971.0,
+            "y": 57.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5969.0,
+            "y": 56.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5966.0,
+            "y": 53.0,
+            "z": 6003.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        }
+    },
+    {
+        "type": "ultimatech.fragile_bricks1",
+        "owner": "4be77a2d-e127-351b-add7-6545deac126d",
+        "origin": {
+            "x": 5966.0,
+            "y": 53.0,
+            "z": 6002.0
+        },
+        "rotation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        }
+    }
+]

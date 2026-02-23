@@ -1,6 +1,8 @@
 package cn.plumc.ultimatech.utils;
 
+import cn.plumc.ultimatech.Lobby;
 import cn.plumc.ultimatech.UltimateCH;
+import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.info.UCHInfos;
 import cn.plumc.ultimatech.section.hit.PlayerHit;
 import com.google.gson.Gson;
@@ -249,5 +251,16 @@ public class PlayerUtil {
 
     public static ClientboundContainerSetSlotPacket createInventoryUpdatePacket(ServerPlayer player, int slot){
         return new ClientboundContainerSetSlotPacket(-2, 0, slot, player.getInventory().getItem(slot));
+    }
+
+    public static boolean inPlayerInPlaying(ServerPlayer player){
+        for (Game game : Lobby.games.values()) {
+            if (game.getStatus().playings.contains(player)) return true;
+        }
+        return false;
+    }
+
+    public static boolean isMapHolder(ServerPlayer player){
+        return player.getUUID().equals(UUID.nameUUIDFromBytes(UCHInfos.MAP_HOLDER.getBytes(StandardCharsets.UTF_8)));
     }
 }

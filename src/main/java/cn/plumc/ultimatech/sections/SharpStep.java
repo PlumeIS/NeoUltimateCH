@@ -28,15 +28,16 @@ public class SharpStep extends Section {
     }
 
     public void init(){
-        if (initialized) return;
-        transform.createItemDisplay("minecraft:purple_carpet", new Vec3(0.5, 0.5, 0.5), UCHInfos.contentID("section.control.spike"), null);
-        transform.createItemDisplay("minecraft:purple_carpet", new Vec3(0.5, 0.5, 1.5), UCHInfos.contentID("section.control.spike"), null);
-        transform.createItemDisplay("minecraft:purple_carpet", new Vec3(0.5, 0.5, 2.5), UCHInfos.contentID("section.control.spike"), null);
-        triggerHit = new BoxHit.Relative(content.origin, new Vec3(0, 1, 0), new Vec3(1, 1.2, 3));
-        deathHit = new BoxHit.Relative(content.origin, new Vec3(0, 1, 0), new Vec3(1, 1.6, 3));
+        if (!initialized) {
+            transform.createItemDisplay("minecraft:purple_carpet", new Vec3(0.5, 0.5, 0.5), UCHInfos.contentID("section.control.spike"), null);
+            transform.createItemDisplay("minecraft:purple_carpet", new Vec3(0.5, 0.5, 1.5), UCHInfos.contentID("section.control.spike"), null);
+            transform.createItemDisplay("minecraft:purple_carpet", new Vec3(0.5, 0.5, 2.5), UCHInfos.contentID("section.control.spike"), null);
+            initialized = true;
+        }
+        triggerHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1, 0), new Vec3(1, 1.2, 3));
+        deathHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1, 0), new Vec3(1, 1.6, 3));
         transform.applyRotationToRelativeHit(triggerHit);
         transform.applyRotationToRelativeHit(deathHit);
-        initialized = true;
         setSpikeVisible(false);
     }
 

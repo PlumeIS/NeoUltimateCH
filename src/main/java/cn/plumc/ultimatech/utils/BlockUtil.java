@@ -91,8 +91,15 @@ public class BlockUtil {
             double len = dir.length();
             Vec3 unit = dir.scale(1.0 / len);
 
-            for (double t = 0; t < len; t += step) {
-                Vec3 p = a.add(unit.scale(t)).add(unit.scale(random.nextDouble(-offset, offset)));
+            for (double t = 0; t <= len; t += step) {
+
+                double jitter = 0;
+
+                if (t > offset && t < len - offset) {
+                    jitter = random.nextDouble(-offset, offset);
+                }
+
+                Vec3 p = a.add(unit.scale(t + jitter));
                 points.add(p);
             }
             points.add(b);

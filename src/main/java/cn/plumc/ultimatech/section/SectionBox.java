@@ -80,9 +80,10 @@ public class SectionBox implements MenuProvider, Container {
         }
 
         List<Integer> sectionSlots = new ArrayList<>();
-        int sectionCount = (playerCount*3/2) +1;
+        int sectionCount = (playerCount*3/2) +100;
         Random random = new Random();
         while (sectionSlots.size() < sectionCount){
+            if (sectionSlots.size() == 54) break;
             int slot = random.nextInt(0, getContainerSize());
             if (!sectionSlots.contains(slot)){
                 sectionSlots.add(slot);

@@ -3,7 +3,7 @@ package cn.plumc.ultimatech.commands;
 import cn.plumc.ultimatech.Lobby;
 import cn.plumc.ultimatech.UltimateCH;
 import cn.plumc.ultimatech.game.Game;
-import cn.plumc.ultimatech.game.map.Maps;
+import cn.plumc.ultimatech.game.map.MapInfo;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.minecraft.commands.CommandSourceStack;
@@ -24,17 +24,17 @@ public class GameCommand {
                                 .suggests((context, builder) -> {
                                     try {
                                         String string = StringArgumentType.getString(context, "map");
-                                        Arrays.stream(Maps.values()).forEach(map -> {
+                                        Arrays.stream(MapInfo.values()).forEach(map -> {
                                             if (map.id.contains(string)) builder.suggest(map.id);}
                                         );
                                     } catch (IllegalArgumentException ignored) {
-                                        Arrays.stream(Maps.values()).map(Maps::getId).forEach(builder::suggest);
+                                        Arrays.stream(MapInfo.values()).map(MapInfo::getId).forEach(builder::suggest);
                                     }
                                     return builder.buildFuture();
                                 })
                                 .executes(commandContext -> {
                                     try {
-                                        Maps mapInfo = Maps.getMap(StringArgumentType.getString(commandContext, "map"));
+                                        MapInfo mapInfo = MapInfo.getMap(StringArgumentType.getString(commandContext, "map"));
                                         Optional.ofNullable(Lobby.games.remove(mapInfo.id)).ifPresent(Game::destroy);
                                         Lobby.games.put(mapInfo.id, new Game(mapInfo));
                                         return 1;
@@ -50,17 +50,17 @@ public class GameCommand {
                                 .suggests((context, builder) -> {
                                     try {
                                         String string = StringArgumentType.getString(context, "map");
-                                        Arrays.stream(Maps.values()).forEach(map -> {
+                                        Arrays.stream(MapInfo.values()).forEach(map -> {
                                             if (map.id.contains(string)) builder.suggest(map.id);}
                                         );
                                     } catch (IllegalArgumentException ignored) {
-                                        Arrays.stream(Maps.values()).map(Maps::getId).forEach(builder::suggest);
+                                        Arrays.stream(MapInfo.values()).map(MapInfo::getId).forEach(builder::suggest);
                                     }
                                     return builder.buildFuture();
                                 })
                                 .then(Commands.argument("player", EntityArgument.players())
                                         .executes(commandContext -> {
-                                            Maps mapInfo = Maps.getMap(StringArgumentType.getString(commandContext, "map"));
+                                            MapInfo mapInfo = MapInfo.getMap(StringArgumentType.getString(commandContext, "map"));
                                             Game game = Lobby.games.get(mapInfo.id);
                                             Collection<ServerPlayer> players = EntityArgument.getPlayers(commandContext, "player");
                                             players.forEach(serverPlayer -> game.getPlayerManager().join(serverPlayer));
@@ -75,17 +75,17 @@ public class GameCommand {
                                 .suggests((context, builder) -> {
                                     try {
                                         String string = StringArgumentType.getString(context, "map");
-                                        Arrays.stream(Maps.values()).forEach(map -> {
+                                        Arrays.stream(MapInfo.values()).forEach(map -> {
                                             if (map.id.contains(string)) builder.suggest(map.id);}
                                         );
                                     } catch (IllegalArgumentException ignored) {
-                                        Arrays.stream(Maps.values()).map(Maps::getId).forEach(builder::suggest);
+                                        Arrays.stream(MapInfo.values()).map(MapInfo::getId).forEach(builder::suggest);
                                     }
                                     return builder.buildFuture();
                                 })
                                 .then(Commands.argument("player", EntityArgument.players())
                                         .executes(commandContext -> {
-                                            Maps mapInfo = Maps.getMap(StringArgumentType.getString(commandContext, "map"));
+                                            MapInfo mapInfo = MapInfo.getMap(StringArgumentType.getString(commandContext, "map"));
                                             Game game = Lobby.games.get(mapInfo.id);
                                             Collection<ServerPlayer> players = EntityArgument.getPlayers(commandContext, "player");
                                             players.forEach(serverPlayer -> game.getPlayerManager().leave(serverPlayer));
@@ -100,16 +100,16 @@ public class GameCommand {
                                 .suggests((context, builder) -> {
                                     try {
                                         String string = StringArgumentType.getString(context, "map");
-                                        Arrays.stream(Maps.values()).forEach(map -> {
+                                        Arrays.stream(MapInfo.values()).forEach(map -> {
                                             if (map.id.contains(string)) builder.suggest(map.id);}
                                         );
                                     } catch (IllegalArgumentException ignored) {
-                                        Arrays.stream(Maps.values()).map(Maps::getId).forEach(builder::suggest);
+                                        Arrays.stream(MapInfo.values()).map(MapInfo::getId).forEach(builder::suggest);
                                     }
                                     return builder.buildFuture();
                                 })
                                 .executes(commandContext -> {
-                                    Maps mapInfo = Maps.getMap(StringArgumentType.getString(commandContext, "map"));
+                                    MapInfo mapInfo = MapInfo.getMap(StringArgumentType.getString(commandContext, "map"));
                                     Lobby.games.get(mapInfo.id).gameStart();
                                     return 1;
                                 })
@@ -120,16 +120,16 @@ public class GameCommand {
                                 .suggests((context, builder) -> {
                                     try {
                                         String string = StringArgumentType.getString(context, "map");
-                                        Arrays.stream(Maps.values()).forEach(map -> {
+                                        Arrays.stream(MapInfo.values()).forEach(map -> {
                                             if (map.id.contains(string)) builder.suggest(map.id);}
                                         );
                                     } catch (IllegalArgumentException ignored) {
-                                        Arrays.stream(Maps.values()).map(Maps::getId).forEach(builder::suggest);
+                                        Arrays.stream(MapInfo.values()).map(MapInfo::getId).forEach(builder::suggest);
                                     }
                                     return builder.buildFuture();
                                 })
                                 .executes(commandContext -> {
-                                    Maps mapInfo = Maps.getMap(StringArgumentType.getString(commandContext, "map"));
+                                    MapInfo mapInfo = MapInfo.getMap(StringArgumentType.getString(commandContext, "map"));
                                     Lobby.games.get(mapInfo.id).gameEnd(commandContext.getSource().getPlayer());
                                     return 1;
                                 })
