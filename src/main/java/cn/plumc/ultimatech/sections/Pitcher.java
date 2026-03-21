@@ -16,7 +16,7 @@ public class Pitcher extends Section {
     public Vec3 motion;
     public Vec3 spawnPoint;
 
-    public FixedLinkedList<Snowball> snowballs = new FixedLinkedList<>(UCHInfos.SECTION_MAX_ENTITIES){
+    public FixedLinkedList<Snowball> snowballs = new FixedLinkedList<>(UCHInfos.SECTION_MAX_ENTITIES) {
         @Override
         public Snowball removeFirst() {
             getFirst().kill();
@@ -38,7 +38,7 @@ public class Pitcher extends Section {
     @Override
     public void tickRun(int tickTime) {
         if (process.at(1.5)) {
-            Snowball snowball = new Snowball(EntityType.SNOWBALL, level){
+            Snowball snowball = new Snowball(EntityType.SNOWBALL, level) {
                 @Override
                 protected void onHitEntity(EntityHitResult result) {
                     if (result.getEntity() instanceof ServerPlayer player) Pitcher.this.kill(player);

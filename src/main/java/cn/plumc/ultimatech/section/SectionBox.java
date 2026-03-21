@@ -19,25 +19,8 @@ public class SectionBox implements MenuProvider, Container {
     private List<ItemStack> items = new ArrayList<>();
     private List<SectionRegistry.SectionInfo> sections = new ArrayList<>();
 
-    private static class WeightedSectionRandom {
-        private final TreeMap<Double, SectionRegistry.SectionInfo> weightedSectionMap = new TreeMap<>();
-
-        public WeightedSectionRandom(List<SectionRegistry.SectionInfo> sections) {
-            double cumulativeWeight = 0;
-            for (SectionRegistry.SectionInfo section : sections) {
-                cumulativeWeight += section.weight();
-                weightedSectionMap.put(cumulativeWeight, section);
-            }
-        }
-
-        public SectionRegistry.SectionInfo getRandomSection() {
-            double randomWeight = weightedSectionMap.lastKey() * Math.random();
-            return weightedSectionMap.higherEntry(randomWeight).getValue();
-        }
-    }
-
-    public SectionBox(int round, int playerCount){
-        for(int i = 0; i < getContainerSize()+1; i++){
+    public SectionBox(int round, int playerCount) {
+        for (int i = 0; i < getContainerSize() + 1; i++) {
             items.add(ItemStack.EMPTY);
         }
 
@@ -49,11 +32,11 @@ public class SectionBox implements MenuProvider, Container {
 
         for (java.util.Map.Entry<String, SectionRegistry.SectionInfo> sectionEntry : sectionInfos.entrySet()) {
             SectionRegistry.SectionInfo info = sectionEntry.getValue();
-            if (info.difficulty() == SectionRegistry.SectionDifficulty.EASY){
+            if (info.difficulty() == SectionRegistry.SectionDifficulty.EASY) {
                 easySections.add(info);
-            } else if (info.difficulty() == SectionRegistry.SectionDifficulty.NORMAL){
+            } else if (info.difficulty() == SectionRegistry.SectionDifficulty.NORMAL) {
                 normalSections.add(info);
-            } else if (info.difficulty() == SectionRegistry.SectionDifficulty.HARD){
+            } else if (info.difficulty() == SectionRegistry.SectionDifficulty.HARD) {
                 hardSections.add(info);
             }
         }
@@ -65,11 +48,11 @@ public class SectionBox implements MenuProvider, Container {
         double easyWeight;
         double normalWeight;
         double hardWeight;
-        if (round <= 2){
+        if (round <= 2) {
             easyWeight = 0.8;
             normalWeight = 0.2;
             hardWeight = 0;
-        } else if (round <= 6){
+        } else if (round <= 6) {
             easyWeight = 0.5;
             normalWeight = 0.3;
             hardWeight = 0.2;
@@ -80,29 +63,29 @@ public class SectionBox implements MenuProvider, Container {
         }
 
         List<Integer> sectionSlots = new ArrayList<>();
-        int sectionCount = (playerCount*3/2) +100;
+        int sectionCount = (playerCount * 3 / 2) ;
         Random random = new Random();
-        while (sectionSlots.size() < sectionCount){
+        while (sectionSlots.size() < sectionCount) {
             if (sectionSlots.size() == 54) break;
             int slot = random.nextInt(0, getContainerSize());
-            if (!sectionSlots.contains(slot)){
+            if (!sectionSlots.contains(slot)) {
                 sectionSlots.add(slot);
             }
         }
 
         Random sectionRandom = new Random();
-        for (int slot : sectionSlots){
+        for (int slot : sectionSlots) {
             double result = sectionRandom.nextDouble();
-                SectionRegistry.SectionInfo section;
-                if (result <= (easyWeight)) {
-                    section = easySectionRandom.getRandomSection();
-                } else if (result <= easyWeight+normalWeight) {
-                    section = normalSectionRandom.getRandomSection();
-                } else {
-                    section = hardSectionRandom.getRandomSection();
-                }
-                sections.add(section);
-                items.set(slot, SectionBuilder.buildItem(section.id()));
+            SectionRegistry.SectionInfo section;
+            if (result <= (easyWeight)) {
+                section = easySectionRandom.getRandomSection();
+            } else if (result <= easyWeight + normalWeight) {
+                section = normalSectionRandom.getRandomSection();
+            } else {
+                section = hardSectionRandom.getRandomSection();
+            }
+            sections.add(section);
+            items.set(slot, SectionBuilder.buildItem(section.id()));
         }
     }
 
@@ -160,5 +143,22 @@ public class SectionBox implements MenuProvider, Container {
     @Override
     public void clearContent() {
         items.clear();
+    }
+
+    private static class WeightedSectionRandom {
+        private final TreeMap<Double, SectionRegistry.SectionInfo> weightedSectionMap = new TreeMap<>();
+
+        public WeightedSectionRandom(List<SectionRegistry.SectionInfo> sections) {
+            double cumulativeWeight = 0;
+            for (SectionRegistry.SectionInfo section : sections) {
+                cumulativeWeight += section.weight();
+                weightedSectionMap.put(cumulativeWeight, section);
+            }
+        }
+
+        public SectionRegistry.SectionInfo getRandomSection() {
+            double randomWeight = weightedSectionMap.lastKey() * Math.random();
+            return weightedSectionMap.higherEntry(randomWeight).getValue();
+        }
     }
 }

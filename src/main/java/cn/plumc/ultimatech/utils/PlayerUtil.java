@@ -31,10 +31,99 @@ import java.util.*;
 import java.util.List;
 
 public class PlayerUtil {
-    public static HashMap<UUID, PlayerTexture> textureCache = new HashMap<>();
     private static final Random RANDOM = new Random();
+    public static HashMap<UUID, PlayerTexture> textureCache = new HashMap<>();
 
-    public static class PlayerTexture{
+    public static void cachePlayerTexture(ServerPlayer player) {
+        textureCache.put(player.getUUID(), new PlayerTexture(player));
+    }
+
+    public static Vec3 getRandomPointInPlayerAABB(ServerPlayer player) {
+        AABB aabb = new PlayerHit(player).getAABB();
+        double x = RANDOM.nextDouble() * (aabb.maxX - aabb.minX) + aabb.minX;
+        double y = RANDOM.nextDouble() * (aabb.maxY - aabb.minY) + aabb.minY;
+        double z = RANDOM.nextDouble() * (aabb.maxZ - aabb.minZ) + aabb.minZ;
+        return new Vec3(x, y, z);
+    }
+
+    public static Vec3 getPlayerLooking(ServerPlayer player, int distance) {
+        Vec3 eyePosition = player.getEyePosition();
+        double playerX = eyePosition.x;
+        double playerY = eyePosition.y;
+        double playerZ = eyePosition.z;
+
+        float playerPitch = player.getCamera().getXRot(); // 玩家的俯仰角
+        float playerYaw = player.getCamera().getYRot(); // 玩家的偏航角
+
+        double pitchRadians = Math.toRadians(playerPitch);
+        double yawRadians = Math.toRadians(playerYaw);
+
+        double directionX = -Math.sin(yawRadians) * Math.cos(pitchRadians);
+        double directionY = -Math.sin(pitchRadians);
+        double directionZ = Math.cos(yawRadians) * Math.cos(pitchRadians);
+
+        double targetX = Math.floor(playerX + directionX * distance);
+        double targetY = Math.floor(playerY + directionY * distance);
+        double targetZ = Math.floor(playerZ + directionZ * distance);
+
+        return new Vec3(targetX, targetY, targetZ);
+    }
+
+    public static void teleport(Player player, Vec3 location) {
+        player.teleportTo(location.x, location.y, location.z);
+    }
+
+    public static boolean containsTag(Player player, String tag) {
+        return player.getTags().contains(tag);
+    }
+
+    public static void updateDeltaMovement(List<ServerPlayer> players, Entity entity) {
+        players.forEach(serverPlayer -> serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(entity)));
+    }
+
+    public static ClientboundContainerSetSlotPacket createInventoryUpdatePacket(ServerPlayer player, int slot) {
+        return new ClientboundContainerSetSlotPacket(-2, 0, slot, player.getInventory().getItem(slot));
+    }
+
+    public static boolean inPlayerInPlaying(ServerPlayer player) {
+        for (Game game : Lobby.games.values()) {
+            if (game.getStatus().playings.contains(player)) return true;
+        }
+        return false;
+    }
+
+    public static boolean isMapHolder(ServerPlayer player) {
+        return player.getUUID().equals(UUID.nameUUIDFromBytes(UCHInfos.MAP_HOLDER.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    public static class PlayerTexture {
+        public static final String UUID_API = "https://api.mojang.com/users/profiles/minecraft/%s";
+        public static final String TEXTURE_API = "https://sessionserver.mojang.com/session/minecraft/profile/%s";
+        public static final HttpHelper httpHelper = new HttpHelper();
+        public static final Gson gson = new Gson();
+        private final ServerPlayer player;
+        private final UUID playerUUID;
+        private boolean loaded = false;
+        private boolean cached = false;
+        private String username;
+        private Path skin;
+        private BufferedImage skinImage;
+        private WeightedSkinColorRandom colorRandom;
+        public PlayerTexture(ServerPlayer player) {
+            this.username = player.getGameProfile().getName().toLowerCase();
+            this.player = player;
+            this.playerUUID = player.getUUID();
+
+            new Thread(() -> {
+                try {
+                    load();
+                    if (loaded) UltimateCH.LOGGER.info("[PlayerUtil] Loaded player (" + playerUUID + "): " + username);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
+        }
+
         public ServerPlayer getPlayer() {
             return player;
         }
@@ -43,67 +132,17 @@ public class PlayerUtil {
             return cached;
         }
 
-        public static class WeightedSkinColorRandom {
-            private final TreeMap<Integer, Integer> weightColorMap = new TreeMap<>();
-
-            public WeightedSkinColorRandom(HashMap<Integer, Integer> colorMap) {
-                int cumulativeWeight = 0;
-                for (Map.Entry<Integer, Integer> entry : colorMap.entrySet()) {
-                    cumulativeWeight += entry.getValue();
-                    weightColorMap.put(cumulativeWeight, entry.getKey());
-                }
-            }
-
-            public Integer getRandomColor() {
-                Integer randomWeight = (int) (weightColorMap.lastKey() * Math.random());
-                return weightColorMap.higherEntry(randomWeight).getValue();
-            }
-        }
-
-        private boolean loaded = false;
-        private boolean cached = false;
-
-        private final ServerPlayer player;
-        private final UUID playerUUID;
-        private String username;
-
-        private Path skin;
-
-        private BufferedImage skinImage;
-        private WeightedSkinColorRandom colorRandom;
-
-        public static final String UUID_API = "https://api.mojang.com/users/profiles/minecraft/%s";
-        public static final String TEXTURE_API = "https://sessionserver.mojang.com/session/minecraft/profile/%s";
-
-        public static final HttpHelper httpHelper = new HttpHelper();
-        public static final Gson gson = new Gson();
-
-        public PlayerTexture(ServerPlayer player){
-            this.username = player.getGameProfile().getName().toLowerCase();
-            this.player = player;
-            this.playerUUID = player.getUUID();
-
-            new Thread(() -> {
-                try {
-                    load();
-                    if (loaded) UltimateCH.LOGGER.info("[PlayerUtil] Loaded player ("+playerUUID+"): "+username);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }).start();
-        }
-
         public int[] getSkinRGBA(int x, int y) {
             if (!loaded) return null;
             int argb = skinImage.getRGB(x, y);
             int alpha = (argb >> 24) & 0xFF;
-            int red   = (argb >> 16) & 0xFF;
+            int red = (argb >> 16) & 0xFF;
             int green = (argb >> 8) & 0xFF;
-            int blue  = argb & 0xFF;
+            int blue = argb & 0xFF;
             return new int[]{red, green, blue, alpha};
         }
 
-        public HashMap<Integer, Integer> calculateSkinColor(boolean ignoreTransparent){
+        public HashMap<Integer, Integer> calculateSkinColor(boolean ignoreTransparent) {
             if (!loaded) return new HashMap<>();
             HashMap<Integer, Integer> colorMap = new HashMap<>();
 
@@ -124,7 +163,7 @@ public class PlayerUtil {
             return colorMap;
         }
 
-        public WeightedSkinColorRandom getColorRandom(){
+        public WeightedSkinColorRandom getColorRandom() {
             if (!loaded) return null;
             if (colorRandom != null) return colorRandom;
             this.colorRandom = new WeightedSkinColorRandom(calculateSkinColor(true));
@@ -181,7 +220,7 @@ public class PlayerUtil {
         }
 
         private void createNullSkin() throws IOException {
-            if (Files.exists(UCHInfos.CACHED_SKIN_PATCH.resolve( "uch_no_texture.png"))) return;
+            if (Files.exists(UCHInfos.CACHED_SKIN_PATCH.resolve("uch_no_texture.png"))) return;
             int width = 64;
             int height = 64;
 
@@ -193,74 +232,28 @@ public class PlayerUtil {
                 }
             }
 
-            ImageIO.write(skin, "png", UCHInfos.CACHED_SKIN_PATCH.resolve( "uch_no_texture.png").toFile());
+            ImageIO.write(skin, "png", UCHInfos.CACHED_SKIN_PATCH.resolve("uch_no_texture.png").toFile());
         }
 
         public boolean isLoaded() {
             return loaded;
         }
-    }
 
-    public static void cachePlayerTexture(ServerPlayer player){
-        textureCache.put(player.getUUID(), new PlayerTexture(player));
-    }
+        public static class WeightedSkinColorRandom {
+            private final TreeMap<Integer, Integer> weightColorMap = new TreeMap<>();
 
-    public static Vec3 getRandomPointInPlayerAABB(ServerPlayer player){
-        AABB aabb = new PlayerHit(player).getAABB();
-        double x = RANDOM.nextDouble() * (aabb.maxX - aabb.minX) + aabb.minX;
-        double y = RANDOM.nextDouble() * (aabb.maxY - aabb.minY) + aabb.minY;
-        double z = RANDOM.nextDouble() * (aabb.maxZ - aabb.minZ) + aabb.minZ;
-        return new Vec3(x, y, z);
-    }
+            public WeightedSkinColorRandom(HashMap<Integer, Integer> colorMap) {
+                int cumulativeWeight = 0;
+                for (Map.Entry<Integer, Integer> entry : colorMap.entrySet()) {
+                    cumulativeWeight += entry.getValue();
+                    weightColorMap.put(cumulativeWeight, entry.getKey());
+                }
+            }
 
-    public static Vec3 getPlayerLooking(ServerPlayer player, int distance) {
-        Vec3 eyePosition = player.getEyePosition();
-        double playerX = eyePosition.x;
-        double playerY = eyePosition.y;
-        double playerZ = eyePosition.z;
-
-        float playerPitch = player.getCamera().getXRot(); // 玩家的俯仰角
-        float playerYaw = player.getCamera().getYRot(); // 玩家的偏航角
-
-        double pitchRadians = Math.toRadians(playerPitch);
-        double yawRadians = Math.toRadians(playerYaw);
-
-        double directionX = -Math.sin(yawRadians) * Math.cos(pitchRadians);
-        double directionY = -Math.sin(pitchRadians);
-        double directionZ = Math.cos(yawRadians) * Math.cos(pitchRadians);
-
-        double targetX = Math.floor(playerX + directionX * distance);
-        double targetY = Math.floor(playerY + directionY * distance);
-        double targetZ = Math.floor(playerZ + directionZ * distance);
-
-        return new Vec3(targetX, targetY, targetZ);
-    }
-
-
-    public static void teleport(Player player, Vec3 location){
-        player.teleportTo(location.x, location.y, location.z);
-    }
-
-    public static boolean containsTag(Player player, String tag){
-        return player.getTags().contains(tag);
-    }
-
-    public static void updateDeltaMovement(List<ServerPlayer> players, Entity entity){
-        players.forEach(serverPlayer -> serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(entity)));
-    }
-
-    public static ClientboundContainerSetSlotPacket createInventoryUpdatePacket(ServerPlayer player, int slot){
-        return new ClientboundContainerSetSlotPacket(-2, 0, slot, player.getInventory().getItem(slot));
-    }
-
-    public static boolean inPlayerInPlaying(ServerPlayer player){
-        for (Game game : Lobby.games.values()) {
-            if (game.getStatus().playings.contains(player)) return true;
+            public Integer getRandomColor() {
+                Integer randomWeight = (int) (weightColorMap.lastKey() * Math.random());
+                return weightColorMap.higherEntry(randomWeight).getValue();
+            }
         }
-        return false;
-    }
-
-    public static boolean isMapHolder(ServerPlayer player){
-        return player.getUUID().equals(UUID.nameUUIDFromBytes(UCHInfos.MAP_HOLDER.getBytes(StandardCharsets.UTF_8)));
     }
 }

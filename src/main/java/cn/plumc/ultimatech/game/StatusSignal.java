@@ -20,12 +20,12 @@ public class StatusSignal {
     }
 
     public void onSectionPicked(ServerPlayer player, ItemStack stack) {
-        ListTag tags = (ListTag)stack.get(DataComponents.CUSTOM_DATA).copyTag().get("Tags");
+        ListTag tags = (ListTag) stack.get(DataComponents.CUSTOM_DATA).copyTag().get("Tags");
         String id = tags.getString(0);
         Section section = game.getSectionManager().buildSection(id, player);
         game.getStatus().roundSections.put(player, section);
 
-        TickUtil.tickRun(()->{
+        TickUtil.tickRun(() -> {
             player.addTag(PICKED_SECTION_TAG);
             player.closeContainer();
             player.getInventory().clearContent();
@@ -33,8 +33,8 @@ public class StatusSignal {
         });
     }
 
-    public void onSectionClose(ServerPlayer player){
-        if (!player.getTags().contains(PICKED_SECTION_TAG)){
+    public void onSectionClose(ServerPlayer player) {
+        if (!player.getTags().contains(PICKED_SECTION_TAG)) {
             player.addTag(PICKED_SECTION_TAG);
             player.addTag(PUTTED_SECTION_TAG);
         }

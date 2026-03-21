@@ -37,10 +37,10 @@ public class AutomaticDoor extends Section {
     @Override
     public void init() {
         center = transform.toAbsolute(transform.rotatePoint(new Vec3(0.5, 1, 0.5)));
-        front = new BoxHit.Relative(()->content.getOrigin(), new Vec3(-0.2, 0.0, 0.0), new Vec3(0.0, 3.0, 1.0));
-        back = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, 0.0), new Vec3(1.2, 3.0, 1.0));
-        left = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, -0.2), new Vec3(1.0, 3.0, 0.0));
-        right = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, 1.0), new Vec3(1.0, 3.0, 1.2));
+        front = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(-0.2, 0.0, 0.0), new Vec3(0.0, 3.0, 1.0));
+        back = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.0, 0.0, 0.0), new Vec3(1.2, 3.0, 1.0));
+        left = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.0, 0.0, -0.2), new Vec3(1.0, 3.0, 0.0));
+        right = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.0, 0.0, 1.0), new Vec3(1.0, 3.0, 1.2));
         transform.applyRotationToRelativeHit(front);
         transform.applyRotationToRelativeHit(back);
         transform.applyRotationToRelativeHit(left);
@@ -49,23 +49,21 @@ public class AutomaticDoor extends Section {
 
     @Override
     public void tickRun(int tickTime) {
-        if (front.hasPlayer(game)||back.hasPlayer(game)) {
+        if (front.hasPlayer(game) || back.hasPlayer(game)) {
             setBlocking(false);
-            if (open){
+            if (open) {
                 openDoor(false);
                 open = false;
                 vfx();
             }
-        }
-        else if (left.hasPlayer(game)||right.hasPlayer(game)) {
+        } else if (left.hasPlayer(game) || right.hasPlayer(game)) {
             setBlocking(false);
             if (!open) {
                 openDoor(true);
                 open = true;
                 vfx();
             }
-        }
-        else {
+        } else {
             setBlocking(true);
             if (!open) {
                 openDoor(true);
@@ -86,7 +84,7 @@ public class AutomaticDoor extends Section {
         }
     }
 
-    private void setBlocking(boolean blocking){
+    private void setBlocking(boolean blocking) {
         for (Map.Entry<BlockPos, BlockState> entry : content.getBlocks().entrySet()) {
             BlockPos pos = entry.getKey();
             BlockState state = entry.getValue();
@@ -98,7 +96,7 @@ public class AutomaticDoor extends Section {
         }
     }
 
-    private void vfx(){
+    private void vfx() {
         if (open) level.playSound(null, center.x, center.y, center.z, SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS);
         else level.playSound(null, center.x, center.y, center.z, SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS);
     }

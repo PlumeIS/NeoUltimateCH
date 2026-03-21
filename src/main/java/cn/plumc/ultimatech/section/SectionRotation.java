@@ -22,19 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SectionRotation {
+    private final HashMap<Axis, Double> rotations = new HashMap<>();
+    private final HashMap<Axis, Integer> rotationStatus = new HashMap<>();
     private Section parent;
-
-    public enum Axis{X, Y, Z}
-    public enum RotationHandle{CLOCKWISE, COUNTERCLOCKWISE, NONE}
-
     private double x;
     private double y;
     private double z;
 
-    private final HashMap<Axis, Double> rotations = new HashMap<>();
-    private final HashMap<Axis, Integer> rotationStatus =  new HashMap<>();
-
-    public SectionRotation(Section parent){
+    public SectionRotation(Section parent) {
         this.parent = parent;
         rotations.put(Axis.X, 0.0);
         rotations.put(Axis.Y, 0.0);
@@ -42,34 +37,40 @@ public class SectionRotation {
         normalize();
     }
 
-    public void set(Axis axis, double value){
+    public void set(Axis axis, double value) {
         rotations.put(axis, value);
         normalize();
     }
 
-    public void add(Axis axis, double value){
+    public void add(Axis axis, double value) {
         rotations.put(axis, rotations.get(axis) + value);
         normalize();
     }
 
-    private void normalize(){
-        for(Axis axis : Axis.values()){
-            while (rotations.get(axis) > 360){
+    private void normalize() {
+        for (Axis axis : Axis.values()) {
+            while (rotations.get(axis) > 360) {
                 rotations.put(axis, rotations.get(axis) - 360);
             }
-            switch (axis){
-                case X: x = rotations.get(axis); break;
-                case Y: y = rotations.get(axis); break;
-                case Z: z = rotations.get(axis); break;
+            switch (axis) {
+                case X:
+                    x = rotations.get(axis);
+                    break;
+                case Y:
+                    y = rotations.get(axis);
+                    break;
+                case Z:
+                    z = rotations.get(axis);
+                    break;
             }
         }
-        for(Axis axis : Axis.values()){
-            rotationStatus.put(axis, Mth.floor(rotations.get(axis)/UCHInfos.SECTION_ROTATION_DEGREE));
+        for (Axis axis : Axis.values()) {
+            rotationStatus.put(axis, Mth.floor(rotations.get(axis) / UCHInfos.SECTION_ROTATION_DEGREE));
         }
     }
 
-    public void rotate(Axis axis, RotationHandle handle){
-        if (handle.equals(RotationHandle.CLOCKWISE)){
+    public void rotate(Axis axis, RotationHandle handle) {
+        if (handle.equals(RotationHandle.CLOCKWISE)) {
             rotations.put(axis, rotations.get(axis) - UCHInfos.SECTION_ROTATION_DEGREE);
         } else if (handle.equals(RotationHandle.COUNTERCLOCKWISE)) {
             rotations.put(axis, rotations.get(axis) + UCHInfos.SECTION_ROTATION_DEGREE);
@@ -91,7 +92,7 @@ public class SectionRotation {
         return rotated;
     }
 
-    private BlockState rotatedAxis(BlockState state){
+    private BlockState rotatedAxis(BlockState state) {
         Map<Property<?>, Comparable<?>> properties = state.getValues();
         if (!properties.containsKey(BlockStateProperties.AXIS)) return state;
 
@@ -104,12 +105,12 @@ public class SectionRotation {
 
         BlockPos rotatedTestPos = RotationUtil.rotateBlock(testPos, new Vec3(0.5, 0.5, 0.5), getRotationStatus());
         Direction.Axis rotatedAxis = Direction.Axis.X;
-        if (rotatedTestPos.getZ()!=0) rotatedAxis = Direction.Axis.Z;
-        else if (rotatedTestPos.getY()!=0) rotatedAxis = Direction.Axis.Y;
+        if (rotatedTestPos.getZ() != 0) rotatedAxis = Direction.Axis.Z;
+        else if (rotatedTestPos.getY() != 0) rotatedAxis = Direction.Axis.Y;
         return state.setValue(BlockStateProperties.AXIS, rotatedAxis);
     }
 
-    private BlockState rotatedFace(BlockState state){
+    private BlockState rotatedFace(BlockState state) {
         Map<Property<?>, Comparable<?>> properties = state.getValues();
         if (!properties.containsKey(BlockStateProperties.FACING)) return state;
 
@@ -184,4 +185,8 @@ public class SectionRotation {
     public HashMap<Axis, Integer> getRotationStatus() {
         return rotationStatus;
     }
+
+    public enum Axis {X, Y, Z}
+
+    public enum RotationHandle {CLOCKWISE, COUNTERCLOCKWISE, NONE}
 }

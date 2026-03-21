@@ -8,13 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LinearHit extends Hit {
+    private final List<BoxHit> hits = new ArrayList<>();
+    private final List<Vec3> hitPoints = new ArrayList<>();
     public Vec3 start;
     public Vec3 end;
     public double radius;
     public double step;
-
-    private final List<BoxHit> hits = new ArrayList<>();
-    private final List<Vec3> hitPoints = new ArrayList<>();
 
     public LinearHit(Vec3 start, Vec3 end, double radius, double step) {
         this.start = start;
@@ -34,7 +33,7 @@ public class LinearHit extends Hit {
         calculate();
     }
 
-    public void set(Vec3 start, Vec3 end){
+    public void set(Vec3 start, Vec3 end) {
         this.start = start;
         this.end = end;
         calculate();

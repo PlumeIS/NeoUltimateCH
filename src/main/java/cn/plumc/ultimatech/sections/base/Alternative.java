@@ -2,6 +2,7 @@ package cn.plumc.ultimatech.sections.base;
 
 import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.section.SectionLocation;
+import cn.plumc.ultimatech.section.layer.LayerBlock;
 import cn.plumc.ultimatech.section.layer.LayerType;
 import cn.plumc.ultimatech.utils.BlockUtil;
 import net.minecraft.core.BlockPos;
@@ -12,13 +13,12 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import static cn.plumc.ultimatech.info.UCHInfos.SECTION_DISCARDED_BLOCK;
 
 public class Alternative extends Configurable {
-    public HashMap<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> replacements = new HashMap<>();
+    public HashMap<BlockPos, LayerBlock> replacements = new HashMap<>();
 
     public Alternative(ServerPlayer owner, SectionLocation location, Game game) {
         super(owner, location, game);
@@ -32,10 +32,10 @@ public class Alternative extends Configurable {
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            Tuple<BlockState, Optional<BlockEntity>> block = content.manager.getTopLayer().get(worldPos);
+            LayerBlock block = content.manager.getTopLayer().get(worldPos);
             if (!BlockUtil.isMultiBlock(level, worldPos)) {
                 content.changedBlocks.add(worldPos);
-                content.manager.getViewLayer().set(worldPos, checkCanPlace(worldPos, block.getA()) ? blockEntry.getValue() : SECTION_DISCARDED_BLOCK);
+                content.manager.getViewLayer().set(worldPos, checkCanPlace(worldPos, block.state) ? blockEntry.getValue() : SECTION_DISCARDED_BLOCK);
             }
         }
     }
@@ -51,8 +51,8 @@ public class Alternative extends Configurable {
             BlockPos worldPos = new BlockPos(blockOrigin.getX() + relativePos.getX(),
                     blockOrigin.getY() + relativePos.getY(),
                     blockOrigin.getZ() + relativePos.getZ());
-            Tuple<BlockState, Optional<BlockEntity>> block = content.manager.getTopLayer().get(worldPos);
-            if (!BlockUtil.isMultiBlock(level, worldPos)&&!checkCanPlace(worldPos, block.getA())) {
+            LayerBlock block = content.manager.getTopLayer().get(worldPos);
+            if (!BlockUtil.isMultiBlock(level, worldPos) && !checkCanPlace(worldPos, block.state)) {
                 content.manager.getViewLayer().remove(worldPos);
                 content.changedBlocks.remove(worldPos);
             } else if (!BlockUtil.isMultiBlock(level, worldPos)) {
@@ -61,7 +61,7 @@ public class Alternative extends Configurable {
         }
         if (!replacements.isEmpty()) {
             content.changedBlocks.forEach(pos -> {
-                Tuple<BlockState, Optional<BlockEntity>> block = content.manager.getViewLayer().remove(pos);
+                LayerBlock block = content.manager.getViewLayer().remove(pos);
                 content.manager.getLayer(getRunningLayer()).set(pos, block);
             });
         }
@@ -70,9 +70,8 @@ public class Alternative extends Configurable {
 
     @Override
     public void remove() {
-        for (Map.Entry<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> entry : replacements.entrySet()) {
-            level.setBlockAndUpdate(entry.getKey(), entry.getValue().getA());
-            if (entry.getValue().getB().isPresent()) level.setBlockEntity(entry.getValue().getB().get());
+        for (Map.Entry<BlockPos, LayerBlock> entry : replacements.entrySet()) {
+            content.manager.getMiddleLayer().set(entry.getKey(), entry.getValue());
         }
     }
 

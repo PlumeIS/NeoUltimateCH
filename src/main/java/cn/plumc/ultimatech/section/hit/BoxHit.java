@@ -8,11 +8,10 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Predicate;
 
-public class BoxHit extends Hit{
+public class BoxHit extends Hit {
     public Vec3 pos1;
     public Vec3 pos2;
     AABB aabb;
@@ -37,7 +36,9 @@ public class BoxHit extends Hit{
     public List<Entity> detectEntities(ServerLevel level, Predicate<Entity> test) {
         List<Entity> entities = new ArrayList<>();
         AABB aabb = this.getAABB();
-        level.getEntities().get(getAABB(), entity -> {if(test.test(entity)) entities.add(entity);});
+        level.getEntities().get(getAABB(), entity -> {
+            if (test.test(entity)) entities.add(entity);
+        });
         return entities;
     }
 

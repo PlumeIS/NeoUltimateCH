@@ -1,94 +1,165 @@
 package cn.plumc.ultimatech.section.layer;
 
-import com.google.common.collect.Sets;
 import net.minecraft.core.BlockPos;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
+
 public class Layer {
-    public LayerType type;
-    public Layer upper;
-    public Layer lower;
-    public Map<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> blocks = new HashMap<>(){
-        @Override
-        public Tuple<BlockState, Optional<BlockEntity>> put(BlockPos key, Tuple<BlockState, Optional<BlockEntity>> value) {
-            if (key == null || value == null) throw new NullPointerException();
-            return super.put(key, value);
-        }
-    };
-    public Layer(LayerType type){
+    public final LayerType type;
+    protected final Map<Long, LayerBlock> blocks;
+    protected final Set<Long> dirty;
+    protected Layer upper;
+    protected Layer lower;
+
+    public Layer(LayerType type) {
         this.type = type;
+
+        this.blocks = new HashMap<>(1024, 0.75f);
+        this.dirty = new HashSet<>(256, 0.75f);
     }
 
-    public void set(BlockPos pos, Tuple<BlockState, Optional<BlockEntity>> block) {
-        getLowest().get(pos);
-        blocks.put(pos, block);
+
+    protected static long key(BlockPos pos) {
+        return pos.asLong();
     }
 
-    public void set(BlockPos pos, BlockState state){
-        set(pos, new Tuple<>(state, Optional.empty()));
+    private static long key(int x, int y, int z) {
+        return BlockPos.asLong(x, y, z);
     }
 
-    public Tuple<BlockState, Optional<BlockEntity>> get(BlockPos pos){
-        if (has(pos)) return blocks.get(pos);
-        else return lower.get(pos);
-    }
 
-    public Tuple<BlockState, Optional<BlockEntity>> remove(BlockPos pos){
-        return blocks.remove(pos);
-    }
+    public void set(BlockPos pos, BlockState state, BlockEntity entity) {
+        getLowest().read(pos);
+        long k = key(pos);
 
-    public void removeAll(){
-        blocks.clear();
-    }
+        LayerBlock block = blocks.get(k);
+        if (block == null) {
+            blocks.put(k, new LayerBlock(state, entity));
+        } else {
+            block.set(state, entity);
+        }
 
-    public boolean has(BlockPos pos){return blocks.containsKey(pos);}
-
-    public Map<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> apply(){
+        dirty.add(k);
         Layer layer = this;
-        Set<BlockPos> changed = Sets.newHashSet();
-        while(layer != null){
-            changed.addAll(layer.blocks.keySet());
+        while (layer.upper != null) {
+            layer = layer.upper;
+            if (layer.has(k)) layer.dirty.add(k);
+        }
+    }
+
+    public void set(BlockPos pos, BlockState state) {
+        set(pos, state, null);
+    }
+
+    public void set(BlockPos pos, LayerBlock block) {
+        set(pos, block.state, block.entity);
+    }
+
+
+    public LayerBlock remove(BlockPos pos) {
+        long k = key(pos);
+        return remove(k);
+    }
+
+    public LayerBlock remove(long k) {
+        LayerBlock removed;
+        if ((removed = blocks.remove(k)) != null) {
+            dirty.add(k);
+        }
+        Layer layer = this;
+        while (layer.lower != null) {
+            layer = layer.lower;
+            if (layer.has(k)) layer.dirty.add(k);
+        }
+        return removed;
+    }
+
+    public boolean has(BlockPos pos) {
+        return blocks.containsKey(key(pos));
+    }
+
+    public boolean has(long k) {
+        return blocks.containsKey(k);
+    }
+
+
+    public LayerBlock get(BlockPos pos) {
+        if (has(pos)) return blocks.get(key(pos));
+        return lower.get(pos);
+    }
+
+
+    public Map<Long, LayerBlock> apply() {
+        Layer layer = getLowest();
+        Map<Long, LayerBlock> result = new HashMap<>();
+        while (layer != this) {
+            for (long k : layer.dirty) {
+                LayerBlock block = getByKey(k);
+                if (block != null)
+                    result.put(k, block);
+            }
+            layer.dirty.clear();
+            layer = layer.upper;
+        }
+        return result;
+    }
+
+    private LayerBlock getByKey(long k) {
+        Layer layer = this;
+        while (layer != null) {
+            LayerBlock block = layer.blocks.get(k);
+            if (block != null) return block;
             layer = layer.lower;
         }
-        Map<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> applied = new HashMap<>();
-        for(BlockPos pos : changed){
-            applied.put(pos, this.get(pos));
-        }
-        return applied;
+        return null;
     }
 
-    public Map<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> reset(){
+    public Map<Long, LayerBlock> reset() {
         return getLowest().blocks;
+    }
+
+    public Layer getUpper() {
+        return upper;
     }
 
     public void setUpper(Layer upper) {
         this.upper = upper;
     }
 
-    public Layer getUppest(){
-        Layer layer = this;
-        while(layer.upper != null){
-            layer = layer.upper;
-        }
-        return layer;
-    }
-
-    public Layer getLowest(){
-        Layer layer = this;
-        while(layer.lower != null){
-            layer = layer.lower;
-        }
-        return layer;
+    public Layer getLower() {
+        return lower;
     }
 
     public void setLower(Layer lower) {
         this.lower = lower;
+    }
+
+    public WorldLayer getLowest() {
+        Layer layer = this;
+        while (layer.lower != null)
+            layer = layer.lower;
+        return (WorldLayer) layer;
+    }
+
+    public Layer getUppest() {
+        Layer layer = this;
+        while (layer.upper != null)
+            layer = layer.upper;
+        return layer;
+    }
+
+
+    public void removeAll() {
+        new HashSet<>(blocks.keySet()).forEach(this::remove);
+    }
+
+    public int size() {
+        return blocks.size();
     }
 }

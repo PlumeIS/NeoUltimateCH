@@ -8,7 +8,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class BlockSurfaceHit extends Hit{
+public class BlockSurfaceHit extends Hit {
     BlockPos pos;
     List<AABB> aabbs;
 

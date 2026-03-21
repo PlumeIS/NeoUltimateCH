@@ -30,8 +30,8 @@ public class ConveyerBelt extends Section {
 
     @Override
     public void init() {
-        topHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1, 0), new Vec3(3, 1.2, 1));
-        bottomHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 0, 0), new Vec3(3, -0.2, 1));
+        topHit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0, 1, 0), new Vec3(3, 1.2, 1));
+        bottomHit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0, 0, 0), new Vec3(3, -0.2, 1));
         transform.applyRotationToRelativeHit(topHit);
         transform.applyRotationToRelativeHit(bottomHit);
         velocitySampling = transform.toNonNegative(transform.rotateVector(new Vec3(1, 0, 0)));
@@ -57,11 +57,13 @@ public class ConveyerBelt extends Section {
             Vec3 addedSpeed;
             if (deltaSpeed > 0) {
                 Vec3 added = acceleration.scale(0.05);
-                if (added.dot(velocitySampling) > deltaSpeed) addedSpeed = speedVec.add(velocitySampling.scale(deltaSpeed));
+                if (added.dot(velocitySampling) > deltaSpeed)
+                    addedSpeed = speedVec.add(velocitySampling.scale(deltaSpeed));
                 else addedSpeed = speedVec.add(added);
             } else {
                 Vec3 added = acceleration.scale(-0.05);
-                if (added.dot(velocitySampling) < deltaSpeed) addedSpeed = speedVec.add(velocitySampling.scale(deltaSpeed));
+                if (added.dot(velocitySampling) < deltaSpeed)
+                    addedSpeed = speedVec.add(velocitySampling.scale(deltaSpeed));
                 else addedSpeed = speedVec.add(added);
             }
 
@@ -73,7 +75,7 @@ public class ConveyerBelt extends Section {
 
     private void vfx(BoxHit.Relative hit, Vec3 speed,
                      FixedLinkedList<Tuple<DustParticleOptions, Vec3>> tracking,
-                     boolean create){
+                     boolean create) {
         if (create) {
             Vec3 point = BlockUtil.getRandomPointInAABB(hit.getAABB());
             DustParticleOptions dust = new DustParticleOptions(new Vec3(1, 1, 1).toVector3f(), 0.8f);
@@ -82,7 +84,7 @@ public class ConveyerBelt extends Section {
 
         for (Tuple<DustParticleOptions, Vec3> entry : ImmutableList.copyOf(tracking)) {
             Vec3 pos = entry.getB();
-            if (!hit.getAABB().contains(pos.add(speed.scale(0.05)))){
+            if (!hit.getAABB().contains(pos.add(speed.scale(0.05)))) {
                 tracking.remove(entry);
             }
             entry.setB(pos.add(speed.scale(0.05)));

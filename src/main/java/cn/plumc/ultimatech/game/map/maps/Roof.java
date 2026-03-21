@@ -8,14 +8,14 @@ public class Roof extends Map {
     public Roof() {
         super(
                 new Map.Region(
-                        new BlockPos(114578, -41, 19825),
-                        new BlockPos(114498, 29, 19794)),
+                        new BlockPos(-8051, 44, -7899),
+                        new BlockPos(-7968, 68, -7864)),
                 new Map.Region(
-                        new BlockPos(114515, 18, 19811),
-                        new BlockPos(114512, 21, 19808)),
+                        new BlockPos(-8035, 58, -7882),
+                        new BlockPos(-8032, 60, -7885)),
                 new Map.Region(
-                        new BlockPos(114564, 19, 19811),
-                        new BlockPos(114561, 22, 19808)),
+                        new BlockPos(-7984, 58, -7885),
+                        new BlockPos(-7987, 60, -7882)),
                 -10,
                 13000,
                 2
@@ -24,7 +24,7 @@ public class Roof extends Map {
 
     @Override
     public boolean isLose(ServerPlayer player) {
-        return super.isLose(player)||
-                new Region(new BlockPos(114557,7,19817), new BlockPos(114557,7,19817)).inPos(player.position());
+        return super.isLose(player) ||
+                new Region(new BlockPos(114557, 7, 19817), new BlockPos(114557, 7, 19817)).inPos(player.position());
     }
 }

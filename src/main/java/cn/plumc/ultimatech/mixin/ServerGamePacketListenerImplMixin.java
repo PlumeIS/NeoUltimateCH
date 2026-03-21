@@ -15,25 +15,28 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(ServerGamePacketListenerImpl.class)
-public abstract class ServerGamePacketListenerImplMixin extends ServerCommonPacketListenerImpl{
-
-    @Shadow public abstract ServerPlayer getPlayer();
+public abstract class ServerGamePacketListenerImplMixin extends ServerCommonPacketListenerImpl {
 
     public ServerGamePacketListenerImplMixin(MinecraftServer server, Connection connection, CommonListenerCookie cookie) {
         super(server, connection, cookie);
     }
 
+    @Shadow
+    public abstract ServerPlayer getPlayer();
+
     @Override
     public void send(CustomPacketPayload payload) {
         ServerPlayer player = getPlayer();
-        if (payload instanceof ClientboundCustomSetTimePayload && player.getTags().contains(StatusTags.SKIP_TIME_SYNC_TAG)) return;
+        if (payload instanceof ClientboundCustomSetTimePayload && player.getTags().contains(StatusTags.SKIP_TIME_SYNC_TAG))
+            return;
         super.send(payload);
     }
 
     @Override
     public void send(Packet<?> packet) {
         ServerPlayer player = getPlayer();
-        if (packet instanceof ClientboundSetTimePacket && player.getTags().contains(StatusTags.SKIP_TIME_SYNC_TAG)) return;
+        if (packet instanceof ClientboundSetTimePacket && player.getTags().contains(StatusTags.SKIP_TIME_SYNC_TAG))
+            return;
         super.send(packet);
     }
 }

@@ -4,7 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class PlayerHit extends Hit{
+public class PlayerHit extends Hit {
     private final ServerPlayer player;
 
     public PlayerHit(ServerPlayer player) {
@@ -18,9 +18,9 @@ public class PlayerHit extends Hit{
         double z = position.z;
         AABB aabb;
         if (!player.isShiftKeyDown()) {
-            aabb = new AABB(x-0.3, y, z-0.3, x+0.3, y+1.8, z+0.3);
+            aabb = new AABB(x - 0.3, y, z - 0.3, x + 0.3, y + 1.8, z + 0.3);
         } else {
-            aabb = new AABB(x-0.3, y, z+0.3, x+0.3, y+1.0, z+0.3);
+            aabb = new AABB(x - 0.3, y, z + 0.3, x + 0.3, y + 1.0, z + 0.3);
         }
         return aabb;
     }

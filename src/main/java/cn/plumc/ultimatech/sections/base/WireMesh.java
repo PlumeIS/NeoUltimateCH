@@ -6,11 +6,12 @@ import cn.plumc.ultimatech.section.hit.BlockHit;
 import cn.plumc.ultimatech.utils.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static cn.plumc.ultimatech.info.UCHInfos.SECTION_DISCARDED_BLOCK;
 
@@ -43,7 +44,7 @@ public class WireMesh extends Configurable {
                 game.getStatus().map.canPlace(worldPos);
     }
 
-    private List<BlockState> getFacing(BlockPos pos){
+    private List<BlockState> getFacing(BlockPos pos) {
         List<BlockState> faceBlocks = new ArrayList<>();
         faceBlocks.add(getWorldBlockState(pos.above()));
         faceBlocks.add(getWorldBlockState(pos.below()));
@@ -54,8 +55,8 @@ public class WireMesh extends Configurable {
         return faceBlocks.stream().filter(blockState -> !blockState.isAir()).toList();
     }
 
-    private BlockState getWorldBlockState(BlockPos pos){
-        return content.manager.getMiddleLayer().get(pos).getA();
+    private BlockState getWorldBlockState(BlockPos pos) {
+        return content.manager.getMiddleLayer().get(pos).state;
     }
 
     @Override
@@ -74,6 +75,6 @@ public class WireMesh extends Configurable {
 
     @Override
     public void tickRun(int tickTime) {
-        content.getBlocks().keySet().forEach(pos->killAll(new BlockHit(pos).detectPlayers(game)));
+        content.getBlocks().keySet().forEach(pos -> killAll(new BlockHit(pos).detectPlayers(game)));
     }
 }

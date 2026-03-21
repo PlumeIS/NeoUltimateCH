@@ -30,7 +30,7 @@ public class RocketPack extends Section {
 
     @Override
     public void init() {
-        triggerHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 0, 0), new Vec3(1, 1.6, 2));
+        triggerHit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0, 0, 0), new Vec3(1, 1.6, 2));
         transform.applyRotationToRelativeHit(triggerHit);
         rockEntity = content.getContentEntity("uch.rocket_pack_pad.rock");
     }
@@ -45,7 +45,7 @@ public class RocketPack extends Section {
             process.start();
             DisplayEntityUtil.setVisible(rockEntity, "minecraft:lime_glazed_terracotta", false);
             player.getInventory().armor.set(3, getRocketItem());
-            player.connection.send(PlayerUtil.createInventoryUpdatePacket(player,103));
+            player.connection.send(PlayerUtil.createInventoryUpdatePacket(player, 103));
             globalRockedPlayers.add(player);
         }
         if (picked) RocketPackPad.handleRocket(server, game, rockedPlayer);
@@ -56,6 +56,7 @@ public class RocketPack extends Section {
         if (picked) {
             rockedPlayer.getInventory().armor.set(3, ItemStack.EMPTY);
             remove();
-        };
+        }
+        ;
     }
 }

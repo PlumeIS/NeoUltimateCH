@@ -12,14 +12,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
 import static cn.plumc.ultimatech.info.UCHInfos.*;
 

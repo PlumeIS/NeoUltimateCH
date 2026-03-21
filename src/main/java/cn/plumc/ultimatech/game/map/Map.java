@@ -1,7 +1,10 @@
 package cn.plumc.ultimatech.game.map;
 
+import cn.plumc.ultimatech.Lobby;
+import cn.plumc.ultimatech.game.Game;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
@@ -14,6 +17,7 @@ public class Map {
     public int deathHeight;
     public int dayTime;
     public int minStartPlayer;
+    public Game currentGame;
 
     public Map(Region mapRegion, Region startRegion, Region winRegion, int deathHeight, int dayTime, int minStartPlayer) {
         this.mapRegion = mapRegion;
@@ -48,13 +52,12 @@ public class Map {
         return winRegion.inPos(position);
     }
 
-    ;
-
     public boolean isLose(ServerPlayer player) {
         return player.position().y < deathHeight;
     }
 
-    public void startGame(List<ServerPlayer> players) {
+    public void startGame(Game game, List<ServerPlayer> players) {
+        currentGame = game;
         for (ServerPlayer player : players) {
             Vec3 pos = getAStartPos();
             player.teleportTo(pos.x, startRegion.getMin().getY() + 1.5, pos.z);
@@ -74,12 +77,12 @@ public class Map {
     public void second() {
     }
 
-    ;
-
     public void reset() {
     }
 
-    ;
+    public Game getGame(MapInfo mapInfo) {
+        return Lobby.games.get(mapInfo.id);
+    }
 
     public record Region(BlockPos pos1, BlockPos pos2) {
         public static Region get(int x1, int y1, int z1, int x2, int y2, int z2) {
@@ -88,6 +91,19 @@ public class Map {
 
         public static boolean inPos(BlockPos test, Region region) {
             return region.inPos(test);
+        }
+
+        public AABB getAABB() {
+            BlockPos min = getMin();
+            BlockPos max = getMax();
+            return new AABB(
+                    min.getX(),
+                    min.getY(),
+                    min.getZ(),
+                    max.getX() + 1,
+                    max.getY() + 1,
+                    max.getZ() + 1
+            );
         }
 
         public BlockPos[] enclose() {

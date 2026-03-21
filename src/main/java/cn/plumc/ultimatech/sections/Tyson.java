@@ -24,8 +24,8 @@ public class Tyson extends Section {
 
     @Override
     public void init() {
-        triggerFront = new BoxHit.Relative(()->content.getOrigin(), new Vec3(-0.5, 1, -0.5), new Vec3(0.5, 3, 0.5));
-        triggerBack = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.5, 1, 0.5), new Vec3(1.5, 3, 1.5));
+        triggerFront = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(-0.5, 1, -0.5), new Vec3(0.5, 3, 0.5));
+        triggerBack = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.5, 1, 0.5), new Vec3(1.5, 3, 1.5));
         transform.applyRotationToRelativeHit(triggerFront);
         transform.applyRotationToRelativeHit(triggerBack);
         scale = transform.rotateVector(scale);
@@ -33,7 +33,7 @@ public class Tyson extends Section {
 
     @Override
     public void tickRun(int tickTime) {
-        if (!triggered&&(triggerFront.hasPlayer(game)||triggerBack.hasPlayer(game))) {
+        if (!triggered && (triggerFront.hasPlayer(game) || triggerBack.hasPlayer(game))) {
             if (triggerBack.hasPlayer(game)) back = true;
 
             triggered = true;
@@ -42,33 +42,33 @@ public class Tyson extends Section {
             return;
         }
         Entity tyson = content.getContentEntity("uch.tyson");
-        if (triggered&&process.at(0.0)) {
+        if (triggered && process.at(0.0)) {
             HashMap<SectionRotation.Axis, Double> rotations = MotionTransform.createZeroRotationMap();
             if (back) rotations.put(SectionRotation.Axis.Y, 180.0);
             transform.applyEntityRotation(tyson, rotations, 0.1);
         }
-        if (triggered&&process.at(0.1)) {
+        if (triggered && process.at(0.1)) {
             transform.applyEntityScale(tyson, scale, 0.2);
         }
-        if (triggered&&process.at(0.3)) {
+        if (triggered && process.at(0.3)) {
             transform.applyEntityScale(tyson, new Vec3(1.0, 1.0, 1.0), 0.3);
         }
-        if (triggered&&process.at(0.6)) {
+        if (triggered && process.at(0.6)) {
             HashMap<SectionRotation.Axis, Double> rotations = MotionTransform.createZeroRotationMap();
             if (back) rotations.put(SectionRotation.Axis.Y, 300.0);
             else rotations.put(SectionRotation.Axis.Y, 120.0);
             transform.applyEntityRotation(tyson, rotations, 0.2);
         }
-        if (triggered&&process.at(0.8)) {
+        if (triggered && process.at(0.8)) {
             HashMap<SectionRotation.Axis, Double> rotations = MotionTransform.createZeroRotationMap();
             if (back) rotations.put(SectionRotation.Axis.Y, 180.0);
             transform.applyEntityRotation(tyson, rotations, 0.2);
         }
-        if (triggered&&process.at(1.0)) {
+        if (triggered && process.at(1.0)) {
             if (back) killAll(triggerBack.detectPlayers(game));
             else killAll(triggerFront.detectPlayers(game));
         }
-        if (triggered&&process.at(1.2)) {
+        if (triggered && process.at(1.2)) {
             triggered = false;
             back = false;
             setProcess(0);

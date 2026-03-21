@@ -22,15 +22,15 @@ import static cn.plumc.ultimatech.info.UCHInfos.*;
 public class PlayerManager {
     private final List<ServerPlayer> players = new ArrayList<>();
 
-    private Game game;
-    private GameStatus status;
+    private final Game game;
+    private final GameStatus status;
 
     public PlayerManager(Game game, GameStatus status) {
         this.game = game;
         this.status = status;
     }
 
-    public void setMapTime(){
+    public void setMapTime() {
         ClientboundSetTimePacket packet = new ClientboundSetTimePacket(game.getLevel().getGameTime(), game.getStatus().map.dayTime, false);
         players.forEach(player -> {
             player.getTags().remove(StatusTags.SKIP_TIME_SYNC_TAG);
@@ -39,7 +39,7 @@ public class PlayerManager {
         });
     }
 
-    public void resetMapTime(){
+    public void resetMapTime() {
         ServerLevel level = game.getLevel();
         ClientboundSetTimePacket packet = new ClientboundSetTimePacket(level.getGameTime(), level.getDayTime(), level.getGameRules().getBoolean(GameRules.RULE_DAYLIGHT));
         players.forEach(player -> {
@@ -68,23 +68,23 @@ public class PlayerManager {
 
     }
 
-    public String settledPlayer(ServerPlayer player){
+    public String settledPlayer(ServerPlayer player) {
         String message = "§7失败(+0)";
 
-        if (status.losers.isEmpty()){
+        if (status.losers.isEmpty()) {
             message = "§7太简单了!(金币除外)";
             int coin = game.getSectionManager().getPlayerCoin(player);
-            if (coin > 0){
+            if (coin > 0) {
                 message += "§e金币(+12*%d)".formatted(coin);
                 status.playerScore.get(player).add(12);
             }
             return message;
         }
 
-        if (status.winners.contains(player)){
+        if (status.winners.contains(player)) {
             message = "§9胜利(+20)";
             status.playerScore.get(player).add(20);
-            if (status.playerLoseRoundCopied.get(player) - this.status.minPlayerLoseRound >= status.COMEBACK_ROUND){
+            if (status.playerLoseRoundCopied.get(player) - this.status.minPlayerLoseRound >= status.COMEBACK_ROUND) {
                 message += "§5翻盘(+16)";
                 status.playerScore.get(player).add(16);
             }
@@ -93,24 +93,24 @@ public class PlayerManager {
             status.playerLoseRound.get(player).add(1);
         }
 
-        if (player == status.firstWinPlayer){
-            if (status.winners.size()==1){
+        if (player == status.firstWinPlayer) {
+            if (status.winners.size() == 1) {
                 message += "§b独行(+12)";
                 status.playerScore.get(player).add(12);
-            }else {
+            } else {
                 message += "§a第一(+4)";
                 status.playerScore.get(player).add(4);
             }
         }
         status.firstWinPlayer = null;
 
-        if (status.playerKills.get(player).get()>0){
+        if (status.playerKills.get(player).get() > 0) {
             message += "§6陷阱(+4*%d)".formatted(status.playerKills.get(player).get());
-            status.playerScore.get(player).add(status.playerKills.get(player).get()*4);
+            status.playerScore.get(player).add(status.playerKills.get(player).get() * 4);
         }
 
         int coin = game.getSectionManager().getPlayerCoin(player);
-        if (coin > 0){
+        if (coin > 0) {
             message += "§e金币(+12*%d)".formatted(coin);
             status.playerScore.get(player).add(12);
         }
@@ -118,7 +118,7 @@ public class PlayerManager {
         return message;
     }
 
-    public void clearTags(){
+    public void clearTags() {
         for (ServerPlayer player : ImmutableList.copyOf(players)) {
             player.removeTag(PICKED_SECTION_TAG);
             player.removeTag(PUTTING_SECTION_TAG);
@@ -128,41 +128,41 @@ public class PlayerManager {
 
     public void onPlayerUseItem(ServerPlayer player, ItemStack itemStack) {
         SectionManager sectionManager = game.getSectionManager();
-        if (ItemStack.isSameItem(itemStack, SECTION_PLACE_ITEM)){
-            for (Section section : game.getStatus().roundSections.values()){
-                if (section.owner.getUUID().equals(player.getUUID())&&!section.placed){
-                    if (section.place()){
+        if (ItemStack.isSameItem(itemStack, SECTION_PLACE_ITEM)) {
+            for (Section section : game.getStatus().roundSections.values()) {
+                if (section.owner.getUUID().equals(player.getUUID()) && !section.placed) {
+                    if (section.place()) {
                         player.addTag(PUTTED_SECTION_TAG);
                         player.removeTag(PUTTING_SECTION_TAG);
-                        TickUtil.tickRun(()->{
+                        TickUtil.tickRun(() -> {
                             player.getInventory().clearContent();
                             player.setGameMode(GameType.SPECTATOR);
                         });
                     }
                 }
             }
-        } else if (ItemStack.isSameItem(itemStack, SECTION_ROTATE_X_ITEM)){
-            for (Section section : game.getStatus().roundSections.values()){
-                if (section.owner.getUUID().equals(player.getUUID())&&!section.placed){
+        } else if (ItemStack.isSameItem(itemStack, SECTION_ROTATE_X_ITEM)) {
+            for (Section section : game.getStatus().roundSections.values()) {
+                if (section.owner.getUUID().equals(player.getUUID()) && !section.placed) {
                     section.rotation.rotate(SectionRotation.Axis.X, SectionRotation.RotationHandle.CLOCKWISE);
                 }
             }
-        } else if (ItemStack.isSameItem(itemStack, SECTION_ROTATE_Y_ITEM)){
-            for (Section section : game.getStatus().roundSections.values()){
-                if (section.owner.getUUID().equals(player.getUUID())&&!section.placed){
+        } else if (ItemStack.isSameItem(itemStack, SECTION_ROTATE_Y_ITEM)) {
+            for (Section section : game.getStatus().roundSections.values()) {
+                if (section.owner.getUUID().equals(player.getUUID()) && !section.placed) {
                     section.rotation.rotate(SectionRotation.Axis.Y, SectionRotation.RotationHandle.CLOCKWISE);
                 }
             }
-        } else if (ItemStack.isSameItem(itemStack, SECTION_ROTATE_Z_ITEM)){
-            for (Section section : game.getStatus().roundSections.values()){
-                if (section.owner.getUUID().equals(player.getUUID())&&!section.placed){
+        } else if (ItemStack.isSameItem(itemStack, SECTION_ROTATE_Z_ITEM)) {
+            for (Section section : game.getStatus().roundSections.values()) {
+                if (section.owner.getUUID().equals(player.getUUID()) && !section.placed) {
                     section.rotation.rotate(SectionRotation.Axis.Z, SectionRotation.RotationHandle.CLOCKWISE);
                 }
             }
         }
     }
 
-    public ImmutableList<ServerPlayer> getPlayers(){
+    public ImmutableList<ServerPlayer> getPlayers() {
         return ImmutableList.copyOf(players);
     }
 }

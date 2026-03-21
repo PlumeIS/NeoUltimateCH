@@ -37,8 +37,8 @@ public class BlackHole extends Section {
         center = new Vec3(0.5, 0.5, 0.5);
         transform.rotateVector(center);
         physical = new BlockHolePhysical(transform.toAbsolute(center), BLACK_HOLE_MASS);
-        hit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(-0.2, -0.2, -0.2), new Vec3(1.2, 1.2, 1.2));
-        detectionRange = new BoxHit.Relative(()->content.getOrigin(), new Vec3(-4.0, -4.0, -4.0), new Vec3(5.0, 5.0, 5.0));
+        hit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(-0.2, -0.2, -0.2), new Vec3(1.2, 1.2, 1.2));
+        detectionRange = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(-4.0, -4.0, -4.0), new Vec3(5.0, 5.0, 5.0));
         transform.applyRotationToRelativeHit(hit);
     }
 
@@ -46,9 +46,8 @@ public class BlackHole extends Section {
     public void tickRun(int tickTime) {
         List<Entity> entities = detectionRange.detectEntities(level, entity -> {
             if (entity instanceof ServerPlayer player) {
-                return game.getStatus().getPlayings().stream().map(Entity::getUUID).anyMatch(uuid->uuid.equals(player.getUUID()));
-            }
-            else return true;
+                return game.getStatus().getPlayings().stream().map(Entity::getUUID).anyMatch(uuid -> uuid.equals(player.getUUID()));
+            } else return true;
         });
         for (Entity entity : entities) {
             vfx(entity, tickTime);
@@ -72,7 +71,7 @@ public class BlackHole extends Section {
             if (texture.isLoaded()) {
                 Vec3 point = PlayerUtil.getRandomPointInPlayerAABB(player);
                 Integer randomColor = texture.getColorRandom().getRandomColor();
-                DustParticleOptions dust = new DustParticleOptions(ColorUtil.toColor(randomColor).mul(1f/255f), 0.6f);
+                DustParticleOptions dust = new DustParticleOptions(ColorUtil.toColor(randomColor).mul(1f / 255f), 0.6f);
                 level.sendParticles(dust, point.x, point.y, point.z, 1, 0, 0, 0, 0);
                 trackingParticles.add(new Tuple<>(dust, point));
             }
@@ -90,26 +89,26 @@ public class BlackHole extends Section {
         }
     }
 
-    public static class BlockHolePhysical{
+    public static class BlockHolePhysical {
         private static final double G = 6.67430e-11;
         private final Vec3 center;
         private final double M;
 
-        public BlockHolePhysical(Vec3 center, double M){
+        public BlockHolePhysical(Vec3 center, double M) {
             this.center = center;
             this.M = M;
         }
 
-        public double getAcceleration(Vec3 pos, double m){
+        public double getAcceleration(Vec3 pos, double m) {
             double r = pos.distanceTo(center);
-            return G * (M*m)/(Math.pow(r, 2));
+            return G * (M * m) / (Math.pow(r, 2));
         }
 
-        public Vec3 getAccelerationVec(Vec3 pos, double m){
+        public Vec3 getAccelerationVec(Vec3 pos, double m) {
             return center.subtract(pos).normalize().scale(getAcceleration(pos, m));
         }
 
-        public Vec3 getDeltaVelocity(Vec3 pos, double m, double t){
+        public Vec3 getDeltaVelocity(Vec3 pos, double m, double t) {
             Vec3 accelerationVec = getAccelerationVec(pos, m);
             return accelerationVec.scale(t);
         }

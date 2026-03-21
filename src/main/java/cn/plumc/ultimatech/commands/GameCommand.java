@@ -25,7 +25,8 @@ public class GameCommand {
                                     try {
                                         String string = StringArgumentType.getString(context, "map");
                                         Arrays.stream(MapInfo.values()).forEach(map -> {
-                                            if (map.id.contains(string)) builder.suggest(map.id);}
+                                                    if (map.id.contains(string)) builder.suggest(map.id);
+                                                }
                                         );
                                     } catch (IllegalArgumentException ignored) {
                                         Arrays.stream(MapInfo.values()).map(MapInfo::getId).forEach(builder::suggest);
@@ -51,7 +52,8 @@ public class GameCommand {
                                     try {
                                         String string = StringArgumentType.getString(context, "map");
                                         Arrays.stream(MapInfo.values()).forEach(map -> {
-                                            if (map.id.contains(string)) builder.suggest(map.id);}
+                                                    if (map.id.contains(string)) builder.suggest(map.id);
+                                                }
                                         );
                                     } catch (IllegalArgumentException ignored) {
                                         Arrays.stream(MapInfo.values()).map(MapInfo::getId).forEach(builder::suggest);
@@ -76,7 +78,8 @@ public class GameCommand {
                                     try {
                                         String string = StringArgumentType.getString(context, "map");
                                         Arrays.stream(MapInfo.values()).forEach(map -> {
-                                            if (map.id.contains(string)) builder.suggest(map.id);}
+                                                    if (map.id.contains(string)) builder.suggest(map.id);
+                                                }
                                         );
                                     } catch (IllegalArgumentException ignored) {
                                         Arrays.stream(MapInfo.values()).map(MapInfo::getId).forEach(builder::suggest);
@@ -101,7 +104,8 @@ public class GameCommand {
                                     try {
                                         String string = StringArgumentType.getString(context, "map");
                                         Arrays.stream(MapInfo.values()).forEach(map -> {
-                                            if (map.id.contains(string)) builder.suggest(map.id);}
+                                                    if (map.id.contains(string)) builder.suggest(map.id);
+                                                }
                                         );
                                     } catch (IllegalArgumentException ignored) {
                                         Arrays.stream(MapInfo.values()).map(MapInfo::getId).forEach(builder::suggest);
@@ -121,7 +125,8 @@ public class GameCommand {
                                     try {
                                         String string = StringArgumentType.getString(context, "map");
                                         Arrays.stream(MapInfo.values()).forEach(map -> {
-                                            if (map.id.contains(string)) builder.suggest(map.id);}
+                                                    if (map.id.contains(string)) builder.suggest(map.id);
+                                                }
                                         );
                                     } catch (IllegalArgumentException ignored) {
                                         Arrays.stream(MapInfo.values()).map(MapInfo::getId).forEach(builder::suggest);

@@ -6,6 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -15,10 +16,11 @@ import java.util.List;
 import java.util.Random;
 
 public class BlockUtil {
-    public static boolean isMultiBlock(ServerLevel world, BlockPos pos){
+    public static boolean isMultiBlock(ServerLevel world, BlockPos pos) {
         Block block = world.getBlockState(pos).getBlock();
         if (block instanceof BedBlock) return true;
         if (block instanceof DoorBlock) return true;
+        if (block instanceof TallGrassBlock) return true;
         return false;
     }
 

@@ -10,50 +10,51 @@ import static cn.plumc.ultimatech.info.StatusTags.PICKED_SECTION_TAG;
 import static cn.plumc.ultimatech.info.StatusTags.PUTTED_SECTION_TAG;
 
 public class GameUtil {
-    private Game game;
+    private final Game game;
 
     public GameUtil(Game game) {
         this.game = game;
     }
 
     public boolean checkAllPlayerPicked() {
-        for (ServerPlayer player : game.getStatus().getRoundPlayings()){
-            if (!player.getTags().contains(PICKED_SECTION_TAG)){
-                return false;
-            }
-        }
-        return true;
-    }
-    public boolean checkAllPlayerPutted() {
-        for (ServerPlayer player : game.getStatus().getRoundPlayings()){
-            if (!player.getTags().contains(PUTTED_SECTION_TAG)){
+        for (ServerPlayer player : game.getStatus().getRoundPlayings()) {
+            if (!player.getTags().contains(PICKED_SECTION_TAG)) {
                 return false;
             }
         }
         return true;
     }
 
-    public void broadcast(String text){
-        for (ServerPlayer player : game.getPlayerManager().getPlayers()){
+    public boolean checkAllPlayerPutted() {
+        for (ServerPlayer player : game.getStatus().getRoundPlayings()) {
+            if (!player.getTags().contains(PUTTED_SECTION_TAG)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void broadcast(String text) {
+        for (ServerPlayer player : game.getPlayerManager().getPlayers()) {
             player.sendSystemMessage(Component.literal(text));
         }
     }
 
-    public void broadcastTitle(String text){
+    public void broadcastTitle(String text) {
         ClientboundSetTitleTextPacket packet = new ClientboundSetTitleTextPacket(Component.literal(text));
-        for (ServerPlayer player : game.getPlayerManager().getPlayers()){
+        for (ServerPlayer player : game.getPlayerManager().getPlayers()) {
             player.connection.send(packet);
         }
     }
 
-    public void broadcastSubTitle(String subtitle){
+    public void broadcastSubTitle(String subtitle) {
         ClientboundSetSubtitleTextPacket packet = new ClientboundSetSubtitleTextPacket(Component.literal(subtitle));
-        for (ServerPlayer player : game.getPlayerManager().getPlayers()){
+        for (ServerPlayer player : game.getPlayerManager().getPlayers()) {
             player.connection.send(packet);
         }
     }
 
-    public void countdown(int time, boolean broadcast, boolean title , String message ,Runnable callback){
+    public void countdown(int time, boolean broadcast, boolean title, String message, Runnable callback) {
         if (broadcast) {
             for (int i = time; i > 0; i--) {
                 final int seconds = i;
@@ -65,7 +66,7 @@ public class GameUtil {
         TickUtil.runAfterTick(callback, time);
     }
 
-    public void countdown(int time, boolean broadcast, Runnable callback){
+    public void countdown(int time, boolean broadcast, Runnable callback) {
         if (broadcast) {
             for (int i = time; i > 0; i--) {
                 final int seconds = i;

@@ -33,10 +33,10 @@ public class Fist extends Section {
 
     @Override
     public void init() {
-        topCheck = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 1.0, 0.0), new Vec3(1.0, 1.2, 1.0));
-        bottomCheck = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, 0.0), new Vec3(1.0, -0.2, 1.0));
-        backCheck = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, -0.2), new Vec3(1.0, 1.0, 0.0));
-        hit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.0, 0.0, 1.0), new Vec3(1.0, 1.0, 3.0));
+        topCheck = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.0, 1.0, 0.0), new Vec3(1.0, 1.2, 1.0));
+        bottomCheck = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.0, 0.0, 0.0), new Vec3(1.0, -0.2, 1.0));
+        backCheck = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.0, 0.0, -0.2), new Vec3(1.0, 1.0, 0.0));
+        hit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.0, 0.0, 1.0), new Vec3(1.0, 1.0, 3.0));
         transform.applyRotationToRelativeHit(topCheck);
         transform.applyRotationToRelativeHit(bottomCheck);
         transform.applyRotationToRelativeHit(backCheck);
@@ -45,7 +45,7 @@ public class Fist extends Section {
 
     @Override
     public void tickRun(int tickTime) {
-        activators = topCheck.detectPlayers(game).size()+bottomCheck.detectPlayers(game).size()+backCheck.detectPlayers(game).size();
+        activators = topCheck.detectPlayers(game).size() + bottomCheck.detectPlayers(game).size() + backCheck.detectPlayers(game).size();
         if (!active) {
             if (activators > 0) {
                 active = true;
@@ -59,7 +59,7 @@ public class Fist extends Section {
 
         Entity springEntity = content.getContentEntity("uch.fist.spring");
         Entity fistEntity = content.getContentEntity("uch.fist.fist");
-        if (active&&spring&&!backing) {
+        if (active && spring && !backing) {
             if (process.at(0.1)) {
                 transform.applyEntityScale(springEntity, springScale, 0.1);
                 transform.moveEntityRelative(springEntity, springMovement, 0.1);
@@ -74,7 +74,7 @@ public class Fist extends Section {
             }
         }
 
-        if (active&&!spring&&!backing) {
+        if (active && !spring && !backing) {
             if (activators == 0) {
                 backing = true;
                 setProcess(Integer.MAX_VALUE);
@@ -83,7 +83,7 @@ public class Fist extends Section {
                 return;
             }
         }
-        if (active&&backing) {
+        if (active && backing) {
             if (process.at(0.1)) {
                 transform.applyEntityScale(springEntity, new Vec3(1.0, 1.0, 1.0), 0.1);
                 transform.moveEntityRelative(springEntity, springMovement.scale(0.0), 0.1);
@@ -96,7 +96,7 @@ public class Fist extends Section {
         }
     }
 
-    public void vfx(boolean spring, boolean pushing, boolean releasing){
+    public void vfx(boolean spring, boolean pushing, boolean releasing) {
         if (spring) {
             Vec3 explodePoint = new Vec3(0.5, 0.5, 2.5);
             Vec3 point = transform.toAbsolute(transform.rotatePoint(explodePoint));

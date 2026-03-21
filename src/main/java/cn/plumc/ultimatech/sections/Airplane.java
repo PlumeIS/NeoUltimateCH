@@ -29,45 +29,7 @@ public class Airplane extends Section {
     public Vec3 spawnPoint = new Vec3(1.0, 2.5, 1.0);
     public Vec3 velocity = new Vec3(0.0, 0.0, -0.075);
     public BoxHit.Relative blocks;
-
-    public static class AirplaneEntity {
-        private final Entity entity;
-        private final BoxHit.Relative block;
-        private Vec3 pos;
-        private boolean crashed = false;
-
-        public AirplaneEntity(Entity entity, BoxHit.Relative block, Vec3 pos) {
-            this.entity = entity;
-            this.block = block;
-            this.pos = pos;
-        }
-
-        public void setPos(Vec3 pos) {
-            this.pos = pos;
-        }
-
-        public Vec3 getPos() {
-            return pos;
-        }
-
-        public void setCrashed(boolean crashed) {
-            this.crashed = crashed;
-        }
-
-        public boolean isCrashed() {
-            return crashed;
-        }
-
-        public Entity getEntity() {
-            return entity;
-        }
-
-        public BoxHit.Relative getBlock() {
-            return block;
-        }
-    }
-
-    public FixedLinkedList<AirplaneEntity> airplanes = new FixedLinkedList<>(UCHInfos.SECTION_MAX_ENTITIES){
+    public FixedLinkedList<AirplaneEntity> airplanes = new FixedLinkedList<>(UCHInfos.SECTION_MAX_ENTITIES) {
         @Override
         public AirplaneEntity removeFirst() {
             getFirst().getEntity().kill();
@@ -75,7 +37,6 @@ public class Airplane extends Section {
         }
     };
     public List<BlockPos> changedBlocks = new ArrayList<>();
-
     public Airplane(ServerPlayer player, Game game) {
         super(player, SectionLocation.get(3, 8), game);
         setProcess(SectionCounter.toTicks(4.0));
@@ -84,7 +45,7 @@ public class Airplane extends Section {
     @Override
     public void init() {
         spawnPoint = transform.rotateVector(spawnPoint);
-        blocks = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.5, 3.5, 0), new Vec3(1.5, 3.5, 2));
+        blocks = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.5, 3.5, 0), new Vec3(1.5, 3.5, 2));
         transform.applyRotationToRelativeHit(blocks);
     }
 
@@ -146,7 +107,7 @@ public class Airplane extends Section {
 
     private boolean testCrash(List<BlockPos> blocks) {
         for (BlockPos pos : blocks) {
-            if (!content.getBlocksPos().contains(pos)&&!content.checkCanPlace(pos, level.getBlockState(pos))) {
+            if (!content.getBlocksPos().contains(pos) && !content.checkCanPlace(pos, level.getBlockState(pos))) {
                 return true;
             }
         }
@@ -172,5 +133,42 @@ public class Airplane extends Section {
         super.remove();
         changedBlocks.forEach(blockPos -> level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState()));
         airplanes.forEach(airplane -> airplane.getEntity().kill());
+    }
+
+    public static class AirplaneEntity {
+        private final Entity entity;
+        private final BoxHit.Relative block;
+        private Vec3 pos;
+        private boolean crashed = false;
+
+        public AirplaneEntity(Entity entity, BoxHit.Relative block, Vec3 pos) {
+            this.entity = entity;
+            this.block = block;
+            this.pos = pos;
+        }
+
+        public Vec3 getPos() {
+            return pos;
+        }
+
+        public void setPos(Vec3 pos) {
+            this.pos = pos;
+        }
+
+        public boolean isCrashed() {
+            return crashed;
+        }
+
+        public void setCrashed(boolean crashed) {
+            this.crashed = crashed;
+        }
+
+        public Entity getEntity() {
+            return entity;
+        }
+
+        public BoxHit.Relative getBlock() {
+            return block;
+        }
     }
 }

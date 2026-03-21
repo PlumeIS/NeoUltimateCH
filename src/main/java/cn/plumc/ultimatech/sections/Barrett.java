@@ -32,8 +32,8 @@ public class Barrett extends Section {
     @Override
     public void init() {
         stick = content.getContentEntity("uch.barrett.stick");
-        hit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.1, 0, 1), new Vec3(0.9, 0.8, 1.8));
-        maxHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.1, 0, 1), new Vec3(0.1, 0.8, 1.8));
+        hit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.1, 0, 1), new Vec3(0.9, 0.8, 1.8));
+        maxHit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.1, 0, 1), new Vec3(0.1, 0.8, 1.8));
         transform.applyRotationToRelativeHit(hit);
         transform.applyRotationToRelativeHit(maxHit);
         detection = transform.rotateVector(new Vec3(1.0, 0.0, 0.0));
@@ -47,8 +47,8 @@ public class Barrett extends Section {
         if (process.in(1.5, 2.4)) {
             double progress = process.progress(1.5, 2.4);
             HashMap<SectionRotation.Axis, Double> rotations = MotionTransform.createZeroRotationMap();
-            rotations.put(SectionRotation.Axis.Z, -45.0*progress);
-            transform.applyEntityRotationWithCenter(stick, rotations, rotatingCenter,0.05);
+            rotations.put(SectionRotation.Axis.Z, -45.0 * progress);
+            transform.applyEntityRotationWithCenter(stick, rotations, rotatingCenter, 0.05);
             vfxWarning();
         }
         if (process.at(2.5)) {
@@ -63,18 +63,18 @@ public class Barrett extends Section {
         if (process.in(2.4, 2.6)) {
             double progress = process.progress(2.4, 2.6);
             HashMap<SectionRotation.Axis, Double> rotations = MotionTransform.createZeroRotationMap();
-            rotations.put(SectionRotation.Axis.Z, -45+270*progress);
+            rotations.put(SectionRotation.Axis.Z, -45 + 270 * progress);
             transform.applyEntityRotationWithCenter(stick, rotations, rotatingCenter, 0.05);
         }
         if (process.in(2.6, 3.5)) {
             double progress = process.progress(2.6, 3.5);
             HashMap<SectionRotation.Axis, Double> rotations = MotionTransform.createZeroRotationMap();
-            rotations.put(SectionRotation.Axis.Z, 225-225*progress);
+            rotations.put(SectionRotation.Axis.Z, 225 - 225 * progress);
             transform.applyEntityRotationWithCenter(stick, rotations, rotatingCenter, 0.05);
         }
     }
 
-    private void vfxWarning(){
+    private void vfxWarning() {
         level.sendParticles(new DustParticleOptions(new Vec3(1, 0, 0).toVector3f(), 1.5f),
                 warningPos.x, warningPos.y, warningPos.z,
                 5, 0.25, 0.25, 0.25, 0
@@ -85,7 +85,7 @@ public class Barrett extends Section {
         Vec3 startAbs = transform.toAbsolute(start);
         Vec3 endAbs = transform.toAbsolute(end);
         Vec3 pointA = startAbs.add(endAbs.subtract(startAbs).scale(Math.min(progress, 1.0)));
-        Vec3 pointB = startAbs.add(endAbs.subtract(startAbs).scale(Math.min(progress+0.5, 1.0)));
+        Vec3 pointB = startAbs.add(endAbs.subtract(startAbs).scale(Math.min(progress + 0.5, 1.0)));
 
         for (double i = 0; i <= 1; i += 0.002) {
             Vec3 point = pointA.add(pointB.subtract(pointA).scale(i));
@@ -93,7 +93,8 @@ public class Barrett extends Section {
             if (!level.getBlockState(pos).isAir()) {
                 vfx = false;
                 break;
-            };
+            }
+            ;
             level.sendParticles(new DustParticleOptions(new Vec3(0.0, 0.0, 0.0).toVector3f(), 1.2f),
                     point.x, point.y, point.z, 1,
                     0, 0, 0, 0);
@@ -108,7 +109,7 @@ public class Barrett extends Section {
                     Mth.floor(point.add(detection).y),
                     Mth.floor(point.add(detection).z)
             );
-            if (!level.getBlockState(detectionPos).isAir()){
+            if (!level.getBlockState(detectionPos).isAir()) {
                 break;
             }
             point = point.add(detection);

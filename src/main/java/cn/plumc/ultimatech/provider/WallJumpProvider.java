@@ -162,7 +162,7 @@ public class WallJumpProvider {
             if (fakeBlockJumpingPlayers.containsKey(player)) {
                 player.removeEffect(MobEffects.JUMP);
                 player.addEffect(new MobEffectInstance(MobEffects.JUMP, -1, 0, false, false));
-                if (Objects.nonNull(fakeBlockJumpingPlayers.get(player))){
+                if (Objects.nonNull(fakeBlockJumpingPlayers.get(player))) {
                     Optional<BlockPos> changed = fakeBlockJumpingPlayers.get(player);
                     changed.ifPresent(p -> player.connection.send(new ClientboundBlockUpdatePacket(p, UCHInfos.AIR)));
                 }
@@ -187,7 +187,7 @@ public class WallJumpProvider {
     }
 
     public static boolean isTouchingPlayer(ServerPlayer player) {
-        return shulkerJumpingPlayers.containsKey(player)||fakeBlockJumpingPlayers.containsKey(player);
+        return shulkerJumpingPlayers.containsKey(player) || fakeBlockJumpingPlayers.containsKey(player);
     }
 
     private static boolean touchingWall(ServerLevel level, BlockPos pos, Vec3 vec) {

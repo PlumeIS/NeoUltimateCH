@@ -43,9 +43,9 @@ public class RotationUtil {
 
         double[] point = {x, y, z};
 
-        point = rotateX(point, axis.get(SectionRotation.Axis.X)*UCHInfos.SECTION_ROTATION_DEGREE);
-        point = rotateY(point, axis.get(SectionRotation.Axis.Y)*UCHInfos.SECTION_ROTATION_DEGREE);
-        point = rotateZ(point, axis.get(SectionRotation.Axis.Z)*UCHInfos.SECTION_ROTATION_DEGREE);
+        point = rotateX(point, axis.get(SectionRotation.Axis.X) * UCHInfos.SECTION_ROTATION_DEGREE);
+        point = rotateY(point, axis.get(SectionRotation.Axis.Y) * UCHInfos.SECTION_ROTATION_DEGREE);
+        point = rotateZ(point, axis.get(SectionRotation.Axis.Z) * UCHInfos.SECTION_ROTATION_DEGREE);
 
         int newX = Mth.floor(point[0] + origin.x());
         int newY = Mth.floor(point[1] + origin.y());

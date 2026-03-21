@@ -6,7 +6,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class BlockHit extends Hit{
+public class BlockHit extends Hit {
     public final BlockPos pos;
     private final AABB aabb;
 

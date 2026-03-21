@@ -20,8 +20,8 @@ public class FlippableFloorStabbing extends Section {
 
     @Override
     public void init() {
-        topHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1, 0), new Vec3(1, 1.2, 1));
-        bottomHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, -0.2, 0), new Vec3(1, 0, 1));
+        topHit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0, 1, 0), new Vec3(1, 1.2, 1));
+        bottomHit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0, -0.2, 0), new Vec3(1, 0, 1));
         transform.applyRotationToRelativeHit(topHit);
         transform.applyRotationToRelativeHit(bottomHit);
     }
@@ -37,10 +37,10 @@ public class FlippableFloorStabbing extends Section {
             rotations.put(SectionRotation.Axis.Z, 180.0);
             transform.applyEntityRotation(entity, rotations, 0.8);
         }
-        if (process.in(2.0, 3.2)){
+        if (process.in(2.0, 3.2)) {
             killAll(bottomHit.detectPlayers(game));
         }
-        if (process.at(3.2)){
+        if (process.at(3.2)) {
             HashMap<SectionRotation.Axis, Double> rotations = MotionTransform.createZeroRotationMap();
             transform.applyEntityRotation(entity, rotations, 0.8);
         }

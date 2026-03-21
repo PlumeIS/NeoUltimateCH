@@ -33,33 +33,39 @@ import java.util.concurrent.RejectedExecutionException;
 
 @Mixin(Connection.class)
 public abstract class ConnectionMixin {
-    @Shadow private Channel channel;
+    @Shadow
+    @Final
+    private static Logger LOGGER;
+    @Shadow
+    private Channel channel;
+    @Shadow
+    private int receivedPackets;
+    @Shadow
+    private PacketListener packetListener;
 
     @Shadow
-    private static <T extends PacketListener> void genericsFtw(Packet<T> pPacket, PacketListener pListener) {}
+    private static <T extends PacketListener> void genericsFtw(Packet<T> pPacket, PacketListener pListener) {
+    }
 
-    @Shadow public abstract void disconnect(Component pMessage);
-
-    @Shadow @Final private static Logger LOGGER;
-
-    @Shadow private int receivedPackets;
-
-    @Shadow private PacketListener packetListener;
+    @Shadow
+    public abstract void disconnect(Component pMessage);
 
     @Inject(method = "send*", at = @At("HEAD"), cancellable = true)
-    private void onSend(Packet<?> packet, CallbackInfo ci){
+    private void onSend(Packet<?> packet, CallbackInfo ci) {
         ServerPlayer serverPlayer = ultimateCH$getPlayer();
-        logPacket(packet,"OUT:{}");
-        if (packet instanceof ClientboundSetTimePacket && serverPlayer.getTags().contains(StatusTags.SKIP_TIME_SYNC_TAG)){
+        logPacket(packet, "OUT:{}");
+        if (packet instanceof ClientboundSetTimePacket && serverPlayer.getTags().contains(StatusTags.SKIP_TIME_SYNC_TAG)) {
             ci.cancel();
         }
     }
 
     @Inject(method = "channelRead0(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/protocol/Packet;)V", at = @At("HEAD"), cancellable = true)
     public void channelRead0(ChannelHandlerContext channelHandlerContext, Packet<?> packet, CallbackInfo ci) {
-        if (packet instanceof ServerboundMovePlayerPacket){
+        if (packet instanceof ServerboundMovePlayerPacket) {
             ServerPlayer serverPlayer = ultimateCH$getPlayer();
-            if (serverPlayer == null){return;}
+            if (serverPlayer == null) {
+                return;
+            }
             if (WallJumpProvider.isTouchingPlayer(serverPlayer)) {
                 ci.cancel();
                 if (this.channel.isOpen()) {
@@ -68,13 +74,13 @@ public abstract class ConnectionMixin {
                         if (packet instanceof ServerboundMovePlayerPacket.Pos p) {
                             movePlayerPacket = new ServerboundMovePlayerPacket.Pos(p.getX(0), p.getY(0), p.getZ(0), false);
                         }
-                        if (packet instanceof ServerboundMovePlayerPacket.Rot p){
+                        if (packet instanceof ServerboundMovePlayerPacket.Rot p) {
                             movePlayerPacket = new ServerboundMovePlayerPacket.Rot(p.getYRot(0), p.getXRot(0), false);
                         }
-                        if (packet instanceof ServerboundMovePlayerPacket.PosRot p){
+                        if (packet instanceof ServerboundMovePlayerPacket.PosRot p) {
                             movePlayerPacket = new ServerboundMovePlayerPacket.PosRot(p.getX(0), p.getY(0), p.getZ(0), p.getYRot(0), p.getXRot(0), false);
                         }
-                        if (packet instanceof ServerboundMovePlayerPacket.StatusOnly p){
+                        if (packet instanceof ServerboundMovePlayerPacket.StatusOnly p) {
                             movePlayerPacket = new ServerboundMovePlayerPacket.StatusOnly(false);
                         }
                         genericsFtw(movePlayerPacket, this.packetListener);
@@ -91,12 +97,14 @@ public abstract class ConnectionMixin {
             }
         }
 
-        if (packet instanceof ServerboundUseItemPacket){
-            TickUtil.tickRun(()->{
+        if (packet instanceof ServerboundUseItemPacket) {
+            TickUtil.tickRun(() -> {
                 ServerPlayer player = ultimateCH$getPlayer();
-                if (player == null){return;}
+                if (player == null) {
+                    return;
+                }
                 for (Game game : Lobby.games.values()) {
-                    TickUtil.tickRun(()-> {
+                    TickUtil.tickRun(() -> {
                         if (game.getPlayerManager().getPlayers().contains(player)) {
                             game.getPlayerManager().onPlayerUseItem(player, player.getInventory().getSelected());
                         }
@@ -106,14 +114,14 @@ public abstract class ConnectionMixin {
             });
         }
 
-        if (packet instanceof ServerboundContainerClickPacket clickPacket){
+        if (packet instanceof ServerboundContainerClickPacket clickPacket) {
             for (Game game : Lobby.games.values()) {
                 Integer container = game.getStatus().playerSectionBoxIds.get(ultimateCH$getPlayer().getUUID());
                 System.out.println(container);
-                if (container != null && container == clickPacket.getContainerId()){
+                if (container != null && container == clickPacket.getContainerId()) {
                     ItemStack item = clickPacket.getCarriedItem();
                     System.out.println(item);
-                    if (!item.isEmpty()) TickUtil.tickRun(()-> {
+                    if (!item.isEmpty()) TickUtil.tickRun(() -> {
                         game.getStatusSignal().onSectionPicked(ultimateCH$getPlayer(), item);
                         ultimateCH$getPlayer().containerMenu.broadcastFullState();
                     });
@@ -123,13 +131,13 @@ public abstract class ConnectionMixin {
             }
         }
 
-        logPacket(packet,"IN:{}");
+        logPacket(packet, "IN:{}");
 
-        if (packet instanceof ServerboundContainerClosePacket closePacket){
+        if (packet instanceof ServerboundContainerClosePacket closePacket) {
             for (Game game : Lobby.games.values()) {
                 Integer container = game.getStatus().playerSectionBoxIds.get(ultimateCH$getPlayer().getUUID());
-                if (container != null && container == closePacket.getContainerId()){
-                    TickUtil.tickRun(()-> game.getStatusSignal().onSectionClose(ultimateCH$getPlayer()));
+                if (container != null && container == closePacket.getContainerId()) {
+                    TickUtil.tickRun(() -> game.getStatusSignal().onSectionClose(ultimateCH$getPlayer()));
                 }
             }
         }
@@ -138,13 +146,16 @@ public abstract class ConnectionMixin {
     @Unique
     private ServerPlayer ultimateCH$getPlayer() {
         for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
-            if (player.connection.connection == (Connection)(Object)this) return player;
+            if (player.connection.connection == (Connection) (Object) this) return player;
         }
         return null;
     }
 
-    private void logPacket(Packet<?> packet, String io){
+    private void logPacket(Packet<?> packet, String io) {
         if (!UCHInfos.DEBUG) return;
+        if (packet instanceof ServerboundPlayerInputPacket p) {
+            System.out.println(p.isJumping());
+        }
         if (packet instanceof ServerboundMovePlayerPacket || packet instanceof ClientboundMoveEntityPacket) return;
         if (packet instanceof ServerboundKeepAlivePacket) return;
         if (packet instanceof ServerboundChunkBatchReceivedPacket) return;

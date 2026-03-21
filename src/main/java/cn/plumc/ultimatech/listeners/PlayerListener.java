@@ -10,12 +10,12 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 @EventBusSubscriber
 public class PlayerListener {
     @SubscribeEvent
-    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event){
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         PlayerUtil.cachePlayerTexture((ServerPlayer) event.getEntity());
     }
 
     @SubscribeEvent
-    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event){
+    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         Lobby.games.values().forEach(game -> {
             game.getPlayerManager().leave((ServerPlayer) event.getEntity());
         });

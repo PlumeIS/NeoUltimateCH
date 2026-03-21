@@ -28,7 +28,7 @@ public class Honeycomb extends Section {
     public BoxHit.Relative triggerHit;
     public boolean triggered;
     public ServerPlayer target;
-    public PlayerTeam beeTeam = new PlayerTeam(new Scoreboard(), "uch.bee.team"){
+    public PlayerTeam beeTeam = new PlayerTeam(new Scoreboard(), "uch.bee.team") {
         @Override
         public @NotNull CollisionRule getCollisionRule() {
             return CollisionRule.NEVER;
@@ -43,7 +43,7 @@ public class Honeycomb extends Section {
 
     @Override
     public void init() {
-        triggerHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 0, 0), new Vec3(2.0, 2.0, 2.0));
+        triggerHit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0, 0, 0), new Vec3(2.0, 2.0, 2.0));
         transform.applyRotationToRelativeHit(triggerHit);
     }
 
@@ -51,10 +51,11 @@ public class Honeycomb extends Section {
     public void tickRun(int tickTime) {
         if (triggered) {
             bees.forEach(bee -> killAll(new EntityHit(bee).detectPlayers(game)));
-        };
+        }
+        ;
 
         ServerPlayer target = triggerHit.detectPlayer(game);
-        if (!triggered&&Objects.nonNull(target)) {
+        if (!triggered && Objects.nonNull(target)) {
             triggered = true;
             this.target = target;
             setProcess(SectionCounter.toTicks(0.5), -1, false);
@@ -72,7 +73,7 @@ public class Honeycomb extends Section {
     }
 
     private Bee spawnBee(Vec3 spawnPoint, ServerPlayer target) {
-        Bee bee = new Bee(EntityType.BEE, level){
+        Bee bee = new Bee(EntityType.BEE, level) {
             @Override
             public @Nullable PlayerTeam getTeam() {
                 return beeTeam;
@@ -109,7 +110,7 @@ public class Honeycomb extends Section {
         setProcess(0);
     }
 
-    private void vfx(){
+    private void vfx() {
         Vec3 center = triggerHit.getAABB().getCenter();
         level.sendParticles(
                 new DustParticleOptions(new Vec3(1.0f, 0.8235f, 0.09411f).toVector3f(), 0.8f),

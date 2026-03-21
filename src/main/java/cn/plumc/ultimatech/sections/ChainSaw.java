@@ -31,9 +31,9 @@ public class ChainSaw extends Section {
         Entity sawEntity = content.getContentEntity("uch.chain_saw.saw");
         Vec3 movement;
         if (process.in(0.0, 2.0)) movement = end.scale(process.progress(0.0, 2.0));
-        else movement = end.scale(1.0-process.progress(2.0, 4.0));
+        else movement = end.scale(1.0 - process.progress(2.0, 4.0));
 
         transform.moveEntityRelative(sawEntity, movement, 0.05);
-        killAll(new BoxHit.Relative(()->content.getOrigin(), hitStart.add(movement), hitEnd.add(movement)).detectPlayers(game));
+        killAll(new BoxHit.Relative(() -> content.getOrigin(), hitStart.add(movement), hitEnd.add(movement)).detectPlayers(game));
     }
 }

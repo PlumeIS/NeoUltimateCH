@@ -15,7 +15,7 @@ public class Flamethrower extends Section {
     public LinearHit hit;
 
     public Flamethrower(ServerPlayer player, Game game) {
-        super(player, SectionLocation.get(3,0), game);
+        super(player, SectionLocation.get(3, 0), game);
         setProcess(SectionCounter.toTicks(3.0));
     }
 
@@ -44,9 +44,9 @@ public class Flamethrower extends Section {
         double offset = 0;
         double d_offset = 0.01;
         for (int i = 0; i < hit.getHitPoints().size(); i++) {
-            offset+=d_offset;
+            offset += d_offset;
             Vec3 pos = hit.getHitPoints().get(i);
-            if (i % 10 == 0 && tick % 15 == 0 ) {
+            if (i % 10 == 0 && tick % 15 == 0) {
                 level.sendParticles(ParticleTypes.LAVA, pos.x, pos.y, pos.z, 1, 0, 0, 0, 1);
             }
             if (i % 3 == 0) {

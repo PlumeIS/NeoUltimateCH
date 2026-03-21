@@ -30,7 +30,7 @@ public class Waterfall extends Map {
     public void tick() {
         List<ServerPlayer> players = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers();
         players.forEach(player -> {
-            if (player.isInWater()&&PlayerUtil.inPlayerInPlaying(player)) {
+            if (player.isInWater() && PlayerUtil.inPlayerInPlaying(player)) {
                 player.setDeltaMovement(player.getDeltaMovement().add(0, -0.8, 0));
                 PlayerUtil.updateDeltaMovement(players, player);
             }

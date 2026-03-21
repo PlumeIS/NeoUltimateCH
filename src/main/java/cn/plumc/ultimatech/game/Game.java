@@ -5,12 +5,9 @@ import cn.plumc.ultimatech.game.map.MapInfo;
 import cn.plumc.ultimatech.info.UCHInfos;
 import cn.plumc.ultimatech.section.Section;
 import cn.plumc.ultimatech.section.SectionBox;
-import cn.plumc.ultimatech.section.layer.Layer;
-import cn.plumc.ultimatech.section.layer.WorldLayer;
 import cn.plumc.ultimatech.utils.IntCounter;
 import cn.plumc.ultimatech.utils.PlayerUtil;
 import cn.plumc.ultimatech.utils.TickUtil;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -49,7 +46,7 @@ public class Game {
         this.statusSignal = new StatusSignal(this);
     }
 
-    public void tick(){
+    public void tick() {
         if (!status.gameStarting) return;
 
         status.map.tick();
@@ -69,7 +66,7 @@ public class Game {
         }
     }
 
-    public void second(){
+    public void second() {
         status.map.second();
         sectionManager.sectionSecond();
     }
@@ -118,7 +115,7 @@ public class Game {
             status.playings.forEach(player -> player.setGameMode(GameType.ADVENTURE));
 
             status.playings.forEach(serverPlayer ->
-                    serverPlayer.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 20*20, 254, false, false)));
+                    serverPlayer.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 20 * 20, 254, false, false)));
 
             TickUtil.runAfterTick(() -> util.broadcast("现在pvp已开放!"), 20);
 
@@ -137,7 +134,7 @@ public class Game {
             ServerPlayer player = iterator.next();
 
             Boolean playerWinning;
-            if (Objects.nonNull(playerWinning=checkPlayerStatus(player))) {
+            if (Objects.nonNull(playerWinning = checkPlayerStatus(player))) {
                 iterator.remove();
                 handlePlayerElimination(player, playerWinning.booleanValue());
             }
@@ -163,7 +160,7 @@ public class Game {
         }
 
         Section section;
-        if (Objects.nonNull(section=sectionManager.shouldPlayerLose(player))) {
+        if (Objects.nonNull(section = sectionManager.shouldPlayerLose(player))) {
             status.losers.add(player);
             if (!PlayerUtil.isMapHolder(section.owner)) status.playerKills.get(section.owner).add();
             return false;
@@ -180,7 +177,7 @@ public class Game {
     }
 
 
-    public void roundStart(){
+    public void roundStart() {
         status.roundSections.clear();
         status.roundRunning = false;
         status.roundReady = false;
@@ -200,7 +197,7 @@ public class Game {
         statusSignal.onRoundStart();
     }
 
-    public void roundEnd(){
+    public void roundEnd() {
         statusSignal.onRoundEnd();
         playerManager.clearTags();
         util.broadcast("=========回合结算=========");
@@ -237,26 +234,27 @@ public class Game {
         roundStart();
     }
 
-    public void gameStart(){
+    public void gameStart() {
         playerManager.clearTags();
         playerManager.setMapTime();
+        server.getGameRules().getRule(GameRules.RULE_FALL_DAMAGE).set(false, server);
         for (ServerPlayer player : playerManager.getPlayers()) {
             status.playerScore.put(player, new IntCounter(0));
             status.playerLoseRound.put(player, new IntCounter(0));
             player.addEffect(new MobEffectInstance(MobEffects.SATURATION, -1, 0, false, false));
             player.addEffect(new MobEffectInstance(MobEffects.HEAL, -1, 25, false, false));
-            server.getGameRules().getRule(GameRules.RULE_FALL_DAMAGE).set(false, server);
+            player.setGameMode(GameType.ADVENTURE);
         }
-        status.map.startGame(playerManager.getPlayers());
+        status.map.startGame(this, playerManager.getPlayers());
         util.broadcastSubTitle("请等待地图加载...");
-        util.countdown(10, true, true, "%d",() -> {
+        util.countdown(5, true, true, "%d", () -> {
             roundStart();
             status.gameStarting = true;
         });
     }
 
-    public void gameEnd(ServerPlayer winner){
-        if (winner!=null){
+    public void gameEnd(ServerPlayer winner) {
+        if (winner != null) {
             util.broadcast("=========游戏结束=========");
             util.broadcast("胜利者: %s".formatted(winner.getGameProfile().getName()));
         } else {
@@ -265,6 +263,7 @@ public class Game {
         for (ServerPlayer player : playerManager.getPlayers()) {
             util.broadcast("%s: %s".formatted(player.getGameProfile().getName(), status.playerScore.getOrDefault(player, new IntCounter()).get()));
             PlayerUtil.teleport(player, UCHInfos.PLAYER_LOBBY_POINT);
+            player.setGameMode(GameType.ADVENTURE);
         }
         playerManager.resetMapTime();
         status.gameStarting = false;
@@ -274,13 +273,15 @@ public class Game {
         TickUtil.cancelDelayTask();
     }
 
-    public void destroy(){
-        sectionManager.destroy();
+    public void destroy() {
         status.map.reset();
+        sectionManager.destroy();
         playerManager.clearTags();
     }
 
-    public ServerLevel getLevel(){return level;}
+    public ServerLevel getLevel() {
+        return level;
+    }
 
     public GameStatus getStatus() {
         return status;

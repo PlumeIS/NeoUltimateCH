@@ -65,7 +65,7 @@ public class MotionCommand {
         if (entities.isEmpty()) return 0;
         for (Entity entity : entities) {
             Vec3 movement = entity.getDeltaMovement();
-            setMotion(entity, movement.add(x, y, z)) ;
+            setMotion(entity, movement.add(x, y, z));
         }
         return 1;
     }
@@ -77,7 +77,7 @@ public class MotionCommand {
         double z = DoubleArgumentType.getDouble(context, "z");
         if (entities.isEmpty()) return 0;
         for (Entity entity : entities) {
-            setMotion(entity, new Vec3(x, y, z)) ;
+            setMotion(entity, new Vec3(x, y, z));
         }
         return 1;
     }
@@ -90,7 +90,7 @@ public class MotionCommand {
         if (entities.isEmpty()) return 0;
         for (Entity entity : entities) {
             Vec3 movement = entity.getDeltaMovement();
-            setMotion(entity, movement.multiply(x, y, z)) ;
+            setMotion(entity, movement.multiply(x, y, z));
         }
         return 1;
     }
@@ -111,14 +111,14 @@ public class MotionCommand {
             double directionZ = Math.cos(yawRadians) * Math.cos(pitchRadians);
             Vec3 facing = new Vec3(directionX, directionY, directionZ).normalize();
             Vec3 movement = player.getDeltaMovement();
-            return setMotion(player, movement.add(facing.scale(i))) ;
+            return setMotion(player, movement.add(facing.scale(i)));
         }
         return 0;
     }
 
-    private static int setMotion(Entity entity, Vec3 motion){
+    private static int setMotion(Entity entity, Vec3 motion) {
         entity.setDeltaMovement(motion);
-        for (ServerPlayer player : entity.getServer().getPlayerList().getPlayers()){
+        for (ServerPlayer player : entity.getServer().getPlayerList().getPlayers()) {
             player.connection.send(new ClientboundSetEntityMotionPacket(entity));
         }
         return 1;

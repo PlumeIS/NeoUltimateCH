@@ -21,6 +21,7 @@ import java.util.Objects;
 public class SectionCommand {
     public static SectionBox sectionBox;
     public static int tickId = -1;
+
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("section")
                 .then(Commands.literal("add")
@@ -29,7 +30,8 @@ public class SectionCommand {
                                     try {
                                         String string = StringArgumentType.getString(context, "section");
                                         SectionRegistry.instance.getSectionInfos().keySet().forEach(id -> {
-                                            if (id.contains(string)) builder.suggest(id);}
+                                                    if (id.contains(string)) builder.suggest(id);
+                                                }
                                         );
                                     } catch (IllegalArgumentException ignored) {
                                         SectionRegistry.instance.getSectionInfos().keySet().forEach(builder::suggest);
@@ -72,7 +74,7 @@ public class SectionCommand {
                 .then(Commands.literal("box")
                         .executes(commandContext -> {
                             try {
-                                if (sectionBox==null) sectionBox = new SectionBox(1, 9);
+                                if (sectionBox == null) sectionBox = new SectionBox(1, 9);
                                 commandContext.getSource().getPlayer().openMenu(sectionBox);
                                 return 1;
                             } catch (Exception e) {
@@ -90,7 +92,7 @@ public class SectionCommand {
             String sectionId = StringArgumentType.getString(ctx, "section");
             Section section = game.getSectionManager().buildSection(sectionId, ctx.getSource().getPlayer());
             game.getStatus().roundSections.put(ctx.getSource().getPlayer(), section);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 1;
@@ -102,7 +104,7 @@ public class SectionCommand {
             int index = IntegerArgumentType.getInteger(ctx, "section");
             game.getSectionManager().getSections().get(index).remove();
             game.getSectionManager().removeSection(index);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 1;
@@ -113,7 +115,7 @@ public class SectionCommand {
         for (int i = 0; i < game.getSectionManager().getSections().size(); i++) {
             final int index = i;
             Section section = game.getSectionManager().getSections().get(i);
-            ctx.getSource().sendSuccess(()->Component.literal(index+" : "+ SectionRegistry.instance.getSectionInfo(section.getClass())), false);
+            ctx.getSource().sendSuccess(() -> Component.literal(index + " : " + SectionRegistry.instance.getSectionInfo(section.getClass())), false);
         }
         return 1;
     }
@@ -123,9 +125,9 @@ public class SectionCommand {
             Game game = getGameByPlayer(ctx.getSource().getPlayer());
             int index = IntegerArgumentType.getInteger(ctx, "section");
             game.getSectionManager().getSections().get(index).view();
-        } catch (Exception e){
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return 1;
     }
 
@@ -135,8 +137,8 @@ public class SectionCommand {
             int index = IntegerArgumentType.getInteger(ctx, "section");
             Section section = game.getSectionManager().getSections().get(index);
             section.place();
-            if (Objects.nonNull(section.process))section.process.start();
-        } catch (Exception e){
+            if (Objects.nonNull(section.process)) section.process.start();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return 1;
@@ -162,10 +164,12 @@ public class SectionCommand {
         section.rotation.set(SectionRotation.Axis.Z, 0);
         return 1;
     }
-    
+
     public static Game getGameByPlayer(ServerPlayer player) {
         for (Game game : Lobby.games.values()) {
-            if (game.getPlayerManager().getPlayers().contains(player)) {return game;}
+            if (game.getPlayerManager().getPlayers().contains(player)) {
+                return game;
+            }
         }
         return null;
     }

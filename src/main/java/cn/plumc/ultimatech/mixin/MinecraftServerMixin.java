@@ -20,7 +20,9 @@ public abstract class MinecraftServerMixin {
     @Unique
     private int ultimateCH$tickCounter = 0;
 
-    @Shadow @Nullable public abstract ServerLevel getLevel(ResourceKey<Level> pDimension);
+    @Shadow
+    @Nullable
+    public abstract ServerLevel getLevel(ResourceKey<Level> pDimension);
 
     @Inject(method = "tickServer", at = @At("HEAD"))
     private void onTickServer(CallbackInfo ci) {

@@ -48,14 +48,14 @@ public class Crossbow extends Section {
 
     @Override
     public void tickRun(int tickTime) {
-        if (process.at(0.0)){
+        if (process.at(0.0)) {
             setCharged(false);
         }
-        if (process.at(0.5)){
+        if (process.at(0.5)) {
             setCharged(true);
         }
         if (process.at(1.0)) {
-            Arrow arrow = new Arrow(EntityType.ARROW, level){
+            Arrow arrow = new Arrow(EntityType.ARROW, level) {
                 @Override
                 protected void onHitEntity(EntityHitResult result) {
                     if (result.getEntity() instanceof ServerPlayer player) Crossbow.this.kill(player);

@@ -21,24 +21,11 @@ import java.util.UUID;
 public class SectionBuilder {
     private Game game;
 
-    public SectionBuilder(Game game){
+    public SectionBuilder(Game game) {
         this.game = game;
     }
 
-    public Section build(String id, ServerPlayer player){
-        try {
-            return SectionRegistry.instance.byId(id).getConstructor(ServerPlayer.class, Game.class).newInstance(player, game);
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public Section build(String id){
-        FakePlayer mapPlayer = new FakePlayer(game.getLevel(), new GameProfile(UUID.nameUUIDFromBytes(UCHInfos.MAP_HOLDER.getBytes(StandardCharsets.UTF_8)), UCHInfos.MAP_HOLDER));
-        return build(id, mapPlayer);
-    }
-
-    public static ItemStack buildItem(String id){
+    public static ItemStack buildItem(String id) {
         SectionRegistry.SectionInfo info = SectionRegistry.instance.getSectionInfo(id);
         ItemStack itemStack = new ItemStack(Items.PUFFERFISH_BUCKET);
 
@@ -52,5 +39,19 @@ public class SectionBuilder {
                 .append(info.size().getString()).withStyle(ChatFormatting.YELLOW)
         );
         return itemStack;
+    }
+
+    public Section build(String id, ServerPlayer player) {
+        try {
+            return SectionRegistry.instance.byId(id).getConstructor(ServerPlayer.class, Game.class).newInstance(player, game);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Section build(String id) {
+        FakePlayer mapPlayer = new FakePlayer(game.getLevel(), new GameProfile(UUID.nameUUIDFromBytes(UCHInfos.MAP_HOLDER.getBytes(StandardCharsets.UTF_8)), UCHInfos.MAP_HOLDER));
+        return build(id, mapPlayer);
     }
 }

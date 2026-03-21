@@ -32,6 +32,10 @@ public class SectionCounter {
         this.secondTask = secondTask;
     }
 
+    public static int toTicks(double seconds) {
+        return Mth.floor(seconds * 20);
+    }
+
     public void start() {
         running = true;
     }
@@ -40,7 +44,7 @@ public class SectionCounter {
         running = false;
     }
 
-    public void reset(){
+    public void reset() {
         tickCounter.set(0);
         triggerCounter.set(0);
         secondCounter.set(0);
@@ -61,7 +65,8 @@ public class SectionCounter {
         if (triggerCounter.get() % 20 == 0) {
             second();
             triggerCounter.set(0);
-        };
+        }
+        ;
         triggerCounter.add();
 
     }
@@ -76,23 +81,19 @@ public class SectionCounter {
         }
     }
 
-    public boolean at(double time){
+    public boolean at(double time) {
         return tickCounter.get() == toTicks(time);
     }
 
-    public boolean in(double start, double end){
+    public boolean in(double start, double end) {
         return tickCounter.get() >= toTicks(start) && tickCounter.get() < toTicks(end);
     }
 
-    public boolean contains(double start, double end){
+    public boolean contains(double start, double end) {
         return tickCounter.get() >= toTicks(start) && tickCounter.get() <= toTicks(end);
     }
 
-    public double progress(double start, double end){
+    public double progress(double start, double end) {
         return (double) (tickCounter.get() - toTicks(start)) / (toTicks(end) - toTicks(start));
-    }
-
-    public static int toTicks(double seconds){
-        return Mth.floor(seconds*20);
     }
 }

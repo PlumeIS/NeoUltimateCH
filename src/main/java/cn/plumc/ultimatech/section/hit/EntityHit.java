@@ -5,7 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityHit extends Hit{
+public class EntityHit extends Hit {
     private final Entity entity;
 
     public EntityHit(Entity entity) {
@@ -19,7 +19,7 @@ public class EntityHit extends Hit{
         double z = position.z;
         float bbHeight = entity.getBbHeight();
         float bbWidth = entity.getBbWidth();
-        return new AABB(x-bbWidth/2, y, z-bbWidth/2, x+bbWidth, y+bbHeight, z+bbWidth);
+        return new AABB(x - bbWidth / 2, y, z - bbWidth / 2, x + bbWidth, y + bbHeight, z + bbWidth);
     }
 
     @Override

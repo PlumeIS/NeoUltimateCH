@@ -5,10 +5,11 @@ import cn.plumc.ultimatech.LobbyRegion;
 import cn.plumc.ultimatech.game.map.maps.*;
 
 public enum MapInfo {
-    ROOF("roof", "房顶", new Roof(), Map.Region.get(-1, 18, -4, 2 , 20, -2)),
+    ROOF("roof", "房顶", new Roof(), Map.Region.get(-1, 18, -4, 2, 20, -2)),
     WATERFALL("waterfall", "瀑布", new Waterfall(), Map.Region.get(39, 10, 7, 36, 12, 11)),
     Wheatland("wheatland", "麦田", new Wheatland(), Map.Region.get(-32, 3, -35, -28, 5, -32)),
-    FragileBridge("fragile_bridge", "碎碎桥", new FragileBridge(), Map.Region.get(-1, 8, -35, 3 ,10, -37)),
+    FragileBridge("fragile_bridge", "碎碎桥", new FragileBridge(), Map.Region.get(-1, 8, -35, 3, 10, -37)),
+    OldMansion("old_mansion", "旧房子", new OldMansion(), Map.Region.get(-33, 1, -4, -35, 3, -6)),
     ;
 
     public final String id;
@@ -25,7 +26,7 @@ public enum MapInfo {
 
     public static void registerMaps() {
         for (MapInfo map : MapInfo.values()) {
-            Lobby.regions.put("map."+map.id,
+            Lobby.regions.put("map." + map.id,
                     new LobbyRegion(
                             LobbyRegion.Type.GAME,
                             map.id,

@@ -43,7 +43,7 @@ public class FireHydrant extends Section {
         endMovement = transform.rotateVector(new Vec3(0.2, 0.05, 0.2));
         waterMovement = transform.rotateVector(new Vec3(0.0, 3.5, 0.0));
         waterBlock = transform.toAbsolute(transform.rotatePoint(new Vec3(0.5, 4.5, 0.5)));
-        hit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1.5, 0), new Vec3(1, 5, 1));
+        hit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0, 1.5, 0), new Vec3(1, 5, 1));
         transform.applyRotationToRelativeHit(hit);
     }
 
@@ -77,13 +77,14 @@ public class FireHydrant extends Section {
 
     private void vfx(double progress) {
         if (progress <= 0.75) {
-            progress*=(1.0/0.75);
+            progress *= (1.0 / 0.75);
             Vec3 pos = transform.toAbsolute(startPos.add(waterMovement.scale(progress)));
             DustParticleOptions dustParticleOptions = new DustParticleOptions(new Vec3(0, 0.87058823529f, 1).toVector3f(), 0.6f);
             vfxPositions.add(new Tuple<>(pos, dustParticleOptions));
             level.sendParticles(dustParticleOptions, pos.x, pos.y, pos.z, 12,
                     Math.abs(endMovement.x), Math.abs(endMovement.y), Math.abs(endMovement.z), 0);
-        } if (progress >= 0.75) {
+        }
+        if (progress >= 0.75) {
             Vec3 pos = transform.toAbsolute(startPos.add(waterMovement));
             DustParticleOptions dustParticleOptions = new DustParticleOptions(new Vec3(0, 0.87058823529f, 1).toVector3f(), 0.8f);
             level.sendParticles(dustParticleOptions, pos.x, pos.y, pos.z, 12,

@@ -3,6 +3,7 @@ package cn.plumc.ultimatech.game;
 import cn.plumc.ultimatech.section.Section;
 import cn.plumc.ultimatech.section.SectionBuilder;
 import cn.plumc.ultimatech.section.layer.Layer;
+import cn.plumc.ultimatech.section.layer.LayerBlock;
 import cn.plumc.ultimatech.section.layer.LayerType;
 import cn.plumc.ultimatech.section.layer.WorldLayer;
 import cn.plumc.ultimatech.sections.Coin;
@@ -10,23 +11,18 @@ import cn.plumc.ultimatech.sections.base.Alternative;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Tuple;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.*;
 
 public class SectionManager {
-    public List<Section> sections = new ArrayList<>();
-    public SectionBuilder builder;
-    private Game game;
-    private GameStatus status;
-
     private final Layer viewLayer;
     private final Layer topLayer;
     private final Layer middleLayer;
     private final WorldLayer worldLayer;
+    public List<Section> sections = new ArrayList<>();
+    public SectionBuilder builder;
+    private final Game game;
+    private final GameStatus status;
 
 
     public SectionManager(Game game, GameStatus status) {
@@ -65,9 +61,13 @@ public class SectionManager {
         sections.remove(section);
     }
 
-    public void removeSection(int index){sections.remove(index);}
+    public void removeSection(int index) {
+        sections.remove(index);
+    }
 
-    public List<Section> getSections(){return sections;}
+    public List<Section> getSections() {
+        return sections;
+    }
 
     public List<Section> getSectionsByPos(BlockPos pos, LayerType layer) {
         List<Section> find = new ArrayList<>();
@@ -94,37 +94,39 @@ public class SectionManager {
         });
     }
 
-    public int getPlayerCoin(ServerPlayer player){
+    public int getPlayerCoin(ServerPlayer player) {
         return Coin.getPlayerCoinCount(player);
     }
 
-    public void sectionTick(){
+    public void sectionTick() {
         ImmutableList.copyOf(sections).forEach(Section::tick);
     }
 
-    public void applyBlockLayer(){
-        Map<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> reset = getViewLayer().reset();
-        Map<BlockPos, Tuple<BlockState, Optional<BlockEntity>>> apply = getViewLayer().apply();
-        apply.forEach((blockPos, tuple) -> getWorldLayer().read(blockPos));
-        reset.keySet().stream().filter(pos -> !apply.containsKey(pos)).forEach(getWorldLayer()::remove);
-        HashSet<BlockPos> changed = new HashSet<>();
-        changed.addAll(apply.keySet());
-        changed.addAll(reset.keySet());
-        for (BlockPos pos : changed) {
-            Tuple<BlockState, Optional<BlockEntity>> block;
-            if (apply.containsKey(pos)) {
-                block = apply.get(pos);
-            } else block = reset.get(pos);
-            if (Objects.isNull(block)) continue;
-            game.getLevel().setBlockAndUpdate(pos, block.getA());
-            block.getB().ifPresent(b -> {game.getLevel().setBlockEntity(b);});
+    public void applyBlockLayer() {
+        Map<Long, LayerBlock> changes = getViewLayer().apply();
+
+        if (changes.isEmpty()) return;
+        var level = game.getLevel();
+
+        for (Map.Entry<Long, LayerBlock> entry : changes.entrySet()) {
+            long key = entry.getKey();
+            LayerBlock block = entry.getValue();
+            BlockPos pos = BlockPos.of(key);
+            if (block == null) {
+                level.removeBlock(pos, false);
+                continue;
+            }
+            level.setBlock(pos, block.state, 2);
+            if (block.entity != null) {
+                level.setBlockEntity(block.entity);
+            }
         }
     }
 
-    public void sectionSecond(){
+    public void sectionSecond() {
     }
 
-    public Section shouldPlayerLose(ServerPlayer player){
+    public Section shouldPlayerLose(ServerPlayer player) {
         for (Section section : sections) {
             if (section.killed.contains(player)) {
                 section.killed.remove(player);
@@ -139,7 +141,7 @@ public class SectionManager {
         sections.forEach(Section::remove);
     }
 
-    public void destroy(){
+    public void destroy() {
         removeAll();
         for (Section section : ImmutableList.copyOf(getSections())) {
             removeSection(section);
@@ -159,7 +161,9 @@ public class SectionManager {
         };
     }
 
-    public Layer getViewLayer() {return viewLayer;}
+    public Layer getViewLayer() {
+        return viewLayer;
+    }
 
     public Layer getTopLayer() {
         return topLayer;

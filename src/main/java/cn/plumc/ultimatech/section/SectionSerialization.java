@@ -84,7 +84,7 @@ public class SectionSerialization {
         origin.addProperty("x", originVec.x);
         origin.addProperty("y", originVec.y);
         origin.addProperty("z", originVec.z);
-        object.add("origin",  origin);
+        object.add("origin", origin);
 
         JsonObject rotation = new JsonObject();
         rotation.addProperty("x", section.rotation.getX());

@@ -6,6 +6,7 @@
   "refmap": "ultimatech.refmap.json",
   "mixins": [
     "ConnectionMixin",
+    "FallingBlockMixin",
     "MinecraftServerMixin",
     "ServerGamePacketListenerImplMixin"
   ],

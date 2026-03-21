@@ -10,7 +10,7 @@ import net.minecraft.server.commands.data.EntityDataAccessor;
 import net.minecraft.world.entity.Entity;
 
 public class DisplayEntityUtil {
-    public static void setVisible(Entity entity, String origin ,boolean visible) {
+    public static void setVisible(Entity entity, String origin, boolean visible) {
         EntityDataAccessor accessor = new EntityDataAccessor(entity);
         CompoundTag data = accessor.getData();
         CompoundTag item = new CompoundTag();
@@ -24,7 +24,7 @@ public class DisplayEntityUtil {
         }
     }
 
-    public static void setItem(Entity entity, String itemId){
+    public static void setItem(Entity entity, String itemId) {
         EntityDataAccessor accessor = new EntityDataAccessor(entity);
         CompoundTag data = accessor.getData();
         CompoundTag item = new CompoundTag();
@@ -37,7 +37,7 @@ public class DisplayEntityUtil {
         }
     }
 
-    public static void setScale(Entity entity, double scale){
+    public static void setScale(Entity entity, double scale) {
         EntityDataAccessor accessor = new EntityDataAccessor(entity);
         CompoundTag data = accessor.getData();
         ListTag scales = new ListTag();
@@ -52,7 +52,7 @@ public class DisplayEntityUtil {
         }
     }
 
-    public static void setAnima(Entity entity, double duration){
+    public static void setAnima(Entity entity, double duration) {
         EntityDataAccessor accessor = new EntityDataAccessor(entity);
         CompoundTag data = accessor.getData();
         data.putInt("start_interpolation", 0);

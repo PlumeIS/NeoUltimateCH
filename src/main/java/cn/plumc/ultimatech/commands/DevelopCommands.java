@@ -35,17 +35,16 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import java.util.*;
 
 import static cn.plumc.ultimatech.info.UCHInfos.*;
-import static cn.plumc.ultimatech.info.UCHInfos.SECTION_ROTATE_Z_ITEM;
 
 public class DevelopCommands {
-    private static boolean recording = false;
-    private static String mapId = null;
     private static final List<ServerPlayer> recordingPlayers = new ArrayList<>();
     private static final List<Section> recordingSections = new ArrayList<>();
-    private static final HashMap<UUID, String> selections  = new HashMap<>();
-    private static final HashMap<UUID, Section> placings =  new HashMap<>();
+    private static final HashMap<UUID, String> selections = new HashMap<>();
+    private static final HashMap<UUID, Section> placings = new HashMap<>();
+    private static boolean recording = false;
+    private static String mapId = null;
 
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher){
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         registerDevelop(dispatcher);
         registerFlySpeed(dispatcher);
     }
@@ -53,195 +52,202 @@ public class DevelopCommands {
     public static void registerDevelop(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
                 Commands.literal("develop")
-                    .executes(context -> {
-                        if (context.getSource().getEntity() instanceof ServerPlayer player) {
-                            if (PlayerUtil.containsTag(player, StatusTags.DEVELOPER_TAG)) {
-                                player.getTags().remove(StatusTags.DEVELOPER_TAG);
-                                player.getTags().remove(StatusTags.NO_JUMP_TAG);
-                                player.sendSystemMessage(Component.literal("DEVELOP: OFF"));
-                            } else {
-                                player.getTags().add(StatusTags.DEVELOPER_TAG);
-                                player.getTags().add(StatusTags.NO_JUMP_TAG);
-                                player.sendSystemMessage(Component.literal("DEVELOP: ON"));
-                            }
-                        }
-                        return 1;
-                    }
-                    ).then(Commands.literal("map")
-                        .then(Commands.literal("test")
-                            .executes(context -> {
-                                MinecraftServer server = context.getSource().getServer();
-                                CommandSourceStack source = context.getSource();
-                                List<String> commands = List.of("/game create roof",
-                                                                "/game join @a",
-                                                                "/section tick",
-                                                                "/section add ultimatech.beam4",
-                                                                "/section view 0",
-                                                                "/hub map");
-                                CommandUtil.runList(server, source, commands);
-                                return 1;
-                            })
-                        ).then(Commands.literal("test1")
-                            .executes(context -> {
-                                MinecraftServer server = context.getSource().getServer();
-                                CommandSourceStack source = context.getSource();
-                                List<String> commands = List.of("/game create roof",
-                                        "/game join @a",
-                                        "/game start");
-                                CommandUtil.runList(server, source, commands);
-                                return 1;
-                            })
-                        ).then(Commands.literal("test2")
-                            .executes(context -> {
-                                MinecraftServer server = context.getSource().getServer();
-                                CommandSourceStack source = context.getSource();
-                                List<String> commands = List.of("/section add ultimatech.flippable_floor_stabbing",
-                                        "/section view 1",
-                                        "/section place 1");
-                                CommandUtil.runList(server, source, commands);
-                                return 1;
-                            })
-                        ).then(Commands.literal("clear")
-                            .executes(context -> {
-                                    MinecraftServer server = context.getSource().getServer();
-                                    CommandSourceStack source = context.getSource();
-                                    if (source.getPlayer().position().distanceTo(UCHInfos.DEVELOPER_POINT) < 500) return 1;
-                                    List<String> commands = List.of("/kill @e[type=item_display, distance=..200]",
-                                            "/kill @e[type=block_display, distance=..200]",
-                                            "/kill @e[type=text_display, distance=..200]",
-                                            "/fill 114499 3 19794 114541 29 19833 air replace minecraft:barrier",
-                                            "/fill 114499 3 19794 114541 29 19833 air replace minecraft:structure_void",
-                                            "/fill 114497 19 19794 114532 30 19830 air");
-                                    CommandUtil.runList(server, source, commands);
-                                    return 1;
-                                })
-                        ).then(Commands.literal("clear_map")
-                            .executes(context -> {
-                                    MinecraftServer server = context.getSource().getServer();
-                                    ServerLevel level = server.overworld();
-                                    BlockPos pos1 = new BlockPos(1809, -55, 1666);
-                                    BlockPos pos2 = new BlockPos(2209, -55, 2166);
-                                    BlockState air = Blocks.AIR.defaultBlockState();
-                                    long counter = 0;
-                                    long count = (long) (pos2.getX() - pos1.getX()) *(pos2.getZ()-pos1.getZ());
-                                    ArrayList<BlockPos> blockPos = new ArrayList<>();
-                                    for (int x = pos1.getX(); x <= pos2.getX(); x++) {
-                                        for (int z = pos1.getZ(); z <= pos2.getZ(); z++) {
-                                            int height = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
-                                            for (int y = -55; y <= height; y++) {
-                                                BlockPos pos = new BlockPos(x, y, z);
-                                                BlockState state = level.getBlockState(pos);
-                                                if (state.is(Blocks.BARRIER)||
-                                                state.is(Blocks.STRUCTURE_VOID)||
-                                                state.is(Blocks.SAND)||
-                                                state.is(Blocks.GRAVEL)||
-                                                state.is(BlockTags.LOGS)||
-                                                state.is(BlockTags.LEAVES)) continue;
-                                                if (!isOnAir(level, pos)) {blockPos.add(pos);}
-                                            }
-                                            counter++;
+                        .executes(context -> {
+                                    if (context.getSource().getEntity() instanceof ServerPlayer player) {
+                                        if (PlayerUtil.containsTag(player, StatusTags.DEVELOPER_TAG)) {
+                                            player.getTags().remove(StatusTags.DEVELOPER_TAG);
+                                            player.getTags().remove(StatusTags.NO_JUMP_TAG);
+                                            player.sendSystemMessage(Component.literal("DEVELOP: OFF"));
+                                        } else {
+                                            player.getTags().add(StatusTags.DEVELOPER_TAG);
+                                            player.getTags().add(StatusTags.NO_JUMP_TAG);
+                                            player.sendSystemMessage(Component.literal("DEVELOP: ON"));
                                         }
-                                        System.out.println("Counter: " + counter + "Max: " + count);
-                                    }
-                                    counter = 0;
-                                    long max = blockPos.size();
-                                    for (BlockPos pos : blockPos) {
-                                        level.setBlockAndUpdate(pos, air);
-                                        if ((counter%1000L)==0)System.out.println("Counter: " + counter + "Max: " + max);
-                                        counter++;
                                     }
                                     return 1;
-                                })
-                        ).then(Commands.literal("build_hay")
-                            .executes(context -> {
-                                    MinecraftServer server = context.getSource().getServer();
-                                    ServerLevel level = server.overworld();
-                                    BlockPos pos1 = new BlockPos(3889, 0, 3877);
-                                    BlockPos pos2 = new BlockPos(4139, 0, 4109);
-                                    int height = 20;
-                                    BlockState dirt = Blocks.DIRT.defaultBlockState();
-                                    BlockState wheat = Blocks.WHEAT.defaultBlockState();
-                                    wheat.setValue(BlockStateProperties.AGE_7, 7);
-                                    BlockState farmland = Blocks.FARMLAND.defaultBlockState();
-                                    Random rand = new Random();
-                                    for (int x = pos1.getX(); x <= pos2.getX(); x++) {
-                                        for (int z = pos1.getZ(); z <= pos2.getZ(); z++) {
-                                            for (int y = 0; y <= height; y++) {
-                                                BlockPos pos = new BlockPos(x, y, z);
-                                                BlockState state = level.getBlockState(pos.above());
-                                                if ((state.isAir()||state.is(Blocks.WHEAT))) {
-                                                    if ((rand.nextDouble() < 0.01)) break;
-                                                    level.setBlockAndUpdate(pos, farmland);
-                                                    level.setBlockAndUpdate(pos.above(), wheat);
-                                                    break;
-                                                } else {
-                                                    level.setBlockAndUpdate(pos, dirt);
+                                }
+                        ).then(Commands.literal("map")
+                                .then(Commands.literal("test")
+                                        .executes(context -> {
+                                            MinecraftServer server = context.getSource().getServer();
+                                            CommandSourceStack source = context.getSource();
+                                            List<String> commands = List.of("/game create roof",
+                                                    "/game join @a",
+                                                    "/section tick",
+                                                    "/section add ultimatech.beam4",
+                                                    "/section view 0",
+                                                    "/hub map");
+                                            CommandUtil.runList(server, source, commands);
+                                            return 1;
+                                        })
+                                ).then(Commands.literal("test1")
+                                        .executes(context -> {
+                                            MinecraftServer server = context.getSource().getServer();
+                                            CommandSourceStack source = context.getSource();
+                                            List<String> commands = List.of("/game create roof",
+                                                    "/game join @a",
+                                                    "/game start");
+                                            CommandUtil.runList(server, source, commands);
+                                            return 1;
+                                        })
+                                ).then(Commands.literal("test2")
+                                        .executes(context -> {
+                                            MinecraftServer server = context.getSource().getServer();
+                                            CommandSourceStack source = context.getSource();
+                                            List<String> commands = List.of("/section add ultimatech.flippable_floor_stabbing",
+                                                    "/section view 1",
+                                                    "/section place 1");
+                                            CommandUtil.runList(server, source, commands);
+                                            return 1;
+                                        })
+                                ).then(Commands.literal("clear")
+                                        .executes(context -> {
+                                            MinecraftServer server = context.getSource().getServer();
+                                            CommandSourceStack source = context.getSource();
+                                            if (source.getPlayer().position().distanceTo(UCHInfos.DEVELOPER_POINT) < 500)
+                                                return 1;
+                                            List<String> commands = List.of("/kill @e[type=item_display, distance=..200]",
+                                                    "/kill @e[type=block_display, distance=..200]",
+                                                    "/kill @e[type=text_display, distance=..200]",
+                                                    "/fill 114499 3 19794 114541 29 19833 air replace minecraft:barrier",
+                                                    "/fill 114499 3 19794 114541 29 19833 air replace minecraft:structure_void",
+                                                    "/fill 114497 19 19794 114532 30 19830 air");
+                                            CommandUtil.runList(server, source, commands);
+                                            return 1;
+                                        })
+                                ).then(Commands.literal("clear_map")
+                                        .executes(context -> {
+                                            MinecraftServer server = context.getSource().getServer();
+                                            ServerLevel level = server.overworld();
+                                            BlockPos pos1 = new BlockPos(1809, -55, 1666);
+                                            BlockPos pos2 = new BlockPos(2209, -55, 2166);
+                                            BlockState air = Blocks.AIR.defaultBlockState();
+                                            long counter = 0;
+                                            long count = (long) (pos2.getX() - pos1.getX()) * (pos2.getZ() - pos1.getZ());
+                                            ArrayList<BlockPos> blockPos = new ArrayList<>();
+                                            for (int x = pos1.getX(); x <= pos2.getX(); x++) {
+                                                for (int z = pos1.getZ(); z <= pos2.getZ(); z++) {
+                                                    int height = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+                                                    for (int y = -55; y <= height; y++) {
+                                                        BlockPos pos = new BlockPos(x, y, z);
+                                                        BlockState state = level.getBlockState(pos);
+                                                        if (state.is(Blocks.BARRIER) ||
+                                                                state.is(Blocks.STRUCTURE_VOID) ||
+                                                                state.is(Blocks.SAND) ||
+                                                                state.is(Blocks.GRAVEL) ||
+                                                                state.is(BlockTags.LOGS) ||
+                                                                state.is(BlockTags.LEAVES)) continue;
+                                                        if (!isOnAir(level, pos)) {
+                                                            blockPos.add(pos);
+                                                        }
+                                                    }
+                                                    counter++;
+                                                }
+                                                System.out.println("Counter: " + counter + "Max: " + count);
+                                            }
+                                            counter = 0;
+                                            long max = blockPos.size();
+                                            for (BlockPos pos : blockPos) {
+                                                level.setBlockAndUpdate(pos, air);
+                                                if ((counter % 1000L) == 0)
+                                                    System.out.println("Counter: " + counter + "Max: " + max);
+                                                counter++;
+                                            }
+                                            return 1;
+                                        })
+                                ).then(Commands.literal("build_hay")
+                                        .executes(context -> {
+                                            MinecraftServer server = context.getSource().getServer();
+                                            ServerLevel level = server.overworld();
+                                            BlockPos pos1 = new BlockPos(3889, 0, 3877);
+                                            BlockPos pos2 = new BlockPos(4139, 0, 4109);
+                                            int height = 20;
+                                            BlockState dirt = Blocks.DIRT.defaultBlockState();
+                                            BlockState wheat = Blocks.WHEAT.defaultBlockState();
+                                            wheat.setValue(BlockStateProperties.AGE_7, 7);
+                                            BlockState farmland = Blocks.FARMLAND.defaultBlockState();
+                                            Random rand = new Random();
+                                            for (int x = pos1.getX(); x <= pos2.getX(); x++) {
+                                                for (int z = pos1.getZ(); z <= pos2.getZ(); z++) {
+                                                    for (int y = 0; y <= height; y++) {
+                                                        BlockPos pos = new BlockPos(x, y, z);
+                                                        BlockState state = level.getBlockState(pos.above());
+                                                        if ((state.isAir() || state.is(Blocks.WHEAT))) {
+                                                            if ((rand.nextDouble() < 0.01)) break;
+                                                            level.setBlockAndUpdate(pos, farmland);
+                                                            level.setBlockAndUpdate(pos.above(), wheat);
+                                                            break;
+                                                        } else {
+                                                            level.setBlockAndUpdate(pos, dirt);
+                                                        }
+                                                    }
                                                 }
                                             }
-                                        }
-                                    }
-                                    return 1;
-                                })
-                        ).then(Commands.literal("grass_handle")
-                            .executes(context -> {
-                                        MinecraftServer server = context.getSource().getServer();
-                                        ServerLevel level = server.overworld();
-                                        BlockPos pos1 = new BlockPos(69, 10, 680);
-                                        BlockPos pos2 = new BlockPos(340, 10, 942);
-                                        int y = 11;
-                                        BlockState tallGrass = Blocks.TALL_GRASS.defaultBlockState();
-                                        tallGrass.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER);
-                                        for (int x = pos1.getX(); x <= pos2.getX(); x++) {
-                                            for (int z = pos1.getZ(); z <= pos2.getZ(); z++) {
-                                                if (!level.getBlockState(new BlockPos(x, y-1, z)).is(Blocks.TALL_GRASS)) {continue;}
-                                                level.setBlockAndUpdate(new BlockPos(x, y, z), tallGrass);
+                                            return 1;
+                                        })
+                                ).then(Commands.literal("grass_handle")
+                                        .executes(context -> {
+                                            MinecraftServer server = context.getSource().getServer();
+                                            ServerLevel level = server.overworld();
+                                            BlockPos pos1 = new BlockPos(69, 10, 680);
+                                            BlockPos pos2 = new BlockPos(340, 10, 942);
+                                            int y = 11;
+                                            BlockState tallGrass = Blocks.TALL_GRASS.defaultBlockState();
+                                            tallGrass.setValue(BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.UPPER);
+                                            for (int x = pos1.getX(); x <= pos2.getX(); x++) {
+                                                for (int z = pos1.getZ(); z <= pos2.getZ(); z++) {
+                                                    if (!level.getBlockState(new BlockPos(x, y - 1, z)).is(Blocks.TALL_GRASS)) {
+                                                        continue;
+                                                    }
+                                                    level.setBlockAndUpdate(new BlockPos(x, y, z), tallGrass);
+                                                }
                                             }
-                                        }
-                                        return 1;
-                                    })
-                        )
-                    ).then(Commands.literal("start_record")
+                                            return 1;
+                                        })
+                                )
+                        ).then(Commands.literal("start_record")
                                 .then(Commands.argument("map", StringArgumentType.string())
                                         .executes((context) -> {
                                             mapId = context.getArgument("map", String.class);
                                             recording = true;
                                             recordingPlayers.add(context.getSource().getPlayer());
-                                            context.getSource().sendSuccess(()->Component.literal("为你开启记录。"), false);
+                                            context.getSource().sendSuccess(() -> Component.literal("为你开启记录。"), false);
                                             return 1;
                                         })
                                 )
-                    ).then(Commands.literal("stop_record")
-                            .executes((context) -> {
-                                recordingPlayers.remove(context.getSource().getPlayer());
-                                Section section;
-                                if (Objects.nonNull(section = placings.get(context.getSource().getPlayer().getUUID()))) {
-                                    if (!section.place()) {
-                                        context.getSource().sendFailure(Component.literal("请确保当前Section能被放置后重试"));
-                                        return 0;
+                        ).then(Commands.literal("stop_record")
+                                .executes((context) -> {
+                                    recordingPlayers.remove(context.getSource().getPlayer());
+                                    Section section;
+                                    if (Objects.nonNull(section = placings.get(context.getSource().getPlayer().getUUID()))) {
+                                        if (!section.place()) {
+                                            context.getSource().sendFailure(Component.literal("请确保当前Section能被放置后重试"));
+                                            return 0;
+                                        }
+                                        section.remove();
                                     }
-                                    section.remove();
-                                }
-                                context.getSource().sendSuccess(()->Component.literal("为你停止记录。"), false);
-                                return 1;
-                            })
-                    ).then(Commands.literal("end_record")
-                            .then(Commands.argument("map", StringArgumentType.string())
-                                    .executes(DevelopCommands::endRecord)
-                            )
-                    ).then(Commands.literal("undo")
+                                    context.getSource().sendSuccess(() -> Component.literal("为你停止记录。"), false);
+                                    return 1;
+                                })
+                        ).then(Commands.literal("end_record")
+                                .then(Commands.argument("map", StringArgumentType.string())
+                                        .executes(DevelopCommands::endRecord)
+                                )
+                        ).then(Commands.literal("undo")
                                 .executes(context -> {
                                     recordingSections.getLast().remove();
                                     recordingSections.removeLast();
-                                    context.getSource().sendSuccess(()->Component.literal("已撤回"), false);
+                                    context.getSource().sendSuccess(() -> Component.literal("已撤回"), false);
                                     return 1;
                                 })
-                    ).then(Commands.literal("select")
+                        ).then(Commands.literal("select")
                                 .then(Commands.argument("selection", StringArgumentType.string())
                                         .suggests((context, builder) -> {
                                             try {
                                                 String string = StringArgumentType.getString(context, "section");
                                                 SectionRegistry.instance.getSectionInfos().keySet().forEach(id -> {
-                                                    if (id.contains(string)) builder.suggest(id);}
+                                                            if (id.contains(string)) builder.suggest(id);
+                                                        }
                                                 );
                                             } catch (IllegalArgumentException ignored) {
                                                 SectionRegistry.instance.getSectionInfos().keySet().forEach(builder::suggest);
@@ -259,7 +265,7 @@ public class DevelopCommands {
                                                 }
                                                 section.remove();
                                             }
-                                            context.getSource().sendSuccess(()->Component.literal("已选择: "+id), false);
+                                            context.getSource().sendSuccess(() -> Component.literal("已选择: " + id), false);
                                             return 1;
                                         })
                                 )
@@ -296,9 +302,9 @@ public class DevelopCommands {
                                 .executes((context) -> {
                                     Float value = FloatArgumentType.getFloat(context, "value");
                                     ServerPlayer player = context.getSource().getPlayer();
-                                    player.getAbilities().setFlyingSpeed(0.05F*value);
+                                    player.getAbilities().setFlyingSpeed(0.05F * value);
                                     player.connection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
-                                    context.getSource().sendSuccess(() -> Component.literal("飞行速度已设置。"),  false);
+                                    context.getSource().sendSuccess(() -> Component.literal("飞行速度已设置。"), false);
                                     return 1;
                                 })
                         )
@@ -307,25 +313,25 @@ public class DevelopCommands {
                                     ServerPlayer player = context.getSource().getPlayer();
                                     player.getAbilities().setFlyingSpeed(0.05F);
                                     player.connection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
-                                    context.getSource().sendSuccess(() -> Component.literal("飞行速度已设置。"),  false);
+                                    context.getSource().sendSuccess(() -> Component.literal("飞行速度已设置。"), false);
                                     return 1;
                                 })
                         )
         );
     }
 
-    private static boolean isOnAir(ServerLevel level, BlockPos pos){
+    private static boolean isOnAir(ServerLevel level, BlockPos pos) {
         List<BlockPos> blocks = List.of(pos.above(), pos.below(), pos.north(), pos.east(), pos.south(), pos.west());
         for (BlockPos block : blocks) {
             BlockState state = level.getBlockState(block);
-            if ((state.isAir()&&!state.is(Blocks.CAVE_AIR))||
-                    !state.isCollisionShapeFullBlock(level, pos)||
-            state.is(Blocks.BARRIER)||
-            state.is(Blocks.STRUCTURE_VOID)||
-            state.is(Blocks.SAND)||
-            state.is(Blocks.GRAVEL)||
-            state.is(BlockTags.LOGS)||
-            state.is(BlockTags.LEAVES)) return true;
+            if ((state.isAir() && !state.is(Blocks.CAVE_AIR)) ||
+                    !state.isCollisionShapeFullBlock(level, pos) ||
+                    state.is(Blocks.BARRIER) ||
+                    state.is(Blocks.STRUCTURE_VOID) ||
+                    state.is(Blocks.SAND) ||
+                    state.is(Blocks.GRAVEL) ||
+                    state.is(BlockTags.LOGS) ||
+                    state.is(BlockTags.LEAVES)) return true;
         }
         return false;
     }

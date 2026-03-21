@@ -11,33 +11,18 @@ import static cn.plumc.ultimatech.info.UCHInfos.id;
 
 public class SectionRegistry {
     public static SectionRegistry instance;
-
-    public record SectionSize(int length, int width, int height){
-        public String getString(){
-            return length + "x" + width + "x" + height;
-        }
-        @Override
-        public String toString() {
-            return getString();
-        }
-        public static SectionSize get(int length, int width, int height){
-            return new SectionSize(length, width, height);
-        }
-    };
-    public enum SectionDifficulty {EASY, NORMAL, HARD}
-    public record SectionInfo(int code, String id, String name, SectionSize size, SectionDifficulty difficulty, double weight, Class<? extends Section> section) {}
-
     private final Map<Integer, Class<? extends Section>> byCode = new HashMap<>();
+
+    ;
     private final Map<String, Class<? extends Section>> byId = new HashMap<>();
     private final Map<String, Class<? extends Section>> byName = new HashMap<>();
     private final Map<String, SectionInfo> sectionInfos = new HashMap<>();
-
     public SectionRegistry() {
         instance = this;
         builtinRegistries();
     }
 
-    private void builtinRegistries(){
+    private void builtinRegistries() {
         register(1, id("beam1"), "横木", SectionSize.get(1, 1, 1), SectionDifficulty.EASY, Beam1.class);
         register(2, id("beam2"), "横木", SectionSize.get(2, 1, 1), SectionDifficulty.EASY, Beam2.class);
         register(3, id("beam3"), "横木", SectionSize.get(3, 1, 1), SectionDifficulty.EASY, Beam3.class);
@@ -98,12 +83,12 @@ public class SectionRegistry {
         register(info);
     }
 
-    public void register(int code, String id, String name, SectionSize size, SectionDifficulty difficulty, Class<? extends Section> section){
+    public void register(int code, String id, String name, SectionSize size, SectionDifficulty difficulty, Class<? extends Section> section) {
         SectionInfo info = new SectionInfo(code, id, name, size, difficulty, 1.0, section);
         register(info);
     }
 
-    public void register(int code, String id, String name, SectionSize size, SectionDifficulty difficulty, double weight, Class<? extends Section> section){
+    public void register(int code, String id, String name, SectionSize size, SectionDifficulty difficulty, double weight, Class<? extends Section> section) {
         SectionInfo info = new SectionInfo(code, id, name, size, difficulty, weight, section);
         register(info);
     }
@@ -132,8 +117,8 @@ public class SectionRegistry {
     }
 
     public SectionInfo getSectionInfo(Class<? extends Section> section) {
-        for(SectionInfo info : sectionInfos.values()){
-            if(info.section.equals(section)){
+        for (SectionInfo info : sectionInfos.values()) {
+            if (info.section.equals(section)) {
                 return info;
             }
         }
@@ -141,8 +126,8 @@ public class SectionRegistry {
     }
 
     public String getId(Class<? extends Section> section) {
-        for(SectionInfo info : sectionInfos.values()){
-            if(info.section.equals(section)){
+        for (SectionInfo info : sectionInfos.values()) {
+            if (info.section.equals(section)) {
                 return info.id;
             }
         }
@@ -151,5 +136,26 @@ public class SectionRegistry {
 
     public Map<String, SectionInfo> getSectionInfos() {
         return ImmutableMap.copyOf(sectionInfos);
+    }
+
+    public enum SectionDifficulty {EASY, NORMAL, HARD}
+
+    public record SectionSize(int length, int width, int height) {
+        public static SectionSize get(int length, int width, int height) {
+            return new SectionSize(length, width, height);
+        }
+
+        public String getString() {
+            return length + "x" + width + "x" + height;
+        }
+
+        @Override
+        public String toString() {
+            return getString();
+        }
+    }
+
+    public record SectionInfo(int code, String id, String name, SectionSize size, SectionDifficulty difficulty,
+                              double weight, Class<? extends Section> section) {
     }
 }

@@ -37,47 +37,7 @@ public class Coin extends Section {
         setProcess(0);
     }
 
-    @Override
-    public void tickRun(int tickTime) {
-        if (!checkCoinCanPick()) return;
-        List<PlayerHit> playerHits = Hit.getPlayerHits(game);
-        BlockHit coinHit = new BlockHit(content.getEntityPosition(UCHInfos.contentID("coin")));
-        for (PlayerHit playerHit : playerHits) {
-            if (coinHit.intersect(playerHit)&&checkCoinCanPick()) {
-                picked = true;
-                pickedPlayer = playerHit.getPlayer();
-                setVisible(false);
-                addCoin(pickedPlayer);
-            }
-        }
-    }
-
-    private boolean checkCoinCanPick(){
-        if (!existing||picked) return false;
-        Entity coin = content.getContentEntity(UCHInfos.contentID("coin"));
-        EntityDataAccessor accessor = new EntityDataAccessor(coin);
-        CompoundTag data = accessor.getData();
-        return !data.getCompound("item").getString("id").equals("minecraft:air");
-    }
-
-    private void setVisible(boolean visible) {
-        Entity coin = content.getContentEntity(UCHInfos.contentID("coin"));
-        DisplayEntityUtil.setVisible(coin, "minecraft:activator_rail", visible);
-    }
-
-    private void addCoin(ServerPlayer player) {
-        Inventory inventory = player.getInventory();
-        ItemStack item = inventory.getItem(0);
-        if (ItemStack.isSameItem(item, getCoinItem())){
-            item.setCount(item.getCount() + 1);
-            inventory.setItem(0, item);
-        } else {
-            inventory.add(getCoinItem());
-        }
-        inventory.armor.set(3, getCoinItem());
-    }
-
-    private static ItemStack getCoinItem(){
+    private static ItemStack getCoinItem() {
         ItemStack itemStack = new ItemStack(Items.ACTIVATOR_RAIL);
 
         MutableComponent name = Component.literal("金币")
@@ -96,6 +56,68 @@ public class Coin extends Section {
         return itemStack;
     }
 
+    public static void clearPlayerCoin(ServerPlayer player) {
+        Inventory inventory = player.getInventory();
+        for (int i = 0; i < 36; i++) {
+            ItemStack item = inventory.getItem(i);
+            if (ItemStack.isSameItem(item, getCoinItem())) {
+                inventory.setItem(i, ItemStack.EMPTY);
+            }
+        }
+    }
+
+    public static int getPlayerCoinCount(ServerPlayer player) {
+        int count = 0;
+        Inventory inventory = player.getInventory();
+        for (int i = 0; i < 36; i++) {
+            ItemStack item = inventory.getItem(i);
+            if (ItemStack.isSameItem(item, getCoinItem())) {
+                count += item.getCount();
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public void tickRun(int tickTime) {
+        if (!checkCoinCanPick()) return;
+        List<PlayerHit> playerHits = Hit.getPlayerHits(game);
+        BlockHit coinHit = new BlockHit(content.getEntityPosition(UCHInfos.contentID("coin")));
+        for (PlayerHit playerHit : playerHits) {
+            if (coinHit.intersect(playerHit) && checkCoinCanPick()) {
+                picked = true;
+                pickedPlayer = playerHit.getPlayer();
+                setVisible(false);
+                addCoin(pickedPlayer);
+            }
+        }
+    }
+
+    private boolean checkCoinCanPick() {
+        if (!existing || picked) return false;
+        Entity coin = content.getContentEntity(UCHInfos.contentID("coin"));
+        EntityDataAccessor accessor = new EntityDataAccessor(coin);
+        CompoundTag data = accessor.getData();
+        return !data.getCompound("item").getString("id").equals("minecraft:air");
+    }
+
+    private void setVisible(boolean visible) {
+        Entity coin = content.getContentEntity(UCHInfos.contentID("coin"));
+        DisplayEntityUtil.setVisible(coin, "minecraft:activator_rail", visible);
+    }
+
+    private void addCoin(ServerPlayer player) {
+        Inventory inventory = player.getInventory();
+        ItemStack item = inventory.getItem(0);
+        if (ItemStack.isSameItem(item, getCoinItem())) {
+            item.setCount(item.getCount() + 1);
+            inventory.setItem(0, item);
+        } else {
+            inventory.add(getCoinItem());
+        }
+        inventory.armor.set(3, getCoinItem());
+    }
+
     @Override
     public void onPlayerWin(ServerPlayer player) {
         if (pickedPlayer.getUUID().equals(player.getUUID())) existing = false;
@@ -104,7 +126,7 @@ public class Coin extends Section {
     @Override
     public void onPlayerDeath(ServerPlayer player) {
         if (Objects.nonNull(pickedPlayer)) clearPlayerCoin(pickedPlayer);
-        if (pickedPlayer!=null&&pickedPlayer.getUUID().equals(player.getUUID())) pickedPlayer = null;
+        if (pickedPlayer != null && pickedPlayer.getUUID().equals(player.getUUID())) pickedPlayer = null;
     }
 
     @Override
@@ -115,28 +137,7 @@ public class Coin extends Section {
             pickedPlayer = null;
             picked = false;
             setVisible(true);
-        };
-    }
-
-    public static void clearPlayerCoin(ServerPlayer player) {
-        Inventory inventory = player.getInventory();
-        for (int i = 0; i < 36; i++){
-            ItemStack item = inventory.getItem(i);
-            if (ItemStack.isSameItem(item, getCoinItem())){
-                inventory.setItem(i, ItemStack.EMPTY);
-            }
         }
-    }
-
-    public static int getPlayerCoinCount(ServerPlayer player){
-        int count = 0;
-        Inventory inventory = player.getInventory();
-        for (int i = 0; i < 36; i++){
-            ItemStack item = inventory.getItem(i);
-            if (ItemStack.isSameItem(item, getCoinItem())){
-                count+=item.getCount();
-            }
-        }
-        return count;
+        ;
     }
 }

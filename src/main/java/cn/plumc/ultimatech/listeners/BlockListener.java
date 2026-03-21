@@ -20,7 +20,7 @@ public class BlockListener {
     @SubscribeEvent
     public static void onPlaceBlockEvent(BlockEvent.EntityPlaceEvent event) {
         if (event.getEntity() instanceof Player player) {
-            if (player.getTags().contains(StatusTags.PUTTING_SECTION_TAG)){
+            if (player.getTags().contains(StatusTags.PUTTING_SECTION_TAG)) {
                 event.setCanceled(true);
             }
         }
@@ -32,7 +32,7 @@ public class BlockListener {
         if (player.getTags().contains(StatusTags.PUTTING_SECTION_TAG)) {
             event.setCanceled(true);
         }
-        if (player.getTags().contains("develop.test")){
+        if (player.getTags().contains("develop.test")) {
             event.setCanceled(true);
             BlockPos pos = event.getPos();
             Game game = Lobby.games.get(MapInfo.FragileBridge.id);

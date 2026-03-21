@@ -40,8 +40,8 @@ public class Fan extends Section {
         effectMovement = transform.rotateVector(new Vec3(1.0, 0.0, 1.0));
         effectMovement = new Vec3(Math.abs(effectMovement.x), Math.abs(effectMovement.y), Math.abs(effectMovement.z));
         deltaMovement = transform.toNonNegative(transform.rotateVector(new Vec3(0, 0.2, 0)));
-        hit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1, 0), new Vec3(3, 8, 3));
-        particleHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1, 0), new Vec3(3, 3.5, 3));
+        hit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0, 1, 0), new Vec3(3, 8, 3));
+        particleHit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0, 1, 0), new Vec3(3, 3.5, 3));
         transform.applyRotationToRelativeHit(hit);
         transform.applyRotationToRelativeHit(particleHit);
     }
@@ -50,7 +50,7 @@ public class Fan extends Section {
     public void tickRun(int tickTime) {
         double progress = process.progress(0, 1.2);
         HashMap<SectionRotation.Axis, Double> rotations = MotionTransform.createZeroRotationMap();
-        rotations.put(SectionRotation.Axis.Y, progress*360);
+        rotations.put(SectionRotation.Axis.Y, progress * 360);
         transform.applyEntityRotation(content.getContentEntity("uch.fan.fan"), rotations, 0.05);
 
         List<ServerPlayer> players = hit.detectPlayers(game);
@@ -73,18 +73,18 @@ public class Fan extends Section {
         vfx();
     }
 
-    private void vfx(){
+    private void vfx() {
         Vec3 point = BlockUtil.getRandomPointInAABB(particleHit.getAABB());
         DustParticleOptions dust = new DustParticleOptions(new Vec3(1, 1, 1).toVector3f(), 1);
         trackingParticles.add(new Tuple<>(dust, point));
 
         for (Tuple<DustParticleOptions, Vec3> trackingParticle : ImmutableList.copyOf(trackingParticles)) {
             Vec3 pos = trackingParticle.getB();
-            if (!hit.getAABB().contains(pos.add(deltaMovement))){
+            if (!hit.getAABB().contains(pos.add(deltaMovement))) {
                 trackingParticles.remove(trackingParticle);
             }
             BlockPos blockPos = BlockUtil.toBlockPos(pos);
-            if (!content.checkCanPlace(blockPos, level.getBlockState(blockPos))){
+            if (!content.checkCanPlace(blockPos, level.getBlockState(blockPos))) {
                 trackingParticles.remove(trackingParticle);
             }
             trackingParticle.setB(pos.add(deltaMovement));

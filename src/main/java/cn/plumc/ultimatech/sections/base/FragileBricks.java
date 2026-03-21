@@ -32,7 +32,8 @@ public class FragileBricks extends Section {
     public void tickRun(int tickTime) {
         if (fullBreak) return;
         List<PlayerHit> playerHits = Hit.getPlayerHits(game);
-        playerLoop: for (PlayerHit playerHit : playerHits) {
+        playerLoop:
+        for (PlayerHit playerHit : playerHits) {
             for (BlockPos blockPos : content.getBlocksPos()) {
                 BlockSurfaceHit blockSurfaceHit = new BlockSurfaceHit(blockPos);
                 if (blockSurfaceHit.intersect(playerHit)) {
@@ -60,15 +61,16 @@ public class FragileBricks extends Section {
         else {
             newState = Blocks.AIR.defaultBlockState();
             fullBreak = true;
-        };
+        }
+        ;
         vfx();
-        for (java.util.Map.Entry<BlockPos, BlockState> entry: bricks.entrySet()){
+        for (java.util.Map.Entry<BlockPos, BlockState> entry : bricks.entrySet()) {
             content.manager.getMiddleLayer().set(entry.getKey(), newState);
         }
         return true;
     }
 
-    private void vfx(){
+    private void vfx() {
         HashMap<BlockPos, BlockState> blocks = content.getBlocks();
         for (BlockPos blockPos : blocks.keySet()) {
             Vec3 pos = BlockUtil.toVec3(blockPos).add(0.5, 0.5, 0.5);

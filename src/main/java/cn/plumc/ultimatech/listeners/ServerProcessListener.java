@@ -5,6 +5,7 @@ import cn.plumc.ultimatech.UltimateCH;
 import cn.plumc.ultimatech.commands.*;
 import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.game.map.MapInfo;
+import cn.plumc.ultimatech.provider.FallingBlockPreventProvider;
 import cn.plumc.ultimatech.section.SectionRegistry;
 import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -36,6 +37,7 @@ public class ServerProcessListener {
         new SectionRegistry();
         MapInfo.registerMaps();
         createPatch(server);
+        new FallingBlockPreventProvider().load();
     }
 
     @SubscribeEvent
@@ -52,7 +54,7 @@ public class ServerProcessListener {
             Files.createDirectories(UCH_PATCH);
             Files.createDirectories(CACHED_PATCH);
             Files.createDirectories(CACHED_SKIN_PATCH);
-        } catch(IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Couldn't create .minecraft/wurst folder.", e);
         }
     }

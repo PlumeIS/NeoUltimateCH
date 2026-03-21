@@ -27,15 +27,15 @@ public class SharpStep extends Section {
         setProcess(0);
     }
 
-    public void init(){
+    public void init() {
         if (!initialized) {
             transform.createItemDisplay("minecraft:purple_carpet", new Vec3(0.5, 0.5, 0.5), UCHInfos.contentID("section.control.spike"), null);
             transform.createItemDisplay("minecraft:purple_carpet", new Vec3(0.5, 0.5, 1.5), UCHInfos.contentID("section.control.spike"), null);
             transform.createItemDisplay("minecraft:purple_carpet", new Vec3(0.5, 0.5, 2.5), UCHInfos.contentID("section.control.spike"), null);
             initialized = true;
         }
-        triggerHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1, 0), new Vec3(1, 1.2, 3));
-        deathHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0, 1, 0), new Vec3(1, 1.6, 3));
+        triggerHit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0, 1, 0), new Vec3(1, 1.2, 3));
+        deathHit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0, 1, 0), new Vec3(1, 1.6, 3));
         transform.applyRotationToRelativeHit(triggerHit);
         transform.applyRotationToRelativeHit(deathHit);
         setSpikeVisible(false);
@@ -58,7 +58,7 @@ public class SharpStep extends Section {
             setSpikeVisible(true);
             vfx(new Vec3(1, 0, 0));
         }
-        if (process.at(0.8)){
+        if (process.at(0.8)) {
             spikes.forEach(entity -> transform.moveEntityRelative(entity, new Vec3(0, 1, 0), 0.2));
         }
         if (process.in(1.0, 2.8)) {
@@ -76,7 +76,7 @@ public class SharpStep extends Section {
         }
     }
 
-    private void setSpikeVisible(boolean visible){
+    private void setSpikeVisible(boolean visible) {
         List<Entity> entities = content.getContentEntities(UCHInfos.contentID("section.control.spike"));
         for (Entity entity : entities) {
             DisplayEntityUtil.setVisible(entity, "minecraft:purple_carpet", visible);
@@ -93,7 +93,7 @@ public class SharpStep extends Section {
         triggered = false;
     }
 
-    private void vfx(Vec3 color){
+    private void vfx(Vec3 color) {
         List<Vec3> boxPoints = transform.generateOutlinePoints(0.2, 0.2);
         for (Vec3 boxPoint : boxPoints) {
             level.sendParticles(new DustParticleOptions(color.toVector3f(), 1), boxPoint.x, boxPoint.y, boxPoint.z, 1, 0, 0, 0, 0);

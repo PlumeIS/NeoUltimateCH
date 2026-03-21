@@ -38,9 +38,9 @@ public class FlyingSaucer extends MovableStep {
 
     @Override
     public void init() {
-        blocks = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.5, 0.5, 0.5), new Vec3(1.5, 0.5, 1.5));
+        blocks = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.5, 0.5, 0.5), new Vec3(1.5, 0.5, 1.5));
         transform.applyRotationToRelativeHit(blocks);
-        blocksCurrent = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.5, 0.5, 0.5), new Vec3(1.5, 0.5, 1.5));
+        blocksCurrent = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.5, 0.5, 0.5), new Vec3(1.5, 0.5, 1.5));
         transform.applyRotationToRelativeHit(blocksCurrent);
     }
 
@@ -48,10 +48,11 @@ public class FlyingSaucer extends MovableStep {
     public void tickRun(int tickTime) {
         if (process.at(10.0)) {
             position = new Vec3(0.0, 0.0, 0.0);
-            blocksCurrent = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.5, 0.5, 0.5), new Vec3(1.5, 0.5, 1.5));
+            blocksCurrent = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.5, 0.5, 0.5), new Vec3(1.5, 0.5, 1.5));
             transform.applyRotationToRelativeHit(blocksCurrent);
             return;
-        };
+        }
+        ;
         Vec3 currentVelocity = velocity;
         if (process.in(5.0, 10.0)) {
             currentVelocity = velocity.scale(-1);
@@ -62,7 +63,7 @@ public class FlyingSaucer extends MovableStep {
 
         double fanProgress = process.progress(0.0, 0.5);
         HashMap<SectionRotation.Axis, Double> rotations = MotionTransform.createZeroRotationMap();
-        rotations.put(SectionRotation.Axis.Y, -360.0*fanProgress);
+        rotations.put(SectionRotation.Axis.Y, -360.0 * fanProgress);
         Entity entity = content.getContentEntity("uch.flying_saucer.fan");
         transform.applyEntityRotationWithCenter(
                 entity,

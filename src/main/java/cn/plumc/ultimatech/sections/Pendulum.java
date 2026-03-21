@@ -41,8 +41,8 @@ public class Pendulum extends Section {
             if (entity.getTags().contains("uch.pendulum.frame")) continue;
 
             double r = pos.distanceTo(center);
-            double dy = r*Math.cos(theta);
-            double dx = r*Math.sin(theta);
+            double dy = r * Math.cos(theta);
+            double dx = r * Math.sin(theta);
 
             transform.applyEntityRotation(entity, rotations, 0.05);
             transform.moveEntityAbsolute(entity, center.add(new Vec3(0, -dy, -dx)), 0.05);
@@ -73,41 +73,52 @@ public class Pendulum extends Section {
             this.omega0 = omega0;
             reset();
         }
-        /** 重置为初始状态 */
+
+        /**
+         * 重置为初始状态
+         */
         public void reset() {
             this.theta = theta0;
             this.omega = omega0;
         }
 
-        /** 单步积分（dt 秒） */
+        /**
+         * 单步积分（dt 秒）
+         */
         public void step(double dt) {
             double k1_theta = omega;
-            double k1_omega = - (g / L) * Math.sin(theta);
+            double k1_omega = -(g / L) * Math.sin(theta);
 
             double k2_theta = omega + 0.5 * dt * k1_omega;
-            double k2_omega = - (g / L) * Math.sin(theta + 0.5 * dt * k1_theta);
+            double k2_omega = -(g / L) * Math.sin(theta + 0.5 * dt * k1_theta);
 
             double k3_theta = omega + 0.5 * dt * k2_omega;
-            double k3_omega = - (g / L) * Math.sin(theta + 0.5 * dt * k2_theta);
+            double k3_omega = -(g / L) * Math.sin(theta + 0.5 * dt * k2_theta);
 
             double k4_theta = omega + dt * k3_omega;
-            double k4_omega = - (g / L) * Math.sin(theta + dt * k3_theta);
+            double k4_omega = -(g / L) * Math.sin(theta + dt * k3_theta);
 
-            theta += (dt / 6.0) * (k1_theta + 2*k2_theta + 2*k3_theta + k4_theta);
-            omega += (dt / 6.0) * (k1_omega + 2*k2_omega + 2*k3_omega + k4_omega);
+            theta += (dt / 6.0) * (k1_theta + 2 * k2_theta + 2 * k3_theta + k4_theta);
+            omega += (dt / 6.0) * (k1_omega + 2 * k2_omega + 2 * k3_omega + k4_omega);
         }
 
-        /** 获取当前角度 θ(t) */
+        /**
+         * 获取当前角度 θ(t)
+         */
         public double getTheta() {
             return theta;
         }
 
-        /** X 坐标 */
+        /**
+         * X 坐标
+         */
         public double getX() {
             return L * Math.sin(theta);
         }
 
-        /** Y 坐标 */
+        /**
+         * Y 坐标
+         */
         public double getY() {
             return -L * Math.cos(theta);
         }

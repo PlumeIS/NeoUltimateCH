@@ -32,7 +32,7 @@ public class Artillery extends Section {
     @Override
     public void init() {
         motion = transform.rotateVector(new Vec3(0.0, 1.3, 3.0));
-        triggerHit = new BoxHit.Relative(()->content.getOrigin(), new Vec3(0.2, 0.0, 0.2), new Vec3(2.8, 2.8, 2.8));
+        triggerHit = new BoxHit.Relative(() -> content.getOrigin(), new Vec3(0.2, 0.0, 0.2), new Vec3(2.8, 2.8, 2.8));
         transform.applyRotationToRelativeHit(triggerHit);
     }
 
@@ -40,8 +40,8 @@ public class Artillery extends Section {
     public void tickRun(int tickTime) {
         List<Entity> entities = triggerHit.detectEntities(level, entity -> {
             UUID uuid = entity.getUUID();
-            return !passengerCooldown.containsKey(uuid)||
-                    (System.currentTimeMillis()-passengerCooldown.get(uuid))>500L;
+            return !passengerCooldown.containsKey(uuid) ||
+                    (System.currentTimeMillis() - passengerCooldown.get(uuid)) > 500L;
         });
         if (Objects.isNull(passenger) && !entities.isEmpty()) {
             passenger = entities.getFirst();
@@ -50,17 +50,17 @@ public class Artillery extends Section {
             process.start();
         }
         if (Objects.nonNull(passenger)) {
-            if (!playerOnly(player -> PlayerUtil.teleport(player, triggerHit.getAABB().getCenter()))){
+            if (!playerOnly(player -> PlayerUtil.teleport(player, triggerHit.getAABB().getCenter()))) {
                 passenger.setDeltaMovement(Vec3.ZERO);
                 passenger.setPos(triggerHit.getAABB().getCenter());
-                for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()){
+                for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()) {
                     serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(passenger));
                 }
             }
             if (process.at(1.0)) {
                 playerOnly(player -> player.setGameMode(GameType.ADVENTURE));
                 passenger.setDeltaMovement(motion);
-                for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()){
+                for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()) {
                     serverPlayer.connection.send(new ClientboundSetEntityMotionPacket(passenger));
                 }
                 passengerCooldown.put(passenger.getUUID(), System.currentTimeMillis());
@@ -78,7 +78,10 @@ public class Artillery extends Section {
     }
 
     private boolean playerOnly(Consumer<ServerPlayer> consumer) {
-        if (passenger instanceof ServerPlayer player) {consumer.accept(player);return true;}
+        if (passenger instanceof ServerPlayer player && game.getStatus().playings.contains(player)) {
+            consumer.accept(player);
+            return true;
+        }
         return false;
     }
 }

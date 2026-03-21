@@ -1,6 +1,6 @@
 package cn.plumc.ultimatech.game.map.maps;
 
-import cn.plumc.ultimatech.Lobby;
+import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.game.map.Map;
 import cn.plumc.ultimatech.game.map.MapInfo;
 import cn.plumc.ultimatech.section.SectionSerialization;
@@ -32,10 +32,10 @@ public class FragileBridge extends Map {
     }
 
     @Override
-    public void startGame(List<ServerPlayer> players) {
-        super.startGame(players);
+    public void startGame(Game game, List<ServerPlayer> players) {
+        super.startGame(game, players);
         try {
-            SectionSerialization.load(MapInfo.FragileBridge, Lobby.games.get(MapInfo.FragileBridge.id));
+            SectionSerialization.load(MapInfo.FragileBridge, currentGame);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
