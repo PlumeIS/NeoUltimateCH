@@ -6,14 +6,13 @@ import cn.plumc.ultimatech.game.SectionManager;
 import cn.plumc.ultimatech.game.map.MapInfo;
 import cn.plumc.ultimatech.info.StatusTags;
 import cn.plumc.ultimatech.info.UCHInfos;
-import cn.plumc.ultimatech.section.Section;
-import cn.plumc.ultimatech.section.SectionRegistry;
-import cn.plumc.ultimatech.section.SectionRotation;
-import cn.plumc.ultimatech.section.SectionSerialization;
+import cn.plumc.ultimatech.section.*;
 import cn.plumc.ultimatech.utils.CommandUtil;
+import cn.plumc.ultimatech.utils.DisplayEntityUtil;
 import cn.plumc.ultimatech.utils.PlayerUtil;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -25,12 +24,15 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.entity.Display;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.*;
 
@@ -43,6 +45,7 @@ public class DevelopCommands {
     private static final HashMap<UUID, Section> placings = new HashMap<>();
     private static boolean recording = false;
     private static String mapId = null;
+    private static int tentacleId = 0;
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         registerDevelop(dispatcher);
@@ -104,7 +107,7 @@ public class DevelopCommands {
                                         .executes(context -> {
                                             MinecraftServer server = context.getSource().getServer();
                                             CommandSourceStack source = context.getSource();
-                                            if (source.getPlayer().position().distanceTo(UCHInfos.DEVELOPER_POINT) < 500)
+                                            if (source.getPlayer().position().distanceTo(DEVELOPER_POINT) < 500)
                                                 return 1;
                                             List<String> commands = List.of("/kill @e[type=item_display, distance=..200]",
                                                     "/kill @e[type=block_display, distance=..200]",
@@ -204,6 +207,48 @@ public class DevelopCommands {
                                             }
                                             return 1;
                                         })
+                                ).then(Commands.literal("create_tentacles").then(
+                                        Commands.argument("nodes", IntegerArgumentType.integer())
+                                            .executes(context -> {
+                                                Vec3 origin = context.getSource().getPlayer().position();
+                                                int nodes = IntegerArgumentType.getInteger(context, "nodes");
+
+                                                ServerLevel level = context.getSource().getLevel();
+
+                                                Display.ItemDisplay last = null;
+                                                Display.ItemDisplay current = null;
+
+                                                UUID lastUUID = null;
+                                                UUID currentUUID = null;
+
+                                                double size = 3.0;
+                                                double step = (size - 1.0) / nodes;
+                                                for (int i = 0; i < nodes; i++) {
+                                                    double scale = size - step * i;
+                                                    current = new Display.ItemDisplay(EntityType.ITEM_DISPLAY, level);
+                                                    DisplayEntityUtil.setVisible(current, "minecraft:waxed_chiseled_copper", true);
+                                                    MotionTransform.updateEntityTransformation(current, transformation -> {
+                                                        transformation.put("scale", MotionTransform.toFloatListTag(new Vec3(scale, 1.0, scale)));
+                                                    }, 0);
+                                                    currentUUID = current.getUUID();
+                                                    current.addTag("tentacle:" + tentacleId);
+                                                    current.addTag("node:" + currentUUID);
+                                                    current.addTag("node.last:" + (lastUUID != null ? lastUUID : "null"));
+
+                                                    if (last != null) last.addTag("node.next:" + currentUUID);
+
+                                                    last = current;
+                                                    lastUUID = currentUUID;
+
+                                                    current.setPos(origin.add(0, i, 0));
+                                                    level.addFreshEntity(current);
+                                                }
+                                                last.addTag("node.next:null");
+                                                DisplayEntityUtil.setVisible(last, "minecraft:exposed_chiseled_copper", true);
+                                                tentacleId++;
+                                                return 1;
+                                            })
+                                        )
                                 )
                         ).then(Commands.literal("start_record")
                                 .then(Commands.argument("map", StringArgumentType.string())
