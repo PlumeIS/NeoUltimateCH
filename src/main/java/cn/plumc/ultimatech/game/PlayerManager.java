@@ -30,6 +30,15 @@ public class PlayerManager {
         this.status = status;
     }
 
+    public void setMapTime(long time) {
+        ClientboundSetTimePacket packet = new ClientboundSetTimePacket(game.getLevel().getGameTime(), time, false);
+        players.forEach(player -> {
+            player.getTags().remove(StatusTags.SKIP_TIME_SYNC_TAG);
+            player.connection.send(packet);
+            player.getTags().add(SKIP_TIME_SYNC_TAG);
+        });
+    }
+
     public void setMapTime() {
         ClientboundSetTimePacket packet = new ClientboundSetTimePacket(game.getLevel().getGameTime(), game.getStatus().map.dayTime, false);
         players.forEach(player -> {

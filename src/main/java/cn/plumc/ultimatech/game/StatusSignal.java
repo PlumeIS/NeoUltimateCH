@@ -38,7 +38,11 @@ public class StatusSignal {
             player.addTag(PICKED_SECTION_TAG);
             player.addTag(PUTTED_SECTION_TAG);
         }
+
         player.sendSystemMessage(Component.literal("你放弃了本轮的道具放置"));
+        TickUtil.tickRun(() -> {
+            player.setGameMode(GameType.SPECTATOR);
+        });
     }
 
     public void onPlayerWin(ServerPlayer player) {

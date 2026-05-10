@@ -10,6 +10,7 @@ public enum MapInfo {
     Wheatland("wheatland", "麦田", new Wheatland(), Map.Region.get(-32, 3, -35, -28, 5, -32)),
     FragileBridge("fragile_bridge", "碎碎桥", new FragileBridge(), Map.Region.get(-1, 8, -35, 3, 10, -37)),
     OldMansion("old_mansion", "旧房子", new OldMansion(), Map.Region.get(-33, 1, -4, -35, 3, -6)),
+    Island("island", "岛屿", new Island(), Map.Region.get(0, 0, 0, 0, 0, 0))
     ;
 
     public final String id;

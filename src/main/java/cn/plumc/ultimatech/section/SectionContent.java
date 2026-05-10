@@ -292,10 +292,10 @@ public class SectionContent {
     public void setSectionViewInventory(ServerPlayer player) {
         Inventory inventory = player.getInventory();
         for (ItemStack itemStack : inventory.items) {
-            if (ItemStack.isSameItem(itemStack, SECTION_PLACE_ITEM) ||
-                    ItemStack.isSameItem(itemStack, SECTION_ROTATE_X_ITEM) ||
-                    ItemStack.isSameItem(itemStack, SECTION_ROTATE_Y_ITEM) ||
-                    ItemStack.isSameItem(itemStack, SECTION_ROTATE_Z_ITEM)) {
+            if (!ItemStack.isSameItem(itemStack, SECTION_PLACE_ITEM) &&
+                    !ItemStack.isSameItem(itemStack, SECTION_ROTATE_X_ITEM) &&
+                    !ItemStack.isSameItem(itemStack, SECTION_ROTATE_Y_ITEM) &&
+                    !ItemStack.isSameItem(itemStack, SECTION_ROTATE_Z_ITEM)) {
                 inventory.clearContent();
             }
         }
@@ -319,10 +319,6 @@ public class SectionContent {
                         itemEntity.getItem().is(SECTION_ROTATE_Z_ITEM.getItem()));
         for (ItemEntity itemEntity : itemEntities) {
             itemEntity.kill();
-        }
-
-        for (int i = 0; i < inventory.getContainerSize(); i++) {
-            player.connection.send(PlayerUtil.createInventoryUpdatePacket(player, i));
         }
     }
 

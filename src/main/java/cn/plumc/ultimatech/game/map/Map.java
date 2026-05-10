@@ -37,6 +37,10 @@ public class Map {
         this.minStartPlayer = minStartPlayer;
     }
 
+    public void changeTime(long time) {
+        currentGame.getPlayerManager().setMapTime(time);
+    }
+
     public Vec3 getAStartPos() {
         BlockPos[] bounds = startRegion.enclose();
         BlockPos min = bounds[0], max = bounds[1];

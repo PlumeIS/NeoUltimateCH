@@ -9,8 +9,8 @@ import java.util.List;
 public class EffectProvider {
     public static void second(List<ServerPlayer> players) {
         for (ServerPlayer player : players) {
-            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, -1, 0, false, false));
-            player.addEffect(new MobEffectInstance(MobEffects.JUMP, -1, 0, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, -1, 1, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.JUMP, -1, 1, false, false));
         }
     }
 }
