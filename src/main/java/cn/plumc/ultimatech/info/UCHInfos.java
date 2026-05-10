@@ -73,6 +73,10 @@ public class UCHInfos {
             Component.literal("绕Z轴旋转").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.YELLOW)
     ), contentID("action_item.rotate.z"));
 
+    public static final ItemStack OFFSET_TESTING_CANCEL = withTag(getStyledItem(new ItemStack(Items.BARRIER),
+            Component.literal("取消测试").withStyle(ChatFormatting.UNDERLINE).withStyle(ChatFormatting.RED)
+    ), contentID("action.offset.add.001"));
+
     public static String contentID(String name){
         return UltimateCH.CONTENT_ID + "." + name;
     }

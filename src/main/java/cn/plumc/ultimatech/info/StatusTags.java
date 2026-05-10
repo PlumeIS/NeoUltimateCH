@@ -5,6 +5,8 @@ import static cn.plumc.ultimatech.info.UCHInfos.id;
 public class StatusTags {
     public static final String DEVELOPER_TAG = id("developer");
 
+    public static final String OFFSET_TESTING_TAG = id("offset_testing");
+
     public static final String NO_JUMP_TAG = id("att","no_jump");
     public static final String BOAT_JUMP_TAG = id("att","boat_jump");
     public static final String SHIFT_JUMP_TAG = id("att","shift_jump");

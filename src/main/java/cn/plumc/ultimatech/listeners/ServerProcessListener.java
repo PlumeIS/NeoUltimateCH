@@ -27,17 +27,15 @@ public class ServerProcessListener {
         SectionCommand.register(event.getDispatcher());
         HubCommand.register(event.getDispatcher());
         DevelopCommands.register(event.getDispatcher());
+        OffsetCommand.register(event.getDispatcher());
         MotionCommand.register(event.getDispatcher());
+        TestCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
-        MinecraftServer server = event.getServer();
-        server.getPlayerList().op(server.getProfileCache().get("Dev").get());
-        new SectionRegistry();
-        MapInfo.registerMaps();
-        createPatch(server);
-        new FallingBlockPreventProvider().load();
+        createPatch(event.getServer());
+        UltimateCH.INSTANCE.initialize(event.getServer());
     }
 
     @SubscribeEvent

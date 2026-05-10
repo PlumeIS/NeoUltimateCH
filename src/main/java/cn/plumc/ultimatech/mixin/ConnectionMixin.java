@@ -2,11 +2,14 @@ package cn.plumc.ultimatech.mixin;
 
 import cn.plumc.ultimatech.Lobby;
 import cn.plumc.ultimatech.commands.DevelopCommands;
+import cn.plumc.ultimatech.commands.TestCommand;
 import cn.plumc.ultimatech.game.Game;
 import cn.plumc.ultimatech.info.StatusTags;
 import cn.plumc.ultimatech.info.UCHInfos;
+import cn.plumc.ultimatech.provider.offset.OffsetProvider;
 import cn.plumc.ultimatech.provider.WallJumpProvider;
 import cn.plumc.ultimatech.utils.ContainerUtil;
+import cn.plumc.ultimatech.utils.PlayerUtil;
 import cn.plumc.ultimatech.utils.TickUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,7 +21,9 @@ import net.minecraft.network.protocol.common.ServerboundKeepAlivePacket;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.RunningOnDifferentThreadException;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -29,6 +34,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.RejectedExecutionException;
 
 @Mixin(Connection.class)
@@ -103,13 +110,17 @@ public abstract class ConnectionMixin {
                 if (player == null) {
                     return;
                 }
-                for (Game game : Lobby.games.values()) {
-                    TickUtil.tickRun(() -> {
-                        if (game.getPlayerManager().getPlayers().contains(player)) {
-                            game.getPlayerManager().onPlayerUseItem(player, player.getInventory().getSelected());
-                        }
-                        DevelopCommands.onPlayerUseItem(player, player.getInventory().getSelected());
-                    });
+                if (player.getTags().contains(StatusTags.OFFSET_TESTING_TAG)) {
+                    OffsetProvider.INSTANCE.interact(player, player.getInventory().getSelected());
+                } else {
+                    for (Game game : Lobby.games.values()) {
+                        TickUtil.tickRun(() -> {
+                            if (game.getPlayerManager().getPlayers().contains(player)) {
+                                game.getPlayerManager().onPlayerUseItem(player, player.getInventory().getSelected());
+                            }
+                            DevelopCommands.onPlayerUseItem(player, player.getInventory().getSelected());
+                        });
+                    }
                 }
             });
         }
@@ -117,7 +128,6 @@ public abstract class ConnectionMixin {
         if (packet instanceof ServerboundContainerClickPacket clickPacket) {
             for (Game game : Lobby.games.values()) {
                 Integer container = game.getStatus().playerSectionBoxIds.get(ultimateCH$getPlayer().getUUID());
-                System.out.println(container);
                 if (container != null && container == clickPacket.getContainerId()) {
                     ItemStack item = clickPacket.getCarriedItem();
                     System.out.println(item);
@@ -128,6 +138,35 @@ public abstract class ConnectionMixin {
 
                 }
                 ContainerUtil.broadcastUpdate(game.getPlayerManager().getPlayers(), clickPacket.getContainerId(), clickPacket.getSlotNum(), ItemStack.EMPTY);
+            }
+        }
+
+        if (packet instanceof ServerboundContainerSlotStateChangedPacket) {
+            ServerPlayer player = ultimateCH$getPlayer();
+            Set<String> tags = player.getTags();
+            if (tags.contains(StatusTags.PUTTING_SECTION_TAG) || tags.contains(StatusTags.OFFSET_TESTING_TAG)) {
+                TickUtil.tickRun(() -> {
+                    for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                        player.connection.send(PlayerUtil.createInventoryUpdatePacket(player, i));
+                    }
+                });
+            }
+        }
+
+        if (packet instanceof ServerboundPlayerInputPacket inputPacket) {
+            System.out.println(inputPacket.getXxa());
+            System.out.println(inputPacket.getZza());
+            System.out.println(inputPacket.isJumping());
+            if (ultimateCH$getPlayer().getTags().contains(TestCommand.TAG)) {
+                Pig pig = TestCommand.temp.get(ultimateCH$getPlayer().getUUID());
+                if (Objects.nonNull(pig)) {
+                    Vec3 pos = pig.position().add(inputPacket.getXxa(), 0, inputPacket.getZza());
+                    pig.teleportTo(pos.x, pos.y, pos.z);
+                    pig.setXRot(ultimateCH$getPlayer().getXRot());
+                    pig.setYRot(ultimateCH$getPlayer().getYRot());
+                    if (inputPacket.isJumping() && pig.onGround()) pig.addDeltaMovement(new Vec3(0, 0.45, 0));
+                    ultimateCH$getPlayer().connection.send(new ClientboundSetEntityMotionPacket(pig));
+                }
             }
         }
 
