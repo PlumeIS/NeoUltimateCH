@@ -22,6 +22,13 @@ public class SlippingTest {
 
     public double offset;
     public boolean checked = false;
+
+    private double kp = 0.05; // 比例系数
+    private double ki = 0.01; // 积分系数
+    private double kd = 0.02; // 微分系数
+    
+    private double integral = 0;
+    private double previousError = 0;
     
     public SlippingTest(ServerPlayer player, double targetSpeed) {
         this.player = player;
@@ -42,10 +49,16 @@ public class SlippingTest {
         player.connection.send(new ClientboundSetActionBarTextPacket(actionBar));
 
         if (findingSpeed) {
-            if (speedProvider.getCurrentSpeed() < targetSpeed) offset = offset - 0.01;
-            if (speedProvider.getCurrentSpeed() >= targetSpeed) {
+            double currentSpeed = speedProvider.getCurrentSpeed();
+            double error = targetSpeed - currentSpeed;
+
+            if (currentSpeed < targetSpeed) offset = offset - 0.01;
+            if (currentSpeed >= targetSpeed) {
                 checkingSpeed = true;
                 findingSpeed = false;
+
+                integral = 0;
+                previousError = error;
             }
         }
 
@@ -59,16 +72,25 @@ public class SlippingTest {
                 if (speedProvider.finished()) {
                     Double testSpeed = speedProvider.getTestSpeed();
                     player.sendSystemMessage(Component.literal("测试速度: %.2f".formatted(testSpeed)));
-                    if (testSpeed <= targetSpeed + 0.03 && testSpeed >= targetSpeed - 0.03) {
+                    
+                    double error = testSpeed - targetSpeed;
+                    
+                    if (Math.abs(error) <= 0.03) {
                         player.sendSystemMessage(Component.literal("测试通过"));
                         checkingSpeed = false;
                         checked = true;
+                    } else {
+                        integral += error;
+
+                        if (integral > 10) integral = 10;
+                        if (integral < -10) integral = -10;
+                        
+                        double derivative = error - previousError;
+                        double output = kp * error + ki * integral + kd * derivative;
+                        offset += output;
+                        
+                        previousError = error;
                     }
-                    double add = 0.005;
-                    if (Math.abs(testSpeed - targetSpeed) > 0.5) add = 0.02;
-                    if (Math.abs(testSpeed - targetSpeed) > 0.2) add = 0.01;
-                    if (testSpeed > targetSpeed) { offset = offset + add;}
-                    if (testSpeed < targetSpeed) { offset = offset - add;}
                     checking = false;
                 }
             }

@@ -60,10 +60,12 @@ public class DevelopCommands {
                                         if (PlayerUtil.containsTag(player, StatusTags.DEVELOPER_TAG)) {
                                             player.getTags().remove(StatusTags.DEVELOPER_TAG);
                                             player.getTags().remove(StatusTags.NO_JUMP_TAG);
+                                            player.getTags().add(StatusTags.SHULKER_JUMP_TAG);
                                             player.sendSystemMessage(Component.literal("DEVELOP: OFF"));
                                         } else {
                                             player.getTags().add(StatusTags.DEVELOPER_TAG);
                                             player.getTags().add(StatusTags.NO_JUMP_TAG);
+                                            player.getTags().remove(StatusTags.SHULKER_JUMP_TAG);
                                             player.sendSystemMessage(Component.literal("DEVELOP: ON"));
                                         }
                                     }

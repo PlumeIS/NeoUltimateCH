@@ -73,25 +73,13 @@ public abstract class ConnectionMixin {
             if (serverPlayer == null) {
                 return;
             }
-            if (WallJumpProvider.isTouchingPlayer(serverPlayer)) {
+            if (WallJumpProvider.wallJumping.contains(serverPlayer.getUUID())) {
                 ci.cancel();
                 if (this.channel.isOpen()) {
                     try {
-                        ServerboundMovePlayerPacket movePlayerPacket = null;
-                        if (packet instanceof ServerboundMovePlayerPacket.Pos p) {
-                            movePlayerPacket = new ServerboundMovePlayerPacket.Pos(p.getX(0), p.getY(0), p.getZ(0), false);
-                        }
-                        if (packet instanceof ServerboundMovePlayerPacket.Rot p) {
-                            movePlayerPacket = new ServerboundMovePlayerPacket.Rot(p.getYRot(0), p.getXRot(0), false);
-                        }
-                        if (packet instanceof ServerboundMovePlayerPacket.PosRot p) {
-                            movePlayerPacket = new ServerboundMovePlayerPacket.PosRot(p.getX(0), p.getY(0), p.getZ(0), p.getYRot(0), p.getXRot(0), false);
-                        }
-                        if (packet instanceof ServerboundMovePlayerPacket.StatusOnly p) {
-                            movePlayerPacket = new ServerboundMovePlayerPacket.StatusOnly(false);
-                        }
-                        genericsFtw(movePlayerPacket, this.packetListener);
-                    } catch (RunningOnDifferentThreadException runningondifferentthreadexception) {
+                        ((ServerboundMovePlayerPacket)packet).onGround = true;
+                        genericsFtw(packet, this.packetListener);
+                    } catch (RunningOnDifferentThreadException ignored) {
                     } catch (RejectedExecutionException rejectedexecutionexception) {
                         this.disconnect(Component.translatable("multiplayer.disconnect.server_shutdown"));
                     } catch (ClassCastException classcastexception) {

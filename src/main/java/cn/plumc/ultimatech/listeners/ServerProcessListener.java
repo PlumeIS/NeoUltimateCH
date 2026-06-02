@@ -46,10 +46,12 @@ public class ServerProcessListener {
     private static void createPatch(MinecraftServer server) {
         MINECRAFT_DIR = server.getServerDirectory().normalize();
         UCH_PATCH = MINECRAFT_DIR.resolve(UltimateCH.MOD_ID);
+        OFFSETS_PATCH = UCH_PATCH.resolve("offsets");
         CACHED_PATCH = UCH_PATCH.resolve("cache");
         CACHED_SKIN_PATCH = CACHED_PATCH.resolve("skin");
         try {
             Files.createDirectories(UCH_PATCH);
+            Files.createDirectories(OFFSETS_PATCH);
             Files.createDirectories(CACHED_PATCH);
             Files.createDirectories(CACHED_SKIN_PATCH);
         } catch (IOException e) {

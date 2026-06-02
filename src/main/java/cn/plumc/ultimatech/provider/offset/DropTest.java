@@ -1,5 +1,6 @@
 package cn.plumc.ultimatech.provider.offset;
 
+import cn.plumc.ultimatech.provider.WallJumpProvider;
 import cn.plumc.ultimatech.utils.PlayerUtil;
 import cn.plumc.ultimatech.utils.TickUtil;
 import net.minecraft.network.chat.Component;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.HashMap;
+import java.util.List;
 
 import static cn.plumc.ultimatech.provider.offset.OffsetProvider.OffsetTesting.BASE_OFFSET;
 import static cn.plumc.ultimatech.provider.offset.OffsetProvider.TEST_START_POINT;
@@ -84,7 +86,10 @@ public class DropTest {
             Vec3 waitingPos = TEST_START_POINT.add(0, -100, 0);
             stand.teleportTo(waitingPos.x, waitingPos.y, waitingPos.z);
             PlayerUtil.teleport(player, TEST_START_POINT);
-            TickUtil.tickRun(() -> player.setDeltaMovement(0, testSpeed.speed/20 - 0.1, 0));
+            TickUtil.tickRun(() -> {
+                player.setDeltaMovement(0, - testSpeed.speed/20 + 0.1, 0);
+                PlayerUtil.updateDeltaMovement(List.of(player), player);
+            });
             testing = true;
         } else {
             if (!checking && speed > testSpeed.speed) {
@@ -104,16 +109,13 @@ public class DropTest {
                     player.sendSystemMessage(Component.literal("在速度 %.2f 下完成测试".formatted(testSpeed.speed)));
                     result.put(checkedSpeed, offset);
                     testSpeed = testSpeed.next();
-                    testing = false;
-                    checking = false;
-                    checkFinished = false;
                 } else {
                     player.sendSystemMessage(Component.literal("测试失败"));
                     offset -= 0.01;
-                    testing = false;
-                    checking = false;
-                    checkFinished = false;
                 }
+                testing = false;
+                checking = false;
+                checkFinished = false;
             }
         }
         if (testSpeed == null) {

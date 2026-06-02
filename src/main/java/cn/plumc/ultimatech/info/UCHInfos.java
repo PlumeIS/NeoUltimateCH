@@ -22,10 +22,13 @@ public class UCHInfos {
 
     public static Path MINECRAFT_DIR;
     public static Path UCH_PATCH;
+    public static Path OFFSETS_PATCH;
     public static Path CACHED_PATCH;
     public static Path CACHED_SKIN_PATCH;
 
-    public static final int WALL_JUMPING_USING_ID = -5;
+    public static final int WALL_JUMPING_USING_ID_0 = -5;
+    public static final int WALL_JUMPING_USING_ID_1 = -6;
+
     public static final BlockState AIR = Blocks.AIR.defaultBlockState();
     public static final BlockState JUMPING_BLOCK = Blocks.BARRIER.defaultBlockState();
 
